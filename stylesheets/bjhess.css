@@ -1,0 +1,92 @@
+@import "vars.css";
+@import "footer.css";
+
+html {
+  font-family: var(--sans-serif-font);
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+body {
+  background-color: var(--main-bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  font-size: 1.33rem;
+}
+
+h1, h2 {
+  font-size: 1.55rem;
+  font-weight: bold;
+  margin: 10px 0 0 0;
+}
+
+h1 .name {
+  text-transform: uppercase;
+}
+
+a {
+  /* we don't like colors */
+  color: var(--text-color);
+}
+
+a:hover {
+  background-color: var(--a-hover-bg-color);
+  filter: var(--a-hover-brightness);
+}
+
+header {
+  padding: 5px 10px 20px 20px;
+}
+
+header p {
+  font-family: var(--serif-font);
+  filter: brightness(85%);
+}
+
+header, section #content, footer p, footer div {
+  max-width: 700px;
+  margin: auto;
+}
+
+section {
+  padding: 30px 10px 30px 20px;
+}
+
+.portfolio {
+  background-color: var(--secondary-bg-color);
+  color: var(--secondary-text-color);
+  font-size: 1rem;
+}
+
+.portfolio h2 a {
+  color: var(--secondary-text-color);
+}
+
+.portfolio a:hover {
+  background-color: var(--a-secondary-hover-bg-color);
+  filter: var(--a-secondary-hover-brightness);
+}
+
+.portfolio {
+  font-family: var(--sans-serif-font);
+}
+
+.portfolio ul {
+  padding-left: 0;
+  font-size: 0.78rem;
+}
+
+.portfolio li {
+  margin: 4px 0;
+  list-style: none;
+  display: inline-block;
+}
+
+.portfolio li:after {
+  content: " \00b7";
+}
+.portfolio li:last-child:after {
+  content: none;
+}
