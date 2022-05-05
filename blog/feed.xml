@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>I am BARRY HESS</title>
+  <link href="https://bjhess.com/blog/feed.xml" rel="self" />
+  <link href="https://bjhess.com/blog/" />
+  <updated>2022-05-05T00:00:00-05:00</updated>
+  <id>https://bjhess.com</id>
+  <author>
+    <name>Barry Hess</name>
+  </author>
+
+  <entry>
+    <title>Strong Songs </title>
+    <link href="https://bjhess.com/blog/2022/strong_songs/" />
+    <updated>2022-04-30T00:00:00-05:00</updated>
+    <id>https://bjhess.com/blog/2022/strong_songs/</id>
+  </entry>
+
+  <entry>
+    <title>Video Gaming vs Videos of Gaming</title>
+    <link href="http://0.0.0.0:8000/blog/2022/video_gaming_vs_videos_of_gaming/l" />
+    <updated>2022-04-30T00:00:00-05:00</updated>
+    <id>https://bjhess.com/blog/2022/video_gaming_vs_videos_of_gaming/</id>
+  </entry>
+
+  <entry>
+    <title>Anti-Joy in Sports Commentating </title>
+    <link href="https://bjhess.com/blog/2022/anti_joy_in_sports_commentating/" />
+    <updated>2022-04-30T00:00:00-05:00</updated>
+    <id>https://bjhess.com/blog/2022/anti_joy_in_sports_commentating/</id>
+  </entry>
+
+</feed>
