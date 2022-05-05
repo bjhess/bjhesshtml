@@ -1,0 +1,210 @@
+/******************************************************************************
+  CSS Reset from https: //www.joshwcomeau.com/css/custom-css-reset/
+******************************************************************************/
+
+/* Use a more-intuitive box-sizing model. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/*
+  2. Remove default margin
+*/
+* {
+  margin: 0;
+}
+
+/* Allow percentage-based heights in the application */
+html,
+body {
+  height: 100%;
+}
+
+/*
+  Typographic tweaks!
+  4. Add accessible line-height
+  5. Improve text rendering
+*/
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Remove built-in form typography styles */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/******************************************************************************
+  End CSS Reset
+******************************************************************************/
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap");
+
+:root {
+  --color-white: #fff;
+  --color-pink: rgb(255, 181, 252);
+  /* Sw2 - Salvia Blue C41 M25 Y10 K0*/
+  --color-bg: #f0f8ff;
+  --color-post-border: #ddd;
+  --color-hr: #ccc;
+  --color-txt: rgb(35, 28, 51);
+  --color-txt-link: #a221c2;
+  --color-txt-meta: #888;
+  --font-size-base: 10px;
+  --font-size-XS: 1.1rem;
+  --font-size-S: 1.4rem;
+  --font-size-M: 1.7rem;
+  --font-size-L: 2rem;
+  --font-size-XL: 3rem;
+  --font-size-XXL: 3.6rem;
+  --font-sans-serif: "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: -apple-system-ui-serif, ui-serif, Georgia, "Nimbus Roman No9 L", serif;
+  --font-mono: 'SF Mono', SFMono-Regular, ui-monospace, 'Inconsolata', 'Monaco', 'DejaVu Sans Mono', Menlo, Consolas, monospace;
+  --post-padding: 1.2em;
+  --post-margin: 1.2em;
+  --width-login: 30rem;
+  --width-comments: 54rem;
+  --width-content: 60rem;
+  --padding-bottom: 4rem;
+  --padding-content: 8px
+}
+
+@media (min-width: 60em) {
+  :root {
+    --font-size-XS: 1.2rem;
+    --font-size-S: 1.6rem;
+    --font-size-M: 1.8rem;
+    --font-size-L: 2rem;
+    --font-size-XL: 3.5rem;
+    --font-size-XXL: 4.6rem
+  }
+}
+
+html {
+  font-size: var(--font-size-base)
+}
+
+body {
+  font-family: var(--font-serif);
+  background-color: var(--color-bg);
+  color: var(--color-txt);
+  font-size: var(--font-size-M);
+  font-weight: 400;
+  line-height: 1.5em
+}
+
+img {
+  width: 100%
+}
+
+a {
+  color: #333
+}
+
+a:hover {
+  text-decoration: none
+}
+
+em {
+  font-style: italic
+}
+
+strong {
+  font-weight: 700
+}
+
+p {
+  margin: 1em 0
+}
+
+hr {
+  border: 1px solid var(--color-hr);
+  margin: 1.6em 0
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-sans-serif);
+}
+
+h1 {
+  font-size: var(--font-size-XL);
+  font-weight: 800;
+  margin: 1em 0
+}
+
+h1.home {
+  font-size: var(--font-size-XXL)
+}
+
+h1.with-meta {
+  margin-top: 3px
+}
+
+.noshow {
+  display: none
+}
+
+ul {
+  margin: 1em 0
+}
+
+.posts-list .post-meta {
+  font-size: 100%;
+  color: #aaa
+}
+
+.content {
+  padding: 1em;
+  margin: 0 auto;
+  max-width: var(--width-content)
+}
+
+.post-meta {
+  color: var(--color-txt-meta);
+  font-size: var(--font-size-S)
+}
+
+.nav-back {
+  margin: 0 0 2em 0
+}
+
+.nav-back a {
+  color: var(--color-txt-meta);
+  text-decoration: none
+}
+
+.nav-back a:hover {
+  text-decoration: underline
+}
