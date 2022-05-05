@@ -70,8 +70,8 @@ h6 {
 :root {
   --color-white: #fff;
   --color-pink: rgb(255, 181, 252);
-  /* Sw2 - Salvia Blue C41 M25 Y10 K0*/
   --color-bg: #f0f8ff;
+  --color-bg-alt: #f0fcfb;
   --color-post-border: #ddd;
   --color-hr: #ccc;
   --color-txt: rgb(35, 28, 51);
@@ -79,6 +79,7 @@ h6 {
   --color-txt-meta: #888;
   --color-pre-bg: #222;
   --color-code-bg: #ddd;
+  --bq-brightness: brightness(120%);
   --font-size-base: 10px;
   --font-size-XS: 1.1rem;
   --font-size-S: 1.4rem;
@@ -224,6 +225,26 @@ ul {
 .nav-back a:hover {
   text-decoration: underline
 }
+
+/******************************************************************************
+  Quotes heavily borrowed from https: //davesmyth.com
+******************************************************************************/
+.quote,
+blockquote {
+  filter: var(--bq-brightness);
+  margin: 1em 0;
+  padding: 1em 1.25em;
+  background-color: var(--color-bg-alt);
+  border: none;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+/******************************************************************************
+  END Quotes
+******************************************************************************/
+
 
 /******************************************************************************
   Code blocks
