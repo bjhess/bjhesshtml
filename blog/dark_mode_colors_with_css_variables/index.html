@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Dark mode colors with CSS variables :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> > <a href="/blog/">Blog</a></span>
+    </div>
+
+    <section class="post">
+      <hr />
+      <h1>
+        Dark mode colors with CSS variables
+      </h1>
+
+      <p>I have been working on simplifying the design of my site. I wanted a design that was easy to maintain, adjusts
+        to the
+        screen on which you are reading, and was very readable across screen <a
+          href="https://www.theverge.com/2019/3/22/18270975/how-to-dark-mode-iphone-android-mac-windows-xbox-ps4-nintendo-switch">lighting
+          modes</a>. When I started looking for ways to simply change CSS depending on whether the reader was viewing in
+        a
+        light or dark mode on their device, I was surprised to find search result after search result offering solutions
+        using
+        CSS classes swapped in and out with JavaScript. This didn’t feel like a problem that needed to be solved with
+        JavaScript!</p>
+
+      <p>I started playing around with <a
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties">CSS custom properties</a>.
+        In
+        the simplest terms, these work as variables that can be defined in one place and changed in one place, but
+        referenced
+        throughout your CSS files. Seems like a great option to adjust the value of background colors when dark mode is
+        detected!</p>
+
+      <p>To detect dark mode I needed the media query <a
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme"><code>prefers-color-scheme</code></a>.
+        This sort of thing can be placed at the top of a CSS file (or in a separate file that you <a
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/@import"><code>@import</code></a>) and the variables
+        can be
+        freely used throughout the rest of your CSS code:</p>
+
+      <code>
+        <pre><span class="symbol">:root</span> <span class="punct">{</span>
+  <span class="punct">--</span><span class="ident">main</span><span class="punct">-</span><span class="ident">bg</span><span class="punct">-</span><span class="ident">color</span><span class="punct">:</span> <span class="comment">#96BFE6;  /* Salvia Blue */</span>
+  <span class="punct">--</span><span class="ident">secondary</span><span class="punct">-</span><span class="ident">bg</span><span class="punct">-</span><span class="ident">color</span><span class="punct">:</span> <span class="comment">#f0f8ff;  /* Light Blue */</span>
+  <span class="punct">--</span><span class="ident">text</span><span class="punct">-</span><span class="ident">color</span><span class="punct">:</span> <span class="comment">#651300;  /* Madder Brown */</span>
+  <span class="punct">--</span><span class="ident">secondary</span><span class="punct">-</span><span class="ident">text</span><span class="punct">-</span><span class="ident">color</span><span class="punct">:</span> <span class="comment">#551000;  /* Madder Brown - Dark */</span>
+<span class="punct">}</span>
+
+<span class="attribute">@media</span> <span class="punct">(</span><span class="ident">prefers</span><span class="punct">-</span><span class="ident">color</span><span class="punct">-</span><span class="ident">scheme</span><span class="punct">:</span> <span class="ident">dark</span><span class="punct">)</span> <span class="punct">{</span>
+  <span class="symbol">:root</span> <span class="punct">{</span>
+    <span class="punct">--</span><span class="ident">main</span><span class="punct">-</span><span class="ident">bg</span><span class="punct">-</span><span class="ident">color</span><span class="punct">:</span> <span class="comment">#121212;  /* Blackish */</span>
+    <span class="punct">--</span><span class="ident">secondary</span><span class="punct">-</span><span class="ident">bg</span><span class="punct">-</span><span class="ident">color</span><span class="punct">:</span> <span class="comment">#1F1B24;  /* Purple-Blackish */</span>
+    <span class="punct">--</span><span class="ident">text</span><span class="punct">-</span><span class="ident">color</span><span class="punct">:</span> <span class="comment">#eee;  /* You know */</span>
+    <span class="punct">--</span><span class="ident">secondary</span><span class="punct">-</span><span class="ident">text</span><span class="punct">-</span><span class="ident">color</span><span class="punct">:</span> <span class="comment">#ddd;  /* Yeah */</span>
+  <span class="punct">}</span>
+<span class="punct">}</span>
+
+<span class="ident">body</span> <span class="punct">{</span>
+  <span class="ident">background</span><span class="punct">-</span><span class="ident">color</span><span class="punct">:</span> <span class="ident">var</span><span class="punct">(--</span><span class="ident">main</span><span class="punct">-</span><span class="ident">bg</span><span class="punct">-</span><span class="ident">color</span><span class="punct">);</span>
+  <span class="ident">color</span><span class="punct">:</span> <span class="ident">var</span><span class="punct">(--</span><span class="ident">text</span><span class="punct">-</span><span class="ident">color</span><span class="punct">);</span>
+<span class="punct">}</span>
+
+<span class="punct">.</span><span class="ident">portfolio</span> <span class="punct">{</span>
+  <span class="ident">background</span><span class="punct">-</span><span class="ident">color</span><span class="punct">:</span> <span class="ident">var</span><span class="punct">(--</span><span class="ident">secondary</span><span class="punct">-</span><span class="ident">bg</span><span class="punct">-</span><span class="ident">color</span><span class="punct">);</span>
+  <span class="ident">color</span><span class="punct">:</span> <span class="ident">var</span><span class="punct">(--</span><span class="ident">secondary</span><span class="punct">-</span><span class="ident">text</span><span class="punct">-</span><span class="ident">color</span><span class="punct">);</span>
+<span class="punct">}</span>
+</pre></code>
+
+      <p>As more varying design colors are brought into the design and used multiple times throughout the rest of the
+        CSS,
+        centralizing the color elements in one spot will be very helpful for colorizing in both light and dark modes. I
+        hope
+        this helps someone out there!</p>
+
+      <p>Note: I assume all the examples I found use JavaScript because there probably is some worry about browser
+        compatibility for <a
+          href="https://caniuse.com/?search=prefers-color-scheme"><code>prefers-color-scheme</code></a>. In
+        my case I’m not concerned about seeing the same behavior in browsers that are not recognizing this useful media
+        query.
+        I guess their screens will remain bright in the dark!</p>
+
+
+      <hr />
+
+      <div class="post-meta">
+        <p class="date">
+          Dec 20, 2021
+        </p>
+      </div>
+
+  </div>
+
+</body>
+
+</html>

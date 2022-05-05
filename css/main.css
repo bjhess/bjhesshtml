@@ -77,6 +77,8 @@ h6 {
   --color-txt: rgb(35, 28, 51);
   --color-txt-link: #a221c2;
   --color-txt-meta: #888;
+  --color-pre-bg: #222;
+  --color-code-bg: #ddd;
   --font-size-base: 10px;
   --font-size-XS: 1.1rem;
   --font-size-S: 1.4rem;
@@ -155,13 +157,12 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-sans-serif);
+  font-weight: 800;
+  margin: 1em 0
 }
 
 h1 {
   font-size: var(--font-size-XL);
-  font-weight: 800;
-  margin: 1em 0
 }
 
 h1.home {
@@ -172,8 +173,23 @@ h1.with-meta {
   margin-top: 3px
 }
 
+h2 {
+  font-size: var(--font-size-L)
+}
+
 .noshow {
   display: none
+}
+
+.blog-list {
+  font-size: var(--font-size-S);
+  font-family: var(--font-sans-serif);
+}
+
+.blog-list li time {
+  width: 10%;
+  float: left;
+  white-space: nowrap;
 }
 
 ul {
@@ -208,3 +224,107 @@ ul {
 .nav-back a:hover {
   text-decoration: underline
 }
+
+/******************************************************************************
+  Code blocks
+******************************************************************************/
+code,
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-S);
+}
+
+p code,
+li code {
+  background-color: var(--color-code-bg);
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  padding: 3px;
+}
+
+pre {
+  color: #ccc;
+  background-color: var(--color-pre-bg);
+  padding: 15px 15px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  overflow: auto;
+  white-space: pre;
+}
+
+pre span.attribute {
+  color: #009900;
+}
+
+pre span.char {
+  color: #F00;
+}
+
+pre span.class {
+  color: #A020F0;
+  font-weight: bold;
+}
+
+pre span.comment {
+  color: #00FFFF;
+}
+
+pre span.constant {
+  color: #008B8B;
+}
+
+pre span.escape {
+  color: #6A5ACD;
+}
+
+pre span.expr {
+  color: #22FFCC;
+}
+
+pre span.global {
+  color: #11AA44;
+}
+
+pre span.ident {
+  color: #CCCCCC;
+}
+
+pre span.keyword {
+  color: #A52A2A;
+  font-weight: bold;
+}
+
+pre span.method {
+  color: #008B8B;
+}
+
+pre span.module {
+  color: #A020F0;
+  font-weight: bold;
+}
+
+pre span.number {
+  color: #DD00DD;
+}
+
+pre span.punct {
+  color: #6A5ACD;
+}
+
+pre span.regex {
+  color: #DD00DD;
+}
+
+pre span.string {
+  color: #DD00DD;
+}
+
+pre span.symbol {
+  color: #008B8B;
+}
+
+/******************************************************************************
+  END Code blocks
+******************************************************************************/
