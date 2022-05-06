@@ -111,6 +111,7 @@ h6 {
     --font-size-XL: 3.5rem;
     --font-size-XXL: 4.6rem;
   }
+
 }
 
 html {
@@ -367,3 +368,9 @@ pre span.symbol {
 /******************************************************************************
   END Code blocks
 ******************************************************************************/
+
+@media all and (min-width:0px) and (max-width: 568px) {
+  .blog-list li time {
+    width: 20%;
+  }
+}
