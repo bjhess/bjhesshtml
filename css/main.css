@@ -152,6 +152,10 @@ hr {
   margin: 1.6em 0
 }
 
+.header {
+  font-family: var(--font-sans-serif);
+}
+
 h1,
 h2,
 h3,
@@ -161,6 +165,7 @@ h6 {
   font-weight: 800;
   margin: 1em 0;
   line-height: 1.2;
+  font-family: var(--font-sans-serif);
 }
 
 h1 {
@@ -198,11 +203,6 @@ ul {
   margin: 1em 0
 }
 
-.posts-list .post-meta {
-  font-size: 100%;
-  color: #aaa
-}
-
 .content {
   padding: 1em;
   margin: 0 auto;
@@ -211,7 +211,8 @@ ul {
 
 .post-meta {
   color: var(--color-txt-meta);
-  font-size: var(--font-size-S)
+  font-size: var(--font-size-S);
+  font-family: var(--font-sans-serif);
 }
 
 .nav-back {
