@@ -97,7 +97,7 @@ h6 {
   --width-comments: 54rem;
   --width-content: 60rem;
   --padding-bottom: 4rem;
-  --padding-content: 8px
+  --padding-content: 8px;
 }
 
 @media (min-width: 60em) {
@@ -107,12 +107,12 @@ h6 {
     --font-size-M: 1.8rem;
     --font-size-L: 2rem;
     --font-size-XL: 3.5rem;
-    --font-size-XXL: 4.6rem
+    --font-size-XXL: 4.6rem;
   }
 }
 
 html {
-  font-size: var(--font-size-base)
+  font-size: var(--font-size-base);
 }
 
 body {
@@ -124,32 +124,32 @@ body {
 }
 
 img {
-  width: 100%
+  width: 100%;
 }
 
 a {
-  color: #333
+  color: #333;
 }
 
 a:hover {
-  text-decoration: none
+  text-decoration: none;
 }
 
 em {
-  font-style: italic
+  font-style: italic;
 }
 
 strong {
-  font-weight: 700
+  font-weight: 700;
 }
 
 p {
-  margin: 1em 0
+  margin: 1em 0;
 }
 
 hr {
   border: 1px solid var(--color-hr);
-  margin: 1.6em 0
+  margin: 1.6em 0;
 }
 
 .header {
@@ -173,19 +173,19 @@ h1 {
 }
 
 h1.home {
-  font-size: var(--font-size-XXL)
+  font-size: var(--font-size-XXL);
 }
 
 h1.with-meta {
-  margin-top: 3px
+  margin-top: 3px;
 }
 
 h2 {
-  font-size: var(--font-size-L)
+  font-size: var(--font-size-L);
 }
 
 .noshow {
-  display: none
+  display: none;
 }
 
 .blog-list {
@@ -200,13 +200,13 @@ h2 {
 }
 
 ul {
-  margin: 1em 0
+  margin: 1em 0;
 }
 
 .content {
   padding: 1em;
   margin: 0 auto;
-  max-width: var(--width-content)
+  max-width: var(--width-content);
 }
 
 .post-meta {
@@ -216,16 +216,16 @@ ul {
 }
 
 .nav-back {
-  margin: 0 0 2em 0
+  margin: 0 0 2em 0;
 }
 
 .nav-back a {
   color: var(--color-txt-meta);
-  text-decoration: none
+  text-decoration: none;
 }
 
 .nav-back a:hover {
-  text-decoration: underline
+  text-decoration: underline;
 }
 
 a.highlight {
