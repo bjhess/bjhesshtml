@@ -1,5 +1,5 @@
 /******************************************************************************
-  CSS Reset from https: //www.joshwcomeau.com/css/custom-css-reset/
+  CSS Reset from https://www.joshwcomeau.com/css/custom-css-reset/
 ******************************************************************************/
 
 /* Use a more-intuitive box-sizing model. */
@@ -121,7 +121,6 @@ body {
   color: var(--color-txt);
   font-size: var(--font-size-M);
   font-weight: 400;
-  line-height: 1.5em
 }
 
 img {
@@ -160,7 +159,8 @@ h4,
 h5,
 h6 {
   font-weight: 800;
-  margin: 1em 0
+  margin: 1em 0;
+  line-height: 1.2;
 }
 
 h1 {
