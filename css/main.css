@@ -99,6 +99,7 @@ h6 {
   --padding-bottom: 4rem;
   --padding-content: 8px;
   --block-border-radius: 10px;
+  --inline-border-radius: 2px;
 }
 
 @media (min-width: 60em) {
@@ -182,10 +183,6 @@ h1.with-meta {
   margin-top: 3px;
 }
 
-h2 {
-  font-size: var(--font-size-L);
-}
-
 .noshow {
   display: none;
 }
@@ -233,6 +230,7 @@ ul {
 a.highlight {
   background-color: var(--color-txt-link-highlight);
   padding: 0.3rem;
+  border-radius: var(--inline-border-radius);
 }
 
 /******************************************************************************
@@ -265,7 +263,7 @@ pre {
 p code,
 li code {
   background-color: var(--color-code-bg);
-  border-radius: 2px;
+  border-radius: var(--inline-border-radius);
   padding: 3px;
 }
 
