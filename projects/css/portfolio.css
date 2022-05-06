@@ -1,0 +1,20 @@
+.portfolio ul {
+  padding-left: 0;
+  font-family: var(--font-sans-serif);
+  font-size: var(--font-size-S);
+  line-height: 1.2;
+}
+
+.portfolio li {
+  margin: 4px 0;
+  list-style: none;
+  display: inline-block;
+}
+
+.portfolio li:after {
+  content: " \00b7";
+}
+
+.portfolio li:last-child:after {
+  content: none;
+}
