@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Beginner's Mind Micro.blog :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml" />
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> > <a href="/blog/">Blog</a></span>
+    </div>
+
+    <section class="post">
+      <hr />
+      <h1>
+        Beginner's Mind Micro.blog
+      </h1>
+
+      <p>
+        <em>(Note: I have since moved my primary blog back to a self-designed system, but I am still micro blogging
+          at <a href="https://micro.bjhess.com">micro.bjhess.com</a>)</em>
+      </p>
+      <p>In committing myself to write here at Micro.blog, I <a
+          href="https://micro.bjhess.com/2022/01/14/microblogging.html">had a few hangups</a>. One unspoken in that post
+        is the challenge of learning of a new platform. Particularly I just couldn’t write on this platform without
+        making the look and feel of it my own. Yes, during last night’s long night I have already succeeded in failing
+        my goal to resist customizing my Micro.blog. I enjoy tending my online garden too much.</p>
+
+      <p>It seems useful to share the experience of trying to accomplish tasks when one doesn’t know anything about how
+        to do it. (This is <a href="https://en.wikipedia.org/wiki/Shoshin">beginner’s mind</a> adjacent, but I don’t
+        think what I’m writing about here represents any sort of a zen-level state of being.) I figured I would write
+        out some of the experience of standing things up on the service.</p>
+
+      <p>To be very clear up front, I have quite enjoyed building up my Micro.blog knowledge. The community is
+        incredibly supportive. I think the platform walks a pretty good line between being an accessible way to have an
+        online presence across micro and traditional blog posts while also providing near infinite flexibility to those
+        who really want to dig into things. Much credit must go to <a href="https://micro.blog/manton">@manton</a> and
+        team! Back to the brain dump…</p>
+
+      <p>It rapidly became clear that I wasn’t going to allow myself to just roll with a theme as is, so the first step
+        was finding a theme that I felt had the bones of what I was looking for. I wanted something that could be
+        customized purely with CSS rather than going to <a href="https://help.micro.blog/t/custom-themes/59">custom
+          themes</a>. I suspect I will not be able to avoid custom themes forever, but at the moment <a
+          href="https://gohugo.io">Hugo</a> is a mind-bend and I’m trying to honor <em>some</em> of the limits I set for
+        myself.</p>
+
+      <p>I clicked through each theme, waiting for my pages to rebuild, and eventually selected the <a
+          href="https://github.com/microdotblog/theme-arabica">Arabica theme</a>. This process would have benefitted
+        from a more real-time-ish theme chooser, but it wasn’t <em>too</em> time consuming overall.</p>
+
+      <p>Before committing to Micro.blog, I was experimenting with <a
+          href="https://en.wikipedia.org/wiki/Mastodon_(software)">Mastodon</a> and wondering if Micro.blog could just
+        be a sort of feed aggregator. Micro.blog <a
+          href="https://www.manton.org/2018/11/14/activitypub-for-your.html">supports ActivityPub</a> for custom
+        domains, but to my memory there was a big warning that this is A One Time Setting You Cannot Change Are You
+        Sure?™ I chose micro.bjhess.com as my domain as it made good sense at the time.</p>
+
+      <p>Fast forward to today. My Micro.blog account is really meant to be a blog. I’d rather it sit at
+        blog.bjhess.com. The current micro.bjhess.com feels a <em>bit</em> like a “proprietary” landing spot. Though I
+        can read about <a href="https://help.micro.blog/t/custom-domains/53/19">changing domains</a>, I don’t readily
+        see a place that I can do it in my account. Now, rather than a year from now, would be the time to deal with 48
+        hours of weirdness in my site. I’ll have to dig around more to see if it’s possible. If it’s not possible, no
+        big deal.</p>
+
+      <p>My goal was to structure the site with a <strong>Blog</strong>, a place for micro posts that I’m calling
+        <strong>Ephemera</strong>, and an area to collect things I like that I’m calling <strong>Commonplace</strong>.
+        It wasn’t incredibly obvious to me how I was going to do this. Categories seemed like a part of the solution,
+        and I <a href="https://help.micro.blog/t/using-categories/68">found they do their job</a>. Incidentally, <a
+          href="https://help.micro.blog/t/using-categories/68">category auto filtering</a> is pretty genius!</p>
+
+      <p>(For a few hours I really struggled to find information on how to best used the service. Eventually I realized
+        that searching <a href="https://help.micro.blog">help.micro.blog</a> for answers worked pretty well. I’m so
+        conditioned to web search “[problem] [example.com]”. It’s a hard habit to break.)</p>
+
+      <p>As I thought more about the <strong>Commonplace</strong> section, I decided that should just be a
+        manually-managed page that links out to subcategories (quotes, poetry, and so on). It was not obvious to me how
+        to do this, but <a href="https://help.micro.blog/t/custom-category-pages/796/2">some friendly help</a> taught me
+        that I could just make additional pages and change their URL scheme to look like
+        <code>/categories/quotes</code>. Pretty easy in the end.</p>
+
+      <p>CSS styling has been incredibly simple and fast to implement. I’ve mostly adjusted the fonts, colors, and link
+        interactions. As a developer by trade, I naturally wish I could be editing CSS on my machine. Not having source
+        control gets me itchy all over as well, but that’s to be expected.</p>
+
+      <p>There are some things that I still think I’d like to customize, but I wish I could do it without delving into
+        custom themes:</p>
+
+      <ul>
+        <li>I might like my homepage to be something more “traditional web page” with an introduction to myself, what’s
+          at the site, and so on.</li>
+        <li>Or I might like my homepage to simply be my longer-form blog posts. For me this site is a blog, with micro
+          posts and a commonplace book alongside it. This and the above point <a
+            href="https://help.micro.blog/t/custom-home-page/62">can be done through custom themes</a>.</li>
+        <li>I would like to have some intro text on my categories pages, but this again appears to require custom
+          themes. Having some sort of smartcode or magic keyword that can be used to plop in category listings could
+          work well. This might be an extension of how <a
+            href="https://help.micro.blog/t/using-categories/68">categories are added to navigation</a>.</li>
+        <li>I would like my primary feed to be the blog feed. Secondarily, I would like to have a link to the <a
+            href="https://micro.bjhess.com/uploads/2022/0102806d25.gif">firehose</a> for people who want it all. Custom
+          themes!</li>
+        <li>On your blog posts pages, it appears you can either have replies shown or relegate them to the Micro.blog
+          timeline. I’d like a couple of other options here in a drop down: show link to reply on Micro.blog and show
+          link to reply via email. I think there is a plugin for the latter, so maybe a plugin will pop up at some point
+          for the former as well.</li>
+      </ul>
+
+      <p>Finally, I’m a bit concerned about the future Hugo upgrade process and how my customizations will play with it.
+        At that point I will probably have to delve into <a
+          href="https://www.manton.org/2019/09/04/microblog-test-blogs.html">test blogs</a>. I’m thankful for their
+        existence, but found them a little hard to approach in this initial site build up.</p>
+
+      <p>Again, Micro.blog is quite a fascinating and fun piece of software. I feel very good about my choice to jump in
+        and give it a try!</p>
+
+      <hr />
+
+      <div class="post-meta">
+        <p class="date">
+          January 15, 2022
+        </p>
+      </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Auto-generate sitemap.xml with Rails on Render.com :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml" />
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> > <a href="/blog/">Blog</a></span>
+    </div>
+
+    <section class="post">
+      <hr />
+      <h1>
+        Auto-generate sitemap.xml with Rails on Render.com
+      </h1>
+
+      <p>With the launch of <a href="https://doevery.day">doevery.day</a>, I decided I should register a sitemap. The
+        site is built with Rails 7 and running on <a href="https://render.com">Render</a>, so I set about finding an
+        automated way to make this happen. Here’s what I came up with.</p>
+
+      <p>First I installed the <a href="https://github.com/kjvarga/sitemap_generator">sitemap_generator</a> gem. This
+        will handle the grunt work. The documentation does a good job <a
+          href="https://github.com/kjvarga/sitemap_generator#adding-links">getting you going</a> and provides for most
+        of the details you’ll need.</p>
+
+      <p>From there you should make sure you have a <code>robots.txt</code> defined (<a
+          href="https://www.robotstxt.org/robotstxt.html">docs</a>). Here’s ours:</p>
+
+      <pre><code>User-agent: *
+Disallow:
+Sitemap: https://doevery.day/sitemap.xml.gz
+</code></pre>
+
+      <p>Finally, you need to update your render build script (mine is found in <code>./bin/render-build.sh</code>. Add
+        this to your script:</p>
+
+      <pre><code>bundle exec rake sitemap:refresh
+</code></pre>
+
+      <p>And that should do it! You will have a sitemap after your next deploy.</p>
+
+      <p>(I’ll admit I did run this in my local environment to make sure my code worked. You should probably do that
+        with the <code>rake sitemap:refresh:no_ping</code> command. I forgot. I hope I didn’t make Google and Bing
+        angry!)</p>
+
+      <hr />
+
+      <div class="post-meta">
+        <p class="date">
+          March 23, 2022
+        </p>
+      </div>
+
+  </div>
+
+</body>
+
+</html>

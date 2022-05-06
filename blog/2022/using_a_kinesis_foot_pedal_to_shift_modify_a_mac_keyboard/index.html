@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Using a Kinesis Foot Pedal to Shift Modify a Mac Keyboard :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml" />
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> > <a href="/blog/">Blog</a></span>
+    </div>
+
+    <section class="post">
+      <hr />
+      <h1>
+        Using a Kinesis Foot Pedal to Shift Modify a Mac Keyboard
+      </h1>
+
+      <p>I’ve recently been trying to code with a new <a
+          href="https://micro.bjhess.com/2022/02/09/im-coding-more.html">Kinesis</a> <a
+          href="https://micro.bjhess.com/2022/02/09/im-coding-more.html">keyboard</a>. Since this particular keyboard
+        remaps many of the keys, it’s been quite a mind bending experience, but it’s getting better. One other thing I
+        thought I’d try is to take advantage of Kinesis’s 60-day trial period and pick up a set of <a
+          href="https://kinesis-ergo.com/products/#foot-switches">foot pedals</a>.</p>
+
+      <p>One of the first things I thought could be useful with a pedal was tying it to the shift key. I never use the
+        caps lock, so when there are moments that I need to type in all caps, I find myself holding the shift key and
+        pretzeling my fingers around the keyboard to get everything written. There was one problem, however. From Joey
+        in support:</p>
+
+      <blockquote>
+        <p>Sadly, there is a limitation with Mac OS where one USB device (pedal) cannot modify another USB device
+          (keyboard/built in keyboard), meaning that you cannot use modifiers on your pedals in combination with another
+          device.</p>
+      </blockquote>
+
+      <p>Combining shift from the pedal with a key from the keyboard, a separate USB device, was not going to work out
+        of the box. Enter <a href="https://karabiner-elements.pqrs.org">Karbiner-Elements</a>. I had heard rumblings in
+        my research that this device could fix my situation, but none of the rumblings really explained very clearly how
+        to make it work. Let’s see if I can explain it.</p>
+
+      <p>There are two steps to get this working. First, follow the Kinesis instructions to program your pedal for a
+        <strong>Single Action</strong> of <strong>Shift</strong>, using the <strong>left shift</strong> key to program
+        enter your single-action program. (Left versus right shift isn’t important. It’s just necessary to be consistent
+        as you configure this stuff.) Make sure to set your pedal into programming mode, get the updates saved to the
+        pedal, and then set it back to play mode when you’re done.</p>
+
+      <p><a href="images/b74353297a.png"><img src="images/b74353297a.png" width="600" height="378" alt=“kinesis
+            configuration“ /></a></p>
+
+      <p>Secondly install <a href="https://karabiner-elements.pqrs.org">Karbiner-Elements</a> and go to the
+        <strong>Simple Modifications</strong> tab. Select your <strong>Target device</strong> as your keyboard (in my
+        case <strong>Advantage2 Keyboard</strong>). Finally, and this is weird, but <strong>Add item</strong> and define
+        the <strong>From key</strong> as <strong>left_shift</strong> and the <strong>To key</strong> as
+        <strong>left_shift</strong>. This will magically allow your shift pedal to modify your keyboard! ALL CAPS
+        GALORE!</p>
+
+      <p><a href="images/fc697dba91.png"><img src="images/fc697dba91.png" width="600" height="346"
+            alt=“karbiner-elements” /></a></p>
+
+      <p>You can use this to allow modification with shift or control or option or whatever else you’re after. Much
+        better!</p>
+
+      <p>(Note, after all this I still might not keep the pedal. I can see uses for it, but the ergonomics are pretty
+        challenging for someone that stands at his desk for the entire day. It seems to be better suited for use while
+        sitting.)</p>
+
+      <hr />
+
+      <div class="post-meta">
+        <p class="date">
+          March 3, 2022
+        </p>
+      </div>
+
+  </div>
+
+</body>
+
+</html>
