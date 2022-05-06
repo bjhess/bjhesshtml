@@ -246,6 +246,11 @@ blockquote {
   border-radius: var(--block-border-radius);
 }
 
+blockquote cite {
+  font-style: normal;
+  font-size: var(--font-size-S);
+}
+
 /******************************************************************************
   END Quotes
 ******************************************************************************/
