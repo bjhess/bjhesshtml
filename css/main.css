@@ -98,6 +98,7 @@ h6 {
   --width-content: 60rem;
   --padding-bottom: 4rem;
   --padding-content: 8px;
+  --block-border-radius: 10px;
 }
 
 @media (min-width: 60em) {
@@ -125,6 +126,7 @@ body {
 
 img {
   width: 100%;
+  border-radius: var(--block-border-radius);
 }
 
 a {
@@ -230,8 +232,7 @@ ul {
 
 a.highlight {
   background-color: var(--color-txt-link-highlight);
-  padding-left: .3rem;
-  padding-right: .3rem;
+  padding: 0.3rem;
 }
 
 /******************************************************************************
@@ -241,12 +242,10 @@ a.highlight {
 blockquote {
   filter: var(--bq-brightness);
   margin: 1em 0;
-  padding: 1em 1.25em;
+  padding: 0.5em 1.25em;
   background-color: var(--color-bg-alt);
   border: none;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  border-radius: var(--block-border-radius);
 }
 
 /******************************************************************************
@@ -266,8 +265,6 @@ pre {
 p code,
 li code {
   background-color: var(--color-code-bg);
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
   border-radius: 2px;
   padding: 3px;
 }
@@ -276,9 +273,7 @@ pre {
   color: #ccc;
   background-color: var(--color-pre-bg);
   padding: 15px 15px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  border-radius: var(--block-border-radius);
   overflow: auto;
   white-space: pre;
 }
