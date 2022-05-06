@@ -1,0 +1,80 @@
+/******************************************************************************
+  Albums design stolen from https: //www.mrshawnliu.com/
+******************************************************************************/
+
+:root {
+  --album-margin: 18px;
+}
+
+.main-container {
+  max-width: 1046px;
+  margin: 1em auto;
+  padding: 0 1em;
+}
+
+h1 {
+  font-size: var(--font-size-XL);
+  font-weight: 800;
+  margin: 1.5em auto 1em auto;
+  text-align: center;
+}
+
+p {
+  margin: inherit auto;
+  text-align: center;
+}
+
+.albums-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 auto;
+  flex-flow: wrap row;
+}
+
+iframe {
+  /* makes the bottom spacing not suck */
+  /* https://stackoverflow.com/questions/21025319/iframe-creates-extra-space-below */
+  display: block;
+}
+
+.albums-container img {
+  border-radius: 0;
+}
+
+.per-album {
+  font-size: var(--font-size-S);
+  font-weight: 400;
+  line-height: 1.5em;
+  width: 300px;
+  margin: var(--album-margin);
+}
+
+.per-album .album-art img {
+  display: block;
+  width: 100%
+}
+
+.per-album .album-info {
+  margin: 10px 0
+}
+
+.per-album .album-name {
+  font-family: var(--font-sans-serif);
+  font-weight: 700
+}
+
+.per-album .album-artist {
+  font-family: var(--font-sans-serif);
+  color: var(--color-txt-meta)
+}
+
+.honorable-mentions {
+  margin: var(--album-margin);
+}
+
+.honorable-mentions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
