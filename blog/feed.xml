@@ -5,7 +5,7 @@
   <link href="https://bjhess.com/blog/feed.xml" rel="self" />
   <link href="https://bjhess.com/blog/" />
   <updated>2022-05-05T00:00:00-05:00</updated>
-  <id>https://bjhess.com</id>
+  <id>https://bjhess.com/</id>
   <author>
     <name>Barry Hess</name>
   </author>
@@ -19,15 +19,15 @@
 
   <entry>
     <title>Video Gaming vs Videos of Gaming</title>
-    <link href="http://0.0.0.0:8000/blog/2022/video-gaming-vs-videos-of-gaming/l" />
-    <updated>2022-04-30T00:00:00-05:00</updated>
+    <link href="https://bjhess.com/blog/2022/video-gaming-vs-videos-of-gaming/l" />
+    <updated>2022-04-15T00:00:00-05:00</updated>
     <id>https://bjhess.com/blog/2022/video-gaming-vs-videos-of-gaming/</id>
   </entry>
 
   <entry>
     <title>Anti-Joy in Sports Commentating</title>
     <link href="https://bjhess.com/blog/2022/anti-joy-in-sports-commentating/" />
-    <updated>2022-04-30T00:00:00-05:00</updated>
+    <updated>2022-04-13T00:00:00-05:00</updated>
     <id>https://bjhess.com/blog/2022/anti-joy-in-sports-commentating/</id>
   </entry>
 
