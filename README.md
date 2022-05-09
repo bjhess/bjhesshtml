@@ -28,6 +28,12 @@ This shall evolve.
 - Make sure your repository is public
 - Select your publishing branch at Settings > Pages
 - Wait
+
+### Validation
+
+https://validator.w3.org/nu/
+https://validator.w3.org/feed/
+
 ### Tools
 
 - [SeaMonkey](https://www.seamonkey-project.org/releases/) for editing pages WYSIWYG style.
