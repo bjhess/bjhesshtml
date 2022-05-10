@@ -225,10 +225,13 @@ h1.with-meta {
   font-family: var(--font-sans-serif);
 }
 
+.blog-list li {
+  display: flex;
+  margin: 0.5em 0;
+}
+
 .blog-list li time {
-  width: 13%;
-  float: left;
-  white-space: nowrap;
+  flex: 0 0 80px;
 }
 
 ul {
