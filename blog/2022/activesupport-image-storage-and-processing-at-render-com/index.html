@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>ActiveSupport Image Storage and Processing at Render.com :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml" />
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> > <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr />
+      <h1>
+        ActiveSupport Image Storage and Processing at Render.com
+      </h1>
+
+      <p>I’m standing up a prototype app using Rails and <a href="https://render.com">Render</a>. It wasn’t too hard to
+        figure out how to get things going - Render’s docs have been pretty good! But I figured it is worth jotting down
+        a few pointers about what I had to do right now while using a Render <a
+          href="https://render.com/docs/native-environments">native environment</a> and Rails 7.0.1.</p>
+
+      <ul>
+        <li>The Rails guide on <a href="https://guides.rubyonrails.org/active_storage_overview.html">Active Storage</a>
+          is generally great.</li>
+        <li>You will be using <a href="https://render-web.onrender.com/docs/disks">Render Disks</a> for storage, which
+          means you can no longer stay on the free plan.</li>
+        <li>Of the available image processing options, Render’s native environments only include <a
+            href="https://imagemagick.org">imagemagick</a> out of the box, so you will have to use MiniMagick for your
+          processor.
+
+          <ul>
+            <li>This means <code>brew install imagemagick</code></li>
+            <li>Rails is transitioning to preferring <a
+                href="https://www.rubydoc.info/gems/ruby-vips/Vips/Image">Vips</a>. While it <a
+                href="https://github.com/rails/rails/issues/44211#issuecomment-1017743763">is not documented yet</a>,
+              you will need <code>config.active_storage.variant_processor = :mini_magick</code> in
+              <code>application.rb</code> to get things working.</li>
+          </ul>
+        </li>
+        <li>When setting up your <a href="https://render-web.onrender.com/docs/disks">Disk</a>, note your mount path. I
+          used <code>/storage</code>.</li>
+
+        <li>
+          <p>Your <code>storage.yml</code> for production should look something like this:</p>
+
+          <pre>production_local:
+  service: Disk
+  root: '/storage'
+</pre>
+        </li>
+
+        <li>
+          <p><code>config/environments/production.rb</code> needs:</p>
+
+          <pre>config.active_storage.service = :production_local</pre>
+        </li>
+      </ul>
+
+      <hr />
+
+      <div class="post-meta">
+        <p class="date">
+          January 20, 2022
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+</body>
+
+</html>
