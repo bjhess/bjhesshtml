@@ -225,12 +225,19 @@ h1.with-meta {
   font-family: var(--font-sans-serif);
 }
 
+.blog-list ul {
+  padding: 0;
+  margin: 0;
+}
+
 .blog-list li {
   display: flex;
   margin: 0.5em 0;
+  padding: 0;
 }
 
 .blog-list li time {
+  /* mrshawnliu: can't grow, can't shrink, fixed at 80px */
   flex: 0 0 80px;
 }
 
