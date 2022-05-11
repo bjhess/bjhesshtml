@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Quick Alert :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Quick Alert
+      </h1>
+
+      
+    
+
+
+<p>I frequently have the need jot off a reminder to myself. Pick up The Kid from school in two hours. Don’t forget to drop tax paperwork off at lunch. My desire was for a natural-language way to create these alerts quickly without interrupting my workflow.</p>
+
+<p><em>You’re thinking “just make an event on your phone.” That is interruptive and slow. You say “don’t you have Siri?!” No, and where’d I set my phone again?</em></p>
+
+<p>My first thought was to build a Ruby gem that allowed me to type into my console and schedule a text message to my phone. Alternatively it would schedule emails and even phone calls. I built the basics of the gem. Syntax:</p>
+
+<pre><code>&gt; alert remember lunch in 30 days</code></pre>
+
+<p>Using <a href="https://github.com/mojombo/chronic">chronic</a> and a few tricks, that worked. Ah, but I needed a web service to receive the reminder, schedule it, and intermittently run jobs to notify me. I could share this with the world! And the world could share its requests, not to mention its downtime, with me!</p>
+
+<p>Then I remembered iCloud exists. I dug around for a short time trying to figure out how to get my library to talk to iCal. That was frustrating. That’s when I found <a href="http://flexibits.com/">Fantastical</a> and for $20 my workflow is now:</p>
+
+<ol>
+<li>Create an “alerts” calendar in iCal</li>
+
+<li>Make sure your calendar is syncing to your phone</li>
+
+<li>Set Fantastical to default to “alerts” calendar</li>
+
+<li>Set Fantastical to default alert “Message with Sound” 0 minutes before event</li>
+
+<li>Hit ctrl-option-space and type “remember lunch in 30 minutes”</li>
+</ol>
+
+<p>Much better. Fantastical’s exceptional natural language processing takes over, iCloud gets the alert to my phone, and I’m back to work.</p>
+
+
+
+
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 9, 2012
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>
