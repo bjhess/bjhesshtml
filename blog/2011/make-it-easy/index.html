@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Make It Easy :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Make It Easy
+      </h1>
+
+      
+    
+
+
+<p>I do a lot of side projects. “But how do you find the time?” you ask? My trick is not one of skill, but laziness. Whenever I start moving on a side project idea I try to find any way I can to make version one easy.</p>
+
+<p>Take <a href="http://pasteforward.com/">Paste Forward</a> (please!) - a very simple service and I wanted the software to be written in no time. Given the amount of time I have for these things, writing and supporting my own <a href="http://peepcode.com/products/mms2r-pdf">email slurper</a> was out of the question. I noticed <a href="http://heroku.com/">Heroku</a> was running a beta with <a href="http://devcenter.heroku.com/articles/cloudmailin">CloudMailin</a> - a perfect fit. Then I searched around and found a well-written <a href="https://github.com/sosedoff/pastie">Pastie gem</a> to tie things up. I was in business.</p>
+
+<p>Admittedly those steps were obvious. Finding a service that does work for you for free and finding an open source library that connects to an API-less service is definitely step one. For my next obvious trick? <a href="http://www.sinatrarb.com/">Sinatra</a>! I’ve used Sinatra for seven side projects, including this blog here. The cute thing is some of those side projects are hardly more than static sites. Sinatra works great for getting a static site out there on Heroku for free. Building something with a mite of complexity, but a very minimal set of page types? Look at Sinatra as a quick way to get your site running.</p>
+
+<p>Sometimes I’ll build a site (or page, really) that includes a small bit of data which could change from time to time. I like to use <a href="http://www.yaml.org/">YAML</a> to serialize that data, making it easier to update as needed. An obvious examples is the <a href="https://github.com/bjhess/magic_lunch_ball/blob/master/data/restaurants.yml">YAML file</a> in my simple Magic Lunch Ball open source project. Perhaps less obvious, the project data on <a href="../../index.html">my homepage</a> is also stored in a YAML file. Editing my project list is easier in the YAML file than in HTML. Plus the HTML is more concise with that little bit of Ruby looping thrown in.</p>
+
+<p><a href="http://haitotheku.com/">Hai to the Ku</a> is just a JavaScript app. Using the Twitter API and <a href="http://en.wikipedia.org/wiki/JSON#JSONP">JSONP</a>, tweets are gathered as the page is loaded guaranteeing an always-fresh stream of tweet-zen. Back when I wrote Get Hoffed (a tragically retired site that was <em>the</em> source for Hoff photos and tweets on the internet), I wanted to try out one of the static site generators that were about. So I got to know <a href="http://staticmatic.rubyforge.org/">StaticMatic</a> and built a little Ruby script that would update the photo and tweet content twice daily. StaticMatic would generate the static pages which would be served to eager Hoff fanatics quick, quick.</p>
+
+<p>The truth is, while lazy leads the way in these side project decisions, there is a fair bit of curiosity that goes into the tech choices as well. I first used Sinatra on <a href="http://followcost.com/">Follow Cost</a>. Sinatra was definitely something I wanted to give a spin. What a great side benefit it is to learn a new technology while building something fast. Most importantly, completing a minimum viable product rather than avoiding it for dread of “loading up the stack” is a gigantic benefit. Don’t let the size of your typical working environment be your reason not to get things done. Use laziness to your advantage.</p>
+
+
+
+
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 14, 2011
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>
