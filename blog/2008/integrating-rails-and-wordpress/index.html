@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Integrating Rails and WordPress :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Integrating Rails and WordPress
+      </h1>
+
+
+
+      <p><a href="http://www.scrawlers.com">Scrawlers</a>, an online writing workshop I helped build, includes a <a
+          href="http://blog.scrawlers.com">blog</a>. Rather than build the blog from scratch, or even use a Rails
+        solution, I chose to stick with the familiarity of <a href="http://www.wordpress.org">WordPress</a>. I’d read
+        enough about Rails-lovers switching to a Rails-based engine and back to WordPress that I wasn’t even going to
+        bother leaving The WP.</p>
+
+      <p>Scrawlers sits on an Ubuntu server with Apache and Mongrel running. Unfortunately I have little to no server
+        admin skill, and that includes Apache mod_rewrite. Ilya Grigorik <a
+          href="http://www.igvita.com/2007/07/04/integrating-wordpress-and-rails/">posted</a> an excellent HOWTO on
+        integrating WordPress and Rails. Unfortunately it didn’t <em>quite</em> work for Scrawlers, and I put off
+        figuring out my special mod_rewrite secret sauce for quite a while.</p>
+
+      <p>Eventually I figured out what I needed beyond Ilya’s original technique and posted it in the comments section
+        of his blog. The completist in me needs to post the solution on my blog as well. What follows is pretty much
+        word-for-word from Ilya’s comment section. Be sure to read <a
+          href="http://www.igvita.com/2007/07/04/integrating-wordpress-and-rails/">his post</a>. It’s an easier
+        solution, if it works for you, and it provides background information for what follows.</p>
+
+      <p>I’m dealing with Apache configuration that I do not understand. So it turns out I have <a
+          href="http://httpd.apache.org/docs/2.0/mod/core.html#allowoverride">AllowOverride</a> disabled on my server,
+        even explicitly in my app-specific Apache configuration for the public directory. This is why
+        <code>.htaccess</code> wasn’t working for me.</p>
+
+      <p>After reading up a bit on <code>.htaccess/AllowOverride</code>, I decided there was really no reason to turn it
+        on and eat the overhead involved. Instead I made a Directory directive in my app-specific config file and placed
+        it before my initial WordPress redirects.</p>
+
+      <p>Once these things were in place, the one-line RewriteRule worked in every instance except one. The URL
+        <code>http://www.scrawlers.com/blog</code> (or <code>/blog/</code>) failed with an access denied error. Looking
+        at the rules it sure appeared like it should work. In the end I needed to include a couple rules specific to
+        these situations. Here is, essentially, the bit of configuration code I needed to make my blog start working
+        naturally:</p>
+      <script src='http://gist.github.com/291457.js'></script>
+      <p>I’d explain each line in detail, but truthfully I can’t. I did a lot of <a
+          href="http://httpd.apache.org/docs/2.0/misc/rewriteguide.html">reading</a> in the Apache 2 manual, especially
+        on the rewrite engine, to get the little bit I needed in place.</p>
+
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1254';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          January 2, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>
