@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Lessons Learned :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Lessons Learned
+      </h1>
+
+      
+    
+
+
+<p>As I continue writing Scrawlers, it’s amazing to see how many things that I have read in the past months have turned out to be complete, unadulterated truth. I was reminded of this yesterday when my brother sent me a <a href="http://wilshipley.com/blog/2005/02/free-programming-tips-are-worth-every.html">link to Wil Shipley's blog</a>.</p>
+
+<p>Shipley says:</p>
+<blockquote>Think first. Think some more. Think about the whole problem. Think about a little part of the problem you're going to start with. Think about the whole thing again, in relation to your idea on the starting point.</blockquote>
+<p>In a world where <a href="https://gettingreal.37signals.com/"><cite>Getting Real</cite></a> has become a sort of mantra, sometimes it’s easy to forget that you still need to think about things before you code them. It’s easy to fall into the trap of just “giving it a try.”</p>
+
+<p>Currently, I am updating the markup and presentation of Scrawlers with something I think will be much better. The original layout was completely by the seat of my pants. I qualified the presentation with statements like “this is a wireframe” and “this is not ideal, butâ€¦” So when I jumped back into the markup to start making things look as I want them to I came to a point where I thought, “Wait a minute, I’m going about this all wrong.”</p>
+
+<p>I bought a CSS book and I am now on my way to revamping the whole thing. Throwing out that nasty CSS and markup code is going to be one of the better choices I’ve made with Scrawlers thus far. As I’ve read countless times, it has become clear the act of throwing out code is key to success.</p>
+<blockquote>And don't write longer, more obtuse code because you think it's faster. Remember, hardware gets faster. MUCH faster, every year. But code has to be maintained by programmers, and there's a shortage of good programmers out there. So, if I write a program that's incredibly maintainable and extensible and it's a bit too slow, next year I'm going have a huge hit on my hands. And the year after that, and the year after that. </blockquote>
+<p>I don’t think it’s safe to make the above statement globally. There are certainly a few slightly quicker-to-load choices that could result in orders of magnitude more load on a server. But there are clear examples where taking the slight bandwidth hit just might be the best choice.</p>
+
+<p>Rounded corners are certainly “in” right now and Scrawlers needed to have some of these embellishments on its boxes. I thought it’d be nice to find a way to make this happen without using any graphics, and sure enough there are <a href="http://www.spiffycorners.com/">CSS-only options</a>.</p>
+
+<p>The resultant code was convoluted and not extensible. I wasn’t looking forward to maintaining this technique going forward, even if I could isolate the code in its own little module. I made the executive decision that Scrawlers would eat the cost of a few 150-byte transparent GIF’s to make these roundy corners happen in an easier-to-maintain way. This should free me to concentrate on other performance issues down the road, like file caching. If it turns out that those GIF’s need to go, I always have non graphical methods I can bring to bear when the time is right.</p>
+
+<p>And so it goes. One can read and read and read some more, but experience will always be the more powerful learning tool.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1021';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          December 21, 2006
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>
