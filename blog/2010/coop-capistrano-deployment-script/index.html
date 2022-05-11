@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Co-Op Capistrano Deployment Script :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Co-Op Capistrano Deployment Script
+      </h1>
+
+
+
+
+
+      <p>Yesterday at Harvest we <a
+          href="http://www.getharvest.com/blog/2010/02/introducing-cobot-system-messaging-for-co-op/">launched a little
+          API-accessible</a> robot for our team communication app, <a href="http://coopapp.com">Co-op</a>. There are
+        many uses for this API hook, from deploy notices to code commits to fun daily team affirmations. You are only
+        limited by your imagination!</p>
+
+      <p>Our first use of the Cobot was to get deployment messages right in our Co-op workstream, including <a
+          href="http://git-scm.com/">git</a> commit messages. This is what we see today:</p>
+
+      <p><img alt="Archive: Tuesday, Feb 16 at Team Iridesco @ Harvest Co-op"
+          src="http://img.skitch.com/20100217-j4ehu37jrsk3mgw68gjep9gkmh.jpg"></p>
+
+      <p>And our <a href="http://www.capify.org">Capistrano</a> deployment script (<a
+          href="http://railstips.org/blog/archives/2009/12/21/twizzle-your-deplizzles/">hat tip to John Nunemaker for
+          the idea</a>):</p>
+
+      <code>
+        <pre><span class="ident">namespace</span> <span class="symbol">:co_op</span> <span class="keyword">do</span>
+  <span class="ident">desc</span> <span class="punct">"</span><span class="string">Update Co-op with most recent deployment messages.</span><span class="punct">"</span>
+  <span class="ident">task</span> <span class="symbol">:update</span> <span class="keyword">do</span>
+    <span class="ident">require</span> <span class="punct">'</span><span class="string">net/http</span><span class="punct">'</span>
+    <span class="ident">require</span> <span class="punct">'</span><span class="string">base64</span><span class="punct">'</span>
+    <span class="ident">require</span> <span class="punct">'</span><span class="string">cgi</span><span class="punct">'</span>
+    <span class="ident">require</span> <span class="punct">'</span><span class="string">json</span><span class="punct">'</span>
+
+    <span class="ident">app</span> <span class="punct">=</span> <span class="punct">"</span><span class="string">Harvest</span><span class="punct">"</span>
+    <span class="ident">key</span> <span class="punct">=</span> <span class="punct">"</span><span class="string">withheld_for_your_protection</span><span class="punct">"</span>
+
+    <span class="ident">headers</span> <span class="punct">=</span> <span class="punct">{</span>
+      <span class="punct">"</span><span class="string">Accept</span><span class="punct">"</span>        <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">application/json</span><span class="punct">",</span>
+      <span class="punct">"</span><span class="string">Content-Type</span><span class="punct">"</span>  <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">application/json; charset=utf-8</span><span class="punct">",</span>
+      <span class="punct">"</span><span class="string">User-Agent</span><span class="punct">"</span>    <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">Co-op Deployment</span><span class="punct">"</span>
+    <span class="punct">}</span>
+
+    <span class="keyword">begin</span>
+      <span class="ident">connection</span> <span class="punct">=</span> <span class="constant">Net</span><span class="punct">::</span><span class="constant">HTTP</span><span class="punct">.</span><span class="ident">new</span><span class="punct">("</span><span class="string">coopapp.com</span><span class="punct">",</span> <span class="number">80</span><span class="punct">)</span>
+      <span class="ident">connection</span><span class="punct">.</span><span class="ident">open_timeout</span> <span class="punct">=</span> <span class="number">10</span>
+      <span class="ident">logs</span> <span class="punct">=</span> <span class="punct">(`</span><span class="ident">git</span> <span class="ident">log</span> <span class="comment">#{previous_revision}..#{current_revision}`).</span>
+               <span class="ident">scan</span><span class="punct">(/</span><span class="regex"><span class="escape">\n\s\s\s</span>.+<span class="escape">\n</span>(?:<span class="escape">\n</span>|$)?</span><span class="punct">/).</span>
+               <span class="ident">map</span><span class="punct">{|</span><span class="ident">l</span><span class="punct">|</span> <span class="ident">l</span><span class="punct">.</span><span class="ident">strip</span><span class="punct">}.</span>
+               <span class="ident">reject</span> <span class="punct">{|</span><span class="ident">t</span><span class="punct">|</span> <span class="ident">t</span><span class="punct">.</span><span class="ident">match</span><span class="punct">(/</span><span class="regex">^Merge branch <span class="escape"></span>
+      <span class="ident">logs_size</span> <span class="punct">=</span> <span class="ident">logs</span><span class="punct">.</span><span class="ident">size</span>
+      <span class="ident">logs</span> <span class="punct">=</span> <span class="ident">logs</span><span class="punct">[</span><span class="number">0</span><span class="punct">,</span><span class="number">6</span><span class="punct">]</span>
+      <span class="ident">logs</span> <span class="punct">&lt;&lt;</span> <span class="punct">'</span><span class="string">...</span><span class="punct">'</span> <span class="keyword">if</span> <span class="ident">logs_size</span> <span class="punct">&gt;</span> <span class="number">6</span>
+      <span class="ident">msg</span> <span class="punct">=</span> <span class="punct">"</span><span class="string">- <span class="expr">#{logs.join('&lt;br /&gt;- ')}</span></span><span class="punct">"</span>
+      <span class="ident">who_am_i</span> <span class="punct">=</span> `<span class="ident">whoami`</span><span class="punct">.</span><span class="ident">chomp</span><span class="punct">.</span><span class="ident">capitalize</span>
+      <span class="ident">connection</span><span class="punct">.</span><span class="ident">post</span><span class="punct">('</span><span class="string">/groups/5/notes</span><span class="punct">',</span>
+                      <span class="punct">{</span><span class="symbol">:status</span> <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string"><span class="expr">#{who_am_i}</span> deployed <span class="expr">#{app}</span>: </span><span class="punct">"</span> <span class="punct">+</span>
+                                  <span class="punct">"</span><span class="string">&lt;br /&gt;<span class="expr">#{msg}</span></span><span class="punct">",</span>
+                       <span class="symbol">:key</span> <span class="punct">=&gt;</span> <span class="ident">key</span><span class="punct">}.</span><span class="ident">to_json</span><span class="punct">,</span>
+                      <span class="ident">headers</span><span class="punct">)</span>
+      <span class="ident">puts</span> <span class="punct">'</span><span class="string">Deploy notice sent to Co-op</span><span class="punct">'</span>
+    <span class="keyword">rescue</span> <span class="constant">Timeout</span><span class="punct">::</span><span class="constant">Error</span> <span class="punct">=&gt;</span> <span class="ident">e</span>
+      <span class="ident">puts</span> <span class="punct">"</span><span class="string">Timeout after 10s: Seems like Co-op missed your update.</span><span class="punct">"</span>
+      <span class="ident">puts</span> <span class="punct">"</span><span class="string">Use <span class="escape">\"</span>cap co_op:update<span class="escape">\"</span> to update Co-op </span><span class="punct">"</span> <span class="punct">+</span>
+           <span class="punct">"</span><span class="string">status later w/o deploying</span><span class="punct">"</span>
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="ident">after</span>  <span class="punct">"</span><span class="string">deploy</span><span class="punct">",</span> <span class="punct">"</span><span class="string">co_op:update</span><span class="punct">"</span>
+</pre></code>
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1681';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 17, 2010
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

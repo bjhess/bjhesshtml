@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Mac Bluetooth Not Available After Power Outage :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Mac Bluetooth Not Available After Power Outage
+      </h1>
+
+      
+    
+
+
+<p>This morning I’m back to work after a wonderful vacation. Unfortunately my iMac wasn’t on board. Within 10 seconds of booting up, my bluetooth went out with the following message on the menu icon:</p>
+
+<pre><code>Bluetooth: Not Available</code></pre>
+
+<p>When visiting system preferences, I did not even have a Bluetooth preference with which to work with. I <a href="http://forums.macosxhints.com/showthread.php?t=43511">tried</a> a <a href="http://blog.evandavey.com/2008/04/how-to-fix-bluetooth-not-available-problem-in-mac-osx.html">few</a> <a href="http://discussions.apple.com/thread.jspa?threadID=933471&amp;start=0&amp;tstart=0">things</a> I found on the ‘net with no luck. It was time for an AppleCare call.</p>
+
+<p>Another thing to note is that my clocks were blinking when I returned home from my vacation. We had a power outage while away.</p>
+
+<p>The tech was helpful as always and here is how things were fixed:</p>
+
+<ul>
+<li>First I had to dig up a USB mouse and keyboard. This was surprisingly difficult. I did this before I called.</li>
+
+<li>And did you know you can have <a href="http://www.apple.com/support/expert/">Apple call you</a>? I always do this with AppleCare so I can type some explanation before talking to them.</li>
+
+<li>I rebooted my machine and pressed shift on the keyboard once the screen went black. This was to get to safe mode.</li>
+
+<li>Upon booting into safe mode, bluetooth became functional: happy menu item, working wireless mouse and keyboard.</li>
+
+<li>Rebooted as normal and bluetooth was working as expected.</li>
+</ul>
+
+<p>This was 10 minutes ago and the tech was pretty confident the fix would be long term. He shared that this fix has worked for many people who have had problems with their Macs after power outages. Hopefully this post will help someone with just such a problem in the future.</p>
+
+<p><strong>Update</strong> I had more problems with my Bluetooth. Progressively getting worse to the point that two of every three mornings waking my Mac from sleep found it without Bluetooth. Called into Apple and got more troubleshooting advice:</p>
+
+<ul>
+<li>Visit <code>~/Library/Preferences</code> and delete all <code>com.apple.Bluetooth*</code> files.</li>
+
+<li>In Terminal, <code>sudo su --</code></li>
+
+<li><code>cd /var/root/Library/Preferences</code></li>
+
+<li><code>mv blued.plist blued.plist.bak</code></li>
+
+<li>Reboot and Bluetooth worked.</li>
+
+<li>More cleaning. Delete all files from: ~/Library/Caches,<nobr>Machintosh HD/Library/Caches</nobr>
+<p>, and</p>
+<nobr>Macintosh HD/System/Library/Caches</nobr>
+<p>.</p>
+</li>
+
+<li>Reboot.</li>
+
+<li>Empty trash (must wait until after reboot to empty the Caches stuff in the trash).</li>
+</ul>
+
+<p>Hope this solves it!</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1685';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          August 12, 2010
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

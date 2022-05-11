@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Setting Up Watchr and Rails :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Setting Up Watchr and Rails
+      </h1>
+
+
+
+
+
+      <p><a href="http://github.com/seattlerb/zentest">Autotest</a> is a great idea. When it worked for me, I loved it.
+        But I hardly ever used it. Our complicated codebase choked on it - something to do with accounts as subdomains
+        or double-loading of <code>test_helper</code> when running the test suite or some such. Frankly, I don’t
+        remember the details, but I do remember the multiple two-hour wild goose chases to try to get the lovely
+        software to work for me. Unfortunately I wasn’t up to the task.</p>
+
+      <p>And the Growl integration problems? Oi!</p>
+
+      <p>So this afternoon I decided to give <a href="http://github.com/mynyml/watchr">watchr</a> a try. I wasn’t
+        hopeful and time-boxed myself at an hour. No rat hole for me, no sir.</p>
+
+      <p>Imagine my surprise when 45 minutes later I not only had watchr working, but I placed it just so in my
+        environment. I could use my script on any Rails app on my system with full growl notification and more!</p>
+
+      <h3 id="automatic_testing_with_rails">Automatic testing with Rails</h3>
+
+      <p>The steps for me to setup watchr were fairly straightforward. On the command line (your symlink will vary,
+        natch):</p>
+
+      <pre><code>gem install watchr
+ln -s /Users/barry/.gem/ruby/1.8/gems/watchr-0.6/bin/watchr /usr/local/bin/watchr</code></pre>
+
+      <p>I am using <a href="http://gist.github.com/276317">this Rails watchr script</a> - I haven’t modified it as of
+        yet. I placed it in <code>~/.watchr/rails.rb</code>.</p>
+
+      <p>I placed <a href="http://farm5.static.flickr.com/4008/4382697719_2ae7932f63.png">these</a> <a
+          href="http://farm3.static.flickr.com/2733/4382697711_7c12538bb9.png">two</a> images into
+        <code>~/.watchr_images/passed.png</code> and
+        <code>~/.watchr_images/failed.png</code> respectively:</p>
+
+      <p>To run watchr on my Rails app, from the code directory:</p>
+
+      <pre><code>watchr ~/.watchr/rails.rb</code></pre>
+
+      <p>To make this less super-annoying I set a bash alias:</p>
+
+      <pre><code>alias watch="watchr ~/.watchr/rails.rb"  # default is Rails cause that's my most frequent workspace</code></pre>
+
+      <p>So tomorrow morning I’ll open a terminal window and type:</p>
+
+      <pre><code>watch</code></pre>
+
+      <p>Life is good!</p>
+
+      <p>(<a href="http://delicious.com/bjhess/watchr">My watchr links at Delicious</a>.)</p>
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1682';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 23, 2010
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

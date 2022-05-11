@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Ruby Whenever and Day of Month Crontab Syntax :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Ruby Whenever and Day of Month Crontab Syntax
+      </h1>
+
+      
+    
+
+
+<p><a href="http://github.com/javan/whenever">Whenever</a> by Javan Makhmali is an excellent way to manage the cron tasks that relate to your ruby app. It provides a very powerful and readable ruby syntax for planning a job schedule.</p>
+
+<p>I had a hard time figuring out how to recreate the case of running a job on a specific day per month, however. The following crontab line is an example of running a job on the first day of month every month at 7:13am:</p>
+
+<code><pre><span class="comment"># .---------------- minute (0 - 59) </span>
+<span class="comment"># |  .------------- hour (0 - 23)</span>
+<span class="comment"># |  |  .---------- day of month (1 - 31)</span>
+<span class="comment"># |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ... </span>
+<span class="comment"># |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7)  OR sun,mon,tue,wed,thu,fri,sat </span>
+<span class="comment"># |  |  |  |  |</span>
+<span class="comment"># *  *  *  *  *  command to be executed</span>
+  <span class="number">13</span> <span class="number">7</span>  <span class="number">1</span>  <span class="punct">*</span>  <span class="punct">*</span>  <span class="ident">my_funky_command</span>
+</pre></code>
+
+<p>The key to understanding the possible syntax is understanding that <a href="http://github.com/mojombo/chronic">chronic</a> is whenever’s underlying natural date and time parser. So the whenever syntax for the above cron definition is most elegantly:</p>
+
+<code><pre><span class="ident">every</span> <span class="number">1</span><span class="punct">.</span><span class="ident">month</span><span class="punct">,</span> <span class="symbol">:at</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">start of the month at 7:13am</span><span class="punct">'</span> <span class="keyword">do</span>
+  <span class="ident">runner</span> <span class="punct">'</span><span class="string">my_funky_command</span><span class="punct">'</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Running a job on days other than the beginning or ending of the month is not so straightforward. <a href="http://github.com/javan/whenever/issues/issue/13/#comment_18869">This GitHub issue</a> explains it best. To running the same command every month at the same time, but on the 15th of the month:</p>
+
+<code><pre><span class="ident">every</span> <span class="number">1</span><span class="punct">.</span><span class="ident">month</span><span class="punct">,</span> <span class="symbol">:at</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">January 15th 7:13am</span><span class="punct">'</span> <span class="keyword">do</span>
+  <span class="ident">runner</span> <span class="punct">'</span><span class="string">my_funky_command</span><span class="punct">'</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>‘January’ will be ignored as whenever parses the monthly job into its pieces.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1683';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 28, 2010
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>
