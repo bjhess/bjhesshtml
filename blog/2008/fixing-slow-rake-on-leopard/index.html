@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Fixing Slow Rake on Leopard :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Fixing Slow Rake on Leopard
+      </h1>
+
+
+
+
+      <div class="flair">
+        <img alt="Hay Rake Third Version" src="http://farm1.static.flickr.com/96/225360722_8ef2a43077.jpg"><br>
+        <div class="text-backing">&nbsp;</div>
+        <div class="text">Photo by <a href="http://www.flickr.com/photos/jbat/">JBAT</a></div>
+      </div>
+      <p><strong>Update:</strong> I highly recommend going with <a href="http://www.rubyenterpriseedition.com/">Ruby
+          Enterprise Edition</a> and <a href="http://blog.evanweaver.com/articles/2009/04/09/ruby-gc-tuning/">Evan
+          Weaver's Ruby GC settings</a> for much improved Ruby speed.</p>
+
+      <p>In the past few months, as a result of <a
+          href="../../bjhessblog/2008/01/18/superduper-is-my-savior/index.html">my clumsiness</a>, I’ve been working on
+        a new, Leopard-enabled MacBook. When replacing my wet and dying Tiger MacBook of yore, my one hope was that my
+        daily executions of rake to test <a href="http://getharvest.com">Harvest</a> would execute a little faster. A
+        20% increase in processor speed doesn’t <a
+          href="http://www.37signals.com/svn/posts/858-the-macbook-air-could-easily-be-the-only-machine">buy one a
+          whole</a> lot when web programming. The one place I figured I’d see a bump is the constant processor use of
+        rake.</p>
+
+      <p>Wrong. So, so, wrong.</p>
+
+      <p>After moving to a new MacBook with Leopard installed, I experienced a test suite that ran 2-3 times
+        <em>slower</em> than on my old machine. This became the difference between testing frequently and hardly at all;
+        the difference between using and not using <a
+          href="http://nubyonrails.com/articles/autotest-rails">autotest</a>. Pain to the max.</p>
+
+      <p>This post is going to get long, so I’m going to reveal now. For me, the issue was resolved by leaving the <a
+          href="http://hivelogic.com/articles/2008/02/ruby-rails-leopard">canonical Hivelogic world</a> and reverting to
+        the default Leopard installation of Ruby. Test speed returned to better-than-normal, and all at the price of
+        only 6 hours of troubleshooting!</p>
+      <!--more-->
+      <h3 id="mysql_like_shooting_fish_in_a_superiorsized_barrel">MySQL: Like shooting fish in a Superior-sized barrel
+      </h3>
+
+      <p>As always, my first suspicion was MySQL. I looked through my local Rails logs for particularly slow calls into
+        MySQL. The initial thought was that a few bad-apple tests were not tuned very well for my environment. What I
+        found was everything was slow and there were too many noticeably poor speeds to point to a few SQL calls as the
+        culprits.</p>
+
+      <p>Next I compared my <code>my.cnf</code> file to my <a href="http://deezsombor.com/">compadre</a>‘s. I noticed no
+        major smells in my file. Since I’m a DB dummy, more important was Dee’s estimation that indeed my configuration
+        file looked alright. We even went so far as comparing MySQL variables from within the MySQL shell:</p>
+      <pre>mysql&gt; show variables;
+</pre>
+      <p>Finally, I upgraded MySQL from 5.0.51 to 5.0.51b and reinstalled the ruby-mysql gem. No dice.</p>
+
+      <h3 id="sanity_check_benchmark_the_macbook">Sanity check: Benchmark the MacBook</h3>
+
+      <p>Dee suggested I verify that my new MacBook itself wasn’t a lemon. I was doubtful since I’d noticed no other
+        areas where it performed worse than its predecessor. Still, this was a great place to regroup. Benchmarking each
+        MacBook put my mind in the right place to finish off my troubleshooting and uncover my problem.</p>
+
+      <p>I used <a href="http://xbench.com/">Xbench</a> to compare the general performance of my new and old MacBooks.
+        Benchmark results favored the new machine everywhere except OpenGL. After reading the <a
+          href="http://db.xbench.com/faq.xhtml">FAQ</a>, it’s pretty clear OpenGL is a false positive for the old
+        MacBook.</p>
+
+      <h3 id="rails_a_general_comparison_between_two_machines">Rails: A general comparison between two machines</h3>
+
+      <p>So I knew Rails was running slow when hitting the DB, but what about all by itself? I simply ran <code>rake
+          environment</code> on both laptops and took a mental count. The command took ~3 seconds on the old machine and
+        6-7 seconds on the new one.</p>
+
+      <p>This was really enough, but I did run some model finders in each environment as a sort of sanity check.
+        Performance results were in line with everything you’ve read so far.</p>
+
+      <h3 id="ruby_activerecordless_and_slow_as_ever">Ruby: ActiveRecord-less and slow as ever</h3>
+
+      <p>To hit the real meat-and-potatoes, I executed some Ruby-only code on both systems, benchmarking the whole way.
+        Old Tiger:</p>
+
+      <code>
+        <pre><span class="global">$ </span><span class="ident">ruby</span> <span class="ident">script</span><span class="punct">/</span><span class="ident">performance</span><span class="punct">/</span><span class="ident">benchmarker</span> <span class="punct">"</span><span class="string">(1..100).inject(1){|sum, n| sum*n}</span><span class="punct">"</span>
+            <span class="ident">user</span>     <span class="ident">system</span>      <span class="ident">total</span>        <span class="ident">real</span>
+<span class="comment">#1      0.000000   0.000000   0.000000 (  0.000217)</span>
+</pre></code>
+
+      <p>New Leopard:</p>
+
+      <code>
+        <pre><span class="global">$ </span><span class="ident">ruby</span> <span class="ident">script</span><span class="punct">/</span><span class="ident">performance</span><span class="punct">/</span><span class="ident">benchmarker</span> <span class="punct">"</span><span class="string">(1..100).inject(1){|sum, n| sum*n}</span><span class="punct">"</span>
+            <span class="ident">user</span>     <span class="ident">system</span>      <span class="ident">total</span>        <span class="ident">real</span>
+<span class="comment">#1      0.000000   0.000000   0.000000 (  0.001347)</span>
+</pre></code>
+
+      <p>Over six times slower. New shit has come to light!</p>
+
+      <h3 id="sanity_check_ii_another_system_test">Sanity check II: Another system test</h3>
+
+      <p>I wanted to run something from the command line that proved the new hotness was outperforming the old hoopty.
+        Enter a little shell script built to copy an empty file to and from a folder 10,000 times:</p>
+
+      <code>
+        <pre><span class="comment">#!/bin/sh</span>
+<span class="ident">echo</span> <span class="punct">"</span><span class="string">start at `date +%s`</span><span class="punct">"</span>
+<span class="ident">touch</span> <span class="punct">./</span><span class="ident">file</span><span class="punct">.</span><span class="ident">txt</span>
+<span class="ident">mkdir</span> <span class="punct">./</span><span class="ident">fileholder</span>
+
+<span class="constant">LIMIT</span><span class="punct">=</span><span class="number">1000</span>
+
+<span class="keyword">for</span> <span class="punct">((</span><span class="ident">a</span><span class="punct">=</span><span class="number">1</span><span class="punct">;</span> <span class="ident">a</span> <span class="punct">&lt;=</span> <span class="constant">LIMIT</span> <span class="punct">;</span> <span class="ident">a</span><span class="punct">++))</span>
+<span class="keyword">do</span>
+  <span class="ident">mv</span> <span class="punct">./</span><span class="ident">file</span><span class="punct">.</span><span class="ident">txt</span> <span class="ident">fileholder</span><span class="punct">/</span>
+  <span class="ident">mv</span> <span class="punct">./</span><span class="ident">fileholder</span><span class="punct">/</span><span class="ident">file</span><span class="punct">.</span><span class="ident">txt</span> <span class="punct">./</span>
+<span class="ident">done</span>
+
+<span class="ident">rm</span> <span class="punct">./</span><span class="ident">file</span><span class="punct">.</span><span class="ident">txt</span>
+<span class="ident">rm</span> <span class="punct">-</span><span class="ident">rf</span> <span class="punct">./</span><span class="ident">fileholder</span>
+
+<span class="ident">echo</span> <span class="punct">"</span><span class="string">end at `date +%s`</span><span class="punct">"</span>
+<span class="ident">exit</span> <span class="number">0</span>
+</pre></code>
+
+      <p>Rejoice! The new machine took 32 seconds to execute. The old one executed in 78 seconds. The winnowing process
+        was imperfect, but I believe a winner has been crowned: Ruby.</p>
+
+      <h3 id="ruby_from_source_to_simple">Ruby: From source to simple</h3>
+
+      <p>Both machines in question were on Ruby 1.8.6. The new one on patchlevel 114, the old one on 0. I attempted to
+        install Ruby from source for patchlevel 230 (ACK!) and 111. No rake performance improvements were achieved. I
+        also own a Leopard Mac Mini, installed from the Hivelogic instructions, and experienced the same rake downfalls
+        (Sanity check III). Time to try Leopard’s default Ruby (patchlevel 114).</p>
+
+      <p>I did not want to remove <code>/usr/local/bin</code> from my path because I have other wonderful things
+        installed there. Advisable or not, I simply renamed key binaries:</p>
+
+      <code>
+        <pre><span class="ident">mv</span> <span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">bin</span><span class="punct">/</span><span class="ident">ruby</span> <span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">bin</span><span class="punct">/</span><span class="ident">ruby</span><span class="punct">.</span><span class="ident">bak</span>
+<span class="ident">mv</span> <span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">bin</span><span class="punct">/</span><span class="ident">rake</span> <span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">bin</span><span class="punct">/</span><span class="ident">rake</span><span class="punct">.</span><span class="ident">bak</span>
+<span class="ident">mv</span> <span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">bin</span><span class="punct">/</span><span class="ident">irb</span> <span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">bin</span><span class="punct">/</span><span class="ident">irb</span><span class="punct">.</span><span class="ident">bak</span>
+</pre></code>
+
+      <p>From there, all my gems needed reinstalled. <code>gem install</code> failed on my first try, but worked
+        thereafter. The ruby-mysql gem had <a
+          href="http://blog.bmn.name/index.php/2008/02/17/rails-gem-install-mysql-throws-error-extconfrb-failed/">special
+          needs</a> (assuming a Hivelogic-style install of MySQL), which were addressed with:</p>
+      <pre>sudo gem install mysql -- --with-mysql-config=/usr/local/mysql/bin/mysql_config
+</pre>
+      <p>rake clean. Barry happy.</p>
+
+      <p>I can’t say I’m comfortable browsing my filesystem for gem source like I was with <code>/usr/local</code>, but
+        I imagine that will come with time. My suspicion is the Hivelogic instructions can still work in Leopard given
+        the appropriate compilation switches. I’m not the person to provide such information - perhaps someone already
+        has?</p>
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1287';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          July 15, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

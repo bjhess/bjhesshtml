@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Open_id_authentication Plugin and Remember Me :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Open_id_authentication Plugin and Remember Me
+      </h1>
+
+      
+    
+
+
+<p>Do you run a Rails website that allows traditional username/email/password login and OpenID authentication? Do you know for sure that your “remember me” feature is working? Please do check…I’ll wait…</p>
+
+<p>Good, now that you realize your “remember me” feature is not working for the OpenID login on your site, I’ll show you an easy way to hack it into the <a href="http://github.com/rails/open_id_authentication/tree/master">latest version</a> of the open_id_authentication plugin. My preferred method to hack plugins is the <a href="http://errtheblog.com/posts/67-evil-twin-plugin">evil twin</a> technique.</p>
+
+<p>The basic problem here is that your login form’s parameter list is not being passed back to your application after authenticity is checked at the OpenID provider. You have a <code>remember_me</code> checkbox, and, dammit, you want that parameter passed through. (Program note: <a href="http://groups.google.co.uk/group/rubyonrails-talk/browse_thread/thread/5a4513c9a7fe7270/63c0a21172a011b3?#63c0a21172a011b3">some say</a> this is not proper technique. I’m just trying to get you a solution, however temporary that may be.)</p>
+
+<p>We need to hack the <code>opend_id_redirect_url</code> method:</p>
+
+<code><pre><span class="keyword">def </span><span class="method">open_id_redirect_url</span><span class="punct">(</span><span class="ident">open_id_request</span><span class="punct">,</span> <span class="ident">return_to</span> <span class="punct">=</span> <span class="constant">nil</span><span class="punct">)</span>
+  <span class="ident">open_id_request</span><span class="punct">.</span><span class="ident">return_to_args</span><span class="punct">['</span><span class="string">open_id_complete</span><span class="punct">']</span> <span class="punct">=</span> <span class="punct">'</span><span class="string">1</span><span class="punct">'</span>
+  <span class="ident">open_id_request</span><span class="punct">.</span><span class="ident">redirect_url</span><span class="punct">(</span><span class="ident">root_url</span><span class="punct">,</span> <span class="ident">return_to</span> <span class="punct">||</span> <span class="ident">requested_url</span><span class="punct">)</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Using the evil twin technique, create an “open_id_authentication_hacks” folder in your vendor/plugins directory. Within this directory, create an “init.rb” file and add the following:</p>
+
+<code><pre><span class="constant">OpenIdAuthentication</span><span class="punct">.</span><span class="ident">module_eval</span> <span class="keyword">do</span>
+
+<span class="ident">private</span>
+
+  <span class="keyword">def </span><span class="method">open_id_redirect_url_with_remember_me</span><span class="punct">(</span><span class="ident">open_id_request</span><span class="punct">,</span> <span class="ident">return_to</span> <span class="punct">=</span> <span class="constant">nil</span><span class="punct">)</span>
+    <span class="ident">open_id_request</span><span class="punct">.</span><span class="ident">return_to_args</span><span class="punct">['</span><span class="string">remember_me</span><span class="punct">']</span> <span class="punct">=</span> <span class="ident">params</span><span class="punct">['</span><span class="string">remember_me</span><span class="punct">']</span>
+    <span class="ident">open_id_redirect_url_without_remember_me</span><span class="punct">(</span><span class="ident">open_id_request</span><span class="punct">,</span> <span class="ident">return_to</span><span class="punct">)</span>
+  <span class="keyword">end</span>
+  <span class="ident">alias_method_chain</span> <span class="symbol">:open_id_redirect_url</span><span class="punct">,</span> <span class="symbol">:remember_me</span>
+
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Now you have a nicely aliased method that includes the <code>remember_me</code> parameter upon returning to your app.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1286';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          June 30, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

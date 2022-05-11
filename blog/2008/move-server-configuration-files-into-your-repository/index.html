@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Move Server Configuration Files Into Your Repository :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Move Server Configuration Files Into Your Repository
+      </h1>
+
+
+
+
+      <div class="flair">
+        <img alt="Dung repository" height="180" src="http://farm1.static.flickr.com/45/139177165_e3855c6686.jpg"
+          width="240"><br>
+        <div class="text-backing">&nbsp;</div>
+        <div class="text">Photo by <a href="http://flickr.com/photos/cheesygarlicboy/">Chambo25</a></div>
+      </div>
+      <p>Are you a programmer? Do you hate any process that involves SSH’ing into a server and editing files directly in
+        production? Would you like to get rid of this non-source controlled hackery? Damn right you would!</p>
+
+      <p>If you’re deploying an application to a server, get those app-specific configuration files in your source
+        control system! I happen to be a Ruby on Rails programmer, so the two files I’m looking to control are the
+        Apache and Mongrel configuration files. Here are two sample locations:</p>
+
+      <code>
+        <pre><span class="punct">/</span><span class="regex">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">apache2</span><span class="punct">/</span><span class="ident">conf</span><span class="punct">/</span><span class="ident">apps</span><span class="punct">/</span><span class="ident">appname</span><span class="punct">.</span><span class="ident">conf</span>
+<span class="punct">/</span><span class="regex">etc</span><span class="punct">/</span><span class="ident">mongrel_cluster</span><span class="punct">/</span><span class="ident">appname</span><span class="punct">.</span><span class="ident">yml</span>
+</pre></code>
+
+      <h3 id="meat">Meat</h3>
+
+      <p>Via terminal, browse into your local Rails app directory. Then, create a couple directories to store this
+        configuration:</p>
+
+      <code>
+        <pre><span class="ident">mkdir</span> <span class="punct">./</span><span class="ident">config</span><span class="punct">/</span><span class="ident">apache</span>
+<span class="ident">mkdir</span> <span class="punct">./</span><span class="ident">config</span><span class="punct">/</span><span class="ident">mongrel</span>
+</pre></code>
+
+      <p>Then copy the configuration files you have sitting on your server into the local directory (I’m using SCP and
+        assuming you know the rest). Again, locally:</p>
+
+      <code>
+        <pre><span class="ident">scp</span> <span class="ident">bjhess</span><span class="attribute">@server_or_ip</span><span class="punct">:/</span><span class="regex">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">apache2</span><span class="punct">/</span><span class="ident">conf</span><span class="punct">/</span><span class="ident">apps</span><span class="punct">/</span><span class="ident">appname</span><span class="punct">.</span><span class="ident">conf</span> <span class="punct">./</span><span class="ident">config</span><span class="punct">/</span><span class="ident">apache</span><span class="punct">/</span>
+<span class="ident">scp</span> <span class="ident">bjhess</span><span class="attribute">@server_or_ip</span><span class="punct">:/</span><span class="regex">etc</span><span class="punct">/</span><span class="ident">mongrel_cluster</span><span class="punct">/</span><span class="ident">appname</span><span class="punct">.</span><span class="ident">yml</span> <span class="punct">./</span><span class="ident">config</span><span class="punct">/</span><span class="ident">mongrel</span><span class="punct">/</span>
+</pre></code>
+
+      <h3 id="potatoes">Potatoes</h3>
+
+      <p>Now you’re all ready to commit these configuration repositories to your SVN/git/mercurial repository. But wait,
+        you also want to actually use these versions of the configuration files in production, no? Well, let’s do it.
+        Rename the original configuration files on the remote server:</p>
+
+      <code>
+        <pre><span class="ident">mv</span> <span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">apache2</span><span class="punct">/</span><span class="ident">conf</span><span class="punct">/</span><span class="ident">apps</span><span class="punct">/</span><span class="ident">appname</span><span class="punct">.</span><span class="ident">conf</span> <span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">apache2</span><span class="punct">/</span><span class="ident">conf</span><span class="punct">/</span><span class="ident">apps</span><span class="punct">/</span><span class="ident">appname</span><span class="punct">.</span><span class="ident">conf</span><span class="punct">.</span><span class="ident">bak</span>
+<span class="ident">mv</span> <span class="punct">/</span><span class="ident">etc</span><span class="punct">/</span><span class="ident">mongrel_cluster</span><span class="punct">/</span><span class="ident">appname</span><span class="punct">.</span><span class="ident">yml</span> <span class="punct">/</span><span class="ident">etc</span><span class="punct">/</span><span class="ident">mongrel_cluster</span><span class="punct">/</span><span class="ident">appname</span><span class="punct">.</span><span class="ident">yml</span><span class="punct">.</span><span class="ident">bak</span>
+</pre></code>
+
+      <p>Then simply update your deployment script to create symlinks from the expected configuration file location to
+        the new location. I’m using Capistrano (version OLD), so adjust accordingly:</p>
+
+      <code>
+        <pre><span class="ident">desc</span> <span class="punct">"</span><span class="string">Tasks to complete after code update</span><span class="punct">"</span>
+<span class="ident">task</span> <span class="symbol">:after_update_code</span> <span class="keyword">do</span>
+  <span class="comment">#            LINK TARGET                                   LINK SOURCE</span>
+  <span class="ident">run</span> <span class="punct">"</span><span class="string">ln -nfs <span class="expr">#{current_release}</span>/config/apache/appname.conf /usr/local/apache2/conf/apps/appname.conf</span><span class="punct">"</span>
+  <span class="ident">run</span> <span class="punct">"</span><span class="string">ln -nfs <span class="expr">#{current_release}</span>/config/mongrel/appname.yml /etc/mongrel_cluster/appname.yml</span><span class="punct">"</span>
+<span class="keyword">end</span>
+</pre></code>
+
+      <h3 id="conclusion">Conclusion</h3>
+
+      <p>This is great, isn’t it? The programmer in you loves having limitless history of configuration changes, not to
+        mention the ability to use whatever local editor you choose. Wonderful day!</p>
+
+      <p>But what about the whole-server configuration files? Unless you commit to one app per server, I don’t think
+        base Apache config files or server-level logrotate config files should be in a specific app’s repository.
+        Perhaps a new repository could be setup to deal with these files? I imagine Capistrano could even be used for
+        the bare-bones deployment.</p>
+
+      <p>Or maybe just backing up these general files is enough to keep your mind at ease. Just be sure to think about
+        it. That’ll put you one step ahead of the rest</p>
+
+      <p><strong>Update:</strong> Be sure to deal with symlinks upon rollbacks, something I just got burnt by:</p>
+
+      <code>
+        <pre><span class="ident">desc</span> <span class="punct">"</span><span class="string">Tasks to complete after code rollback</span><span class="punct">"</span>
+<span class="ident">task</span> <span class="symbol">:after_rollback</span> <span class="keyword">do</span>
+  <span class="ident">run</span> <span class="punct">"</span><span class="string">ln -nfs <span class="expr">#{previous_release}</span>/config/apache/appname.conf /usr/local/apache2/conf/apps/appname.conf</span><span class="punct">"</span>
+<span class="keyword">end</span>
+</pre></code>
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1270';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 28, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

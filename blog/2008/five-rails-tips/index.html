@@ -1,0 +1,155 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Five Rails Tips :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Five Rails Tips
+      </h1>
+
+      
+    
+
+
+<p>Ryan Bates, of the excellent <a href="http://www.railscasts.com">Railscasts</a>, is running a contest to generate a bevy of Rails tips on the web. (And look, <a href="http://getharvest.com">Harvest</a> is part of the grand prize package. W00T!)</p>
+
+<p>Here’s my contribution:</p>
+
+<h3 id="handy_test_helper_to_check_your_layout">Handy test helper to check your layout:</h3>
+
+<p>Do you have any layout variability served up in your controllers? Maybe you’re doing some <a href="http://code.google.com/p/iui/">iUI</a> work and want to test that no layout is being served up at all?</p>
+
+<code><pre><span class="keyword">def </span><span class="method">assert_layout</span><span class="punct">(</span><span class="ident">layout</span><span class="punct">)</span>
+  <span class="ident">assert_equal</span> <span class="ident">layout</span><span class="punct">,</span> <span class="attribute">@response</span><span class="punct">.</span><span class="ident">layout</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Usage:</p>
+
+<code><pre><span class="ident">assert_layout</span> <span class="punct">'</span><span class="string">layouts/application</span><span class="punct">'</span>
+<span class="ident">assert_layout</span> <span class="constant">nil</span>
+</pre></code>
+
+<h3 id="handy_test_helper_to_check_your_format">Handy test helper to check your format:</h3>
+
+<p>In a similar vein, do you have format variability served up in your controllers? Say you are presenting a mobile site that adjusts the format according to subdomain. Well, you may want to test that as well.</p>
+
+<code><pre><span class="keyword">def </span><span class="method">assert_format</span><span class="punct">(</span><span class="ident">format</span><span class="punct">)</span>
+  <span class="ident">assert_equal</span> <span class="ident">format</span><span class="punct">.</span><span class="ident">to_sym</span><span class="punct">,</span> <span class="attribute">@request</span><span class="punct">.</span><span class="ident">format</span><span class="punct">.</span><span class="ident">to_sym</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Usage:</p>
+
+<code><pre><span class="ident">assert_format</span> <span class="symbol">:iphone</span>
+</pre></code>
+
+<h3 id="the_flexibility_of_assert_select">The flexibility of assert_select:</h3>
+
+<p>Did you know you can use regular expressions with assert_select? It’s pretty fun. Here’s a selector to verify a page does not include any table rows with ids of the form “day_entry_#”.</p>
+
+<code><pre><span class="ident">assert_select</span> <span class="punct">"</span><span class="string">tr[id*=?]</span><span class="punct">",</span> <span class="punct">/</span><span class="regex">day_entry_<span class="escape">\d</span>+</span><span class="punct">/,</span> <span class="symbol">:count</span> <span class="punct">=&gt;</span> <span class="number">0</span>
+</pre></code>
+
+<h3 id="massage_params_when_tweaking_them_for_specific_iphone_keyboards">Massage params when tweaking them for specific iPhone keyboards:</h3>
+
+<p>When developing a web app for the iPhone, the only apparent way to specify an entry field use the numeric keyboard is to include the string “zip” in the input name. To get the keypad numeric keyboard, include the string “phone”. What I like to do is append “_zip_keys” as necessary to an entry field’s proper name.</p>
+
+<code><pre><span class="punct">&lt;%=</span><span class="string"> form.text_field(:hours, :name </span><span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">day_entry[hours_zip_keys]</span><span class="punct">')</span> <span class="punct">%&gt;</span><span class="string">
+</span></pre></code>
+
+<p>This obviously causes problems when you are depending on Rails magic to build objects from passed parameters. In <code>application.rb</code> I created some massaging functions that rip through the params hash (and its subhashes) renaming the keys that are suffixed “_zip_keys” or “_phone_keys”.</p>
+
+<code><pre><span class="comment">##</span>
+<span class="comment"># Some params on iPhone pages may be trailed with _zip_keys or _phone_keys to bring up proper keyboards.</span>
+<span class="comment"># This method removes this sugar from the keys.</span>
+<span class="keyword">def </span><span class="method">massage_iphone_params</span>
+  <span class="keyword">return</span> <span class="keyword">unless</span> <span class="ident">iphone_request?</span>
+  <span class="ident">massage_iphone_keys</span><span class="punct">(</span><span class="ident">params</span><span class="punct">)</span>
+<span class="keyword">end</span>
+
+<span class="constant">IPHONE_KEYS_REGEX</span> <span class="punct">=</span> <span class="punct">/</span><span class="regex">(_zip_keys|_phone_keys)$</span><span class="punct">/</span>
+
+<span class="keyword">def </span><span class="method">massage_iphone_keys</span><span class="punct">(</span><span class="ident">_hash</span><span class="punct">)</span>
+  <span class="ident">temp_value</span> <span class="punct">=</span> <span class="punct">'</span><span class="string"></span><span class="punct">'</span>
+  <span class="ident">_hash</span><span class="punct">.</span><span class="ident">each</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">key</span><span class="punct">,</span> <span class="ident">value</span><span class="punct">|</span>
+    <span class="ident">massage_iphone_keys</span><span class="punct">(</span><span class="ident">value</span><span class="punct">)</span> <span class="keyword">and</span> <span class="keyword">next</span> <span class="keyword">if</span> <span class="ident">value</span><span class="punct">.</span><span class="ident">is_a?</span><span class="punct">(</span><span class="constant">Hash</span><span class="punct">)</span>
+    <span class="keyword">if</span> <span class="constant">IPHONE_KEYS_REGEX</span> <span class="punct">===</span> <span class="ident">key</span><span class="punct">.</span><span class="ident">to_s</span>
+      <span class="ident">temp_value</span> <span class="punct">=</span> <span class="ident">_hash</span><span class="punct">.</span><span class="ident">delete</span><span class="punct">(</span><span class="ident">key</span><span class="punct">)</span>
+      <span class="ident">_hash</span><span class="punct">[</span><span class="ident">key</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">.</span><span class="ident">sub</span><span class="punct">(</span><span class="constant">IPHONE_KEYS_REGEX</span><span class="punct">,</span> <span class="punct">'</span><span class="string"></span><span class="punct">')]</span> <span class="punct">=</span> <span class="ident">temp_value</span>
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Making use of this key translator is as simple as a <code>before_filter</code>:</p>
+
+<code><pre><span class="ident">before_filter</span> <span class="symbol">:massage_iphone_params</span><span class="punct">,</span> <span class="symbol">:only</span> <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:create</span><span class="punct">,</span> <span class="symbol">:update</span><span class="punct">]</span>
+</pre></code>
+
+<h3 id="git_meme">Git meme</h3>
+
+<p>Here are my git aliases, which started with those presented in the <a href="http://peepcode.com/products/git">Peepcode screencast</a>.</p>
+
+<code><pre><span class="comment"># Git</span>
+<span class="keyword">alias</span> <span class="ident">gb</span><span class="punct">="</span><span class="string">git branch</span><span class="punct">"</span>
+<span class="keyword">alias</span> <span class="ident">gba</span><span class="punct">="</span><span class="string">git branch -a</span><span class="punct">"</span>
+<span class="keyword">alias</span> <span class="ident">gco</span><span class="punct">="</span><span class="string">git checkout</span><span class="punct">"</span>    <span class="comment"># add branch name to checkout</span>
+<span class="keyword">alias</span> <span class="ident">gm</span><span class="punct">="</span><span class="string">git merge</span><span class="punct">"</span>        <span class="comment"># add branch name to merge into current</span>
+<span class="keyword">alias</span> <span class="ident">gc</span><span class="punct">="</span><span class="string">git commit -v</span><span class="punct">"</span>
+<span class="keyword">alias</span> <span class="ident">gd</span><span class="punct">="</span><span class="string">git diff | mate</span><span class="punct">"</span>
+<span class="keyword">alias</span> <span class="ident">gl</span><span class="punct">="</span><span class="string">git pull</span><span class="punct">"</span>
+<span class="keyword">alias</span> <span class="ident">glb</span><span class="punct">="</span><span class="string">git pull origin</span><span class="punct">"</span> <span class="comment"># add branch name to the end</span>
+<span class="keyword">alias</span> <span class="ident">gp</span><span class="punct">="</span><span class="string">git push</span><span class="punct">"</span>
+<span class="keyword">alias</span> <span class="ident">gpb</span><span class="punct">="</span><span class="string">git push origin</span><span class="punct">"</span> <span class="comment"># add branch name to the end</span>
+<span class="keyword">alias</span> <span class="ident">gst</span><span class="punct">="</span><span class="string">git status</span><span class="punct">"</span>
+<span class="ident">gcob</span><span class="punct">(){</span> <span class="ident">git</span> <span class="ident">branch</span> <span class="punct">--</span><span class="ident">track</span> <span class="global">$1</span> <span class="ident">origin</span><span class="punct">/</span><span class="global">$1</span><span class="punct">;</span> <span class="ident">gco</span> <span class="global">$1</span><span class="punct">;</span> <span class="punct">}</span>  <span class="comment"># add remote root branch name to the end</span>
+</pre></code>
+
+<p>(Most are self-explanatory. That last one basically creates a local branch named identically to its tracked source, and checks it out.)</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1280';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          April 27, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

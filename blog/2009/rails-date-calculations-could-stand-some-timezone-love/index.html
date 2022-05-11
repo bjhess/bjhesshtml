@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Rails Date Calculations Could Stand Some Timezone Love :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Rails Date Calculations Could Stand Some Timezone Love
+      </h1>
+
+      
+    
+
+
+<p>New Rails handles a lot of timezone stuff for you. Set the appropriate time zone for the request and get an object from the DB, it’s <code>created_at</code> date will be translated from UTC to the request’s time zone.</p>
+
+<p>Rails doesn’t do anything with the Ruby enhancements that create time objects from dates. Like:</p>
+
+<code><pre><span class="constant">Date</span><span class="punct">.</span><span class="ident">today</span><span class="punct">.</span><span class="ident">end_of_day</span>
+</pre></code>
+
+<p>That’ll be in the server’s time zone. Ick.</p>
+
+<p>I needed to find the beginning of a day as related to the request’s timezone. I moved the fix into some date extensions:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">::Date</span>
+  <span class="keyword">def </span><span class="method">beginning_of_day_in_zone</span>
+    <span class="constant">Time</span><span class="punct">.</span><span class="ident">zone</span><span class="punct">.</span><span class="ident">parse</span><span class="punct">(</span><span class="constant">self</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">)</span>
+  <span class="keyword">end</span>
+  <span class="ident">alias_method</span> <span class="symbol">:at_beginning_of_day_in_zone</span><span class="punct">,</span> <span class="symbol">:beginning_of_day_in_zone</span>
+  <span class="ident">alias_method</span> <span class="symbol">:midnight_in_zone</span><span class="punct">,</span> <span class="symbol">:beginning_of_day_in_zone</span>
+  <span class="ident">alias_method</span> <span class="symbol">:at_midnight_in_zone</span><span class="punct">,</span> <span class="symbol">:beginning_of_day_in_zone</span>
+
+  <span class="keyword">def </span><span class="method">end_of_day_in_zone</span>
+    <span class="constant">Time</span><span class="punct">.</span><span class="ident">zone</span><span class="punct">.</span><span class="ident">parse</span><span class="punct">((</span><span class="constant">self</span><span class="punct">+</span><span class="number">1</span><span class="punct">).</span><span class="ident">to_s</span><span class="punct">)</span> <span class="punct">-</span> <span class="number">1</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>So now we have:</p>
+
+<code><pre><span class="constant">Time</span><span class="punct">.</span><span class="ident">zone</span> <span class="punct">=</span> <span class="punct">"</span><span class="string">Auckland</span><span class="punct">"</span>
+<span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">Auckland</span><span class="punct">"</span>
+<span class="punct">&gt;</span> <span class="constant">Date</span><span class="punct">.</span><span class="ident">today</span><span class="punct">.</span><span class="ident">beginning_of_day</span>
+<span class="punct">=&gt;</span> <span class="constant">Tue</span> <span class="constant">Dec</span> <span class="number">09</span> <span class="number">00</span><span class="punct">:</span><span class="number">00</span><span class="punct">:</span><span class="number">00</span> <span class="punct">-</span><span class="number">0600</span> <span class="number">2008</span>
+<span class="punct">&gt;</span> <span class="constant">Date</span><span class="punct">.</span><span class="ident">today</span><span class="punct">.</span><span class="ident">beginning_of_day_in_zone</span>
+<span class="punct">=&gt;</span> <span class="constant">Tue</span><span class="punct">,</span> <span class="number">09</span> <span class="constant">Dec</span> <span class="number">2008</span> <span class="number">00</span><span class="punct">:</span><span class="number">00</span><span class="punct">:</span><span class="number">00</span> <span class="constant">NZDT</span> <span class="punct">+</span><span class="number">13</span><span class="punct">:</span><span class="number">00</span>
+</pre></code>
+
+<p>Realistically, I think Rails could be improved in this area. Or maybe I’m missing out on a better way to take a date object and make it zone-aware for generating related times. I spent more than an hour reading through the Rails date and time extensions and realized I need to keep my timezone pain relegated to the work week. For the time being, the above is a nice crutch for my current needs.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1489';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          January 19, 2009
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

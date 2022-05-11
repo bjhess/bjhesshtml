@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>ActiveResource HTTP Basic Auth With Email Address :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        ActiveResource HTTP Basic Auth With Email Address
+      </h1>
+
+      
+    
+
+
+<p>As I’ve started to play around here and there with ActiveResource, I’ve noticed <a href="http://groups.google.com/group/rubyonrails-talk/browse_thread/thread/66be1e43742efd45">lots</a> of <a href="http://www.ruby-forum.com/topic/113116">complaints</a> about how ActiveResource’s implementation of HTTP basic auth leaves a lot to be desired. Specifically with regard to its lack of support for email addresses as usernames. This won’t work:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">Expense</span> <span class="punct">&lt;</span> <span class="constant">ActiveResource</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="constant">self</span><span class="punct">.</span><span class="ident">site</span> <span class="punct">=</span> <span class="punct">"</span><span class="string">https://barry@bjhess.com:password@website.com</span><span class="punct">"</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Turns out it’s fairly simple to authorize via email address in ActiveResource. Just send the header:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">Expense</span> <span class="punct">&lt;</span> <span class="constant">ActiveResource</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="constant">self</span><span class="punct">.</span><span class="ident">site</span> <span class="punct">=</span> <span class="punct">"</span><span class="string">https://website.com</span><span class="punct">"</span>
+  <span class="attribute">@headers</span>  <span class="punct">=</span> <span class="punct">{</span> <span class="punct">'</span><span class="string">Authorization</span><span class="punct">'</span> <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">Basic (<span class="expr">#{Base64.encode64('barry@bjhess.com:password').strip}</span>)</span><span class="punct">"</span> <span class="punct">}</span>
+<span class="keyword">end</span>
+</pre></code>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1273';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          March 29, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

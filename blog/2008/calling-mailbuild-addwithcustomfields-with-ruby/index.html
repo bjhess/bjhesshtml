@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Calling MailBuild AddWithCustomFields With Ruby :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Calling MailBuild AddWithCustomFields With Ruby
+      </h1>
+
+      
+    
+
+
+<p>Today I had a fun trial-and-error exploration of Ruby SOAP messaging. By “fun” I mean “hair-rippingly excruciating.”</p>
+
+<p>Basic SOAP calls are pretty easy with the wsdlDriver inherent in Ruby. Here’s how you’d wrap MailBuild’s <a href="http://www.mailbuild.com/api/subscriber.add.aspx">Subscriber.Add</a> function in Ruby:</p>
+
+<code><pre><span class="ident">require</span> <span class="punct">'</span><span class="string">soap/wsdlDriver</span><span class="punct">'</span>
+
+<span class="keyword">class </span><span class="class">MailBuildWrapper</span>
+
+  <span class="ident">attr_accessor</span> <span class="symbol">:api_key</span><span class="punct">,</span> <span class="symbol">:list_id</span>
+
+  <span class="keyword">def </span><span class="method">initialize</span><span class="punct">(</span><span class="ident">api_key</span><span class="punct">,</span> <span class="ident">list_id</span><span class="punct">)</span>
+    <span class="attribute">@api_key</span> <span class="punct">=</span> <span class="ident">api_key</span>
+    <span class="attribute">@list_id</span> <span class="punct">=</span> <span class="ident">list_id</span>
+  <span class="keyword">end</span>
+  
+  <span class="keyword">def </span><span class="method">add_subscriber</span><span class="punct">(</span><span class="ident">user</span><span class="punct">)</span>
+    <span class="ident">soap</span>     <span class="punct">=</span> <span class="ident">wsdl</span><span class="punct">.</span><span class="ident">create_rpc_driver</span>
+    <span class="ident">response</span> <span class="punct">=</span> <span class="ident">soap</span><span class="punct">.</span><span class="ident">addSubscriber</span> \
+                 <span class="symbol">:ApiKey</span>       <span class="punct">=&gt;</span> <span class="ident">api_key</span><span class="punct">,</span> 
+                 <span class="symbol">:ListID</span>       <span class="punct">=&gt;</span> <span class="ident">list_id</span><span class="punct">,</span> 
+                 <span class="symbol">:Email</span>        <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">email</span><span class="punct">,</span>
+                 <span class="symbol">:Name</span>         <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">full_name</span>
+    <span class="ident">soap</span><span class="punct">.</span><span class="ident">reset_stream</span>
+    <span class="ident">response</span><span class="punct">.</span><span class="ident">subscriber_AddWithCustomFieldsResult</span>
+  <span class="keyword">end</span>
+
+  <span class="ident">private</span>
+
+    <span class="keyword">def </span><span class="method">wsdl</span>
+      <span class="constant">SOAP</span><span class="punct">::</span><span class="constant">WSDLDriverFactory</span><span class="punct">.</span><span class="ident">new</span><span class="punct">("</span><span class="string">http://iridesco.createsend.com/api/api.asmx?WSDL</span><span class="punct">")</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Calling a simple add subscriber is, well, simple.</p>
+
+<code><pre><span class="ident">u</span>  <span class="punct">=</span> <span class="constant">User</span><span class="punct">.</span><span class="ident">find</span><span class="punct">(</span><span class="symbol">:first</span><span class="punct">)</span>
+<span class="ident">mb</span> <span class="punct">=</span> <span class="constant">MailBuildWrapper</span><span class="punct">.</span><span class="ident">new</span>
+<span class="ident">mb</span><span class="punct">.</span><span class="ident">add_subscriber</span><span class="punct">(</span><span class="ident">u</span><span class="punct">)</span>
+</pre></code>
+
+<p><a href="http://www.mailbuild.com/api/subscriber.addwithcustomfields.aspx">Adding with custom fields</a> is different. This is because an array of “SubscriberCustomField” objects is necessary. Finding the magic Ruby incantation to build this SOAP array was a trick. I never found anywhere that said how to do this - Google was not my friend. Here is an example <code>MailBuildWrapper</code> method adding a subscriber with an ‘is_admin’ custom field:</p>
+
+<code><pre><span class="keyword">def </span><span class="method">add_with_is_admin_custom_field</span><span class="punct">(</span><span class="ident">user</span><span class="punct">)</span>
+  <span class="ident">soap</span>     <span class="punct">=</span> <span class="ident">wsdl</span><span class="punct">.</span><span class="ident">create_rpc_driver</span>
+  <span class="ident">response</span> <span class="punct">=</span> <span class="ident">soap</span><span class="punct">.</span><span class="ident">addSubscriberWithCustomFields</span> \
+               <span class="symbol">:ApiKey</span>       <span class="punct">=&gt;</span> <span class="ident">api_key</span><span class="punct">,</span> 
+               <span class="symbol">:ListID</span>       <span class="punct">=&gt;</span> <span class="ident">list_id</span><span class="punct">,</span> 
+               <span class="symbol">:Email</span>        <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">email</span><span class="punct">,</span>
+               <span class="symbol">:Name</span>         <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">full_name</span><span class="punct">,</span>
+               <span class="symbol">:CustomFields</span> <span class="punct">=&gt;</span> <span class="punct">{</span><span class="symbol">:SubscriberCustomField</span> <span class="punct">=&gt;</span>
+                 <span class="punct">[{</span><span class="symbol">:Key</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">is_admin</span><span class="punct">',</span> <span class="symbol">:Value</span> <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">is_admin?</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">}]}</span>
+  <span class="ident">soap</span><span class="punct">.</span><span class="ident">reset_stream</span>
+  <span class="ident">response</span><span class="punct">.</span><span class="ident">subscriber_AddWithCustomFieldsResult</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>So the ‘CustomFields’ hash item needed to point to a hash with a ‘SubscriberCustomField’ item, which itself points to an array of hashes containing ‘Key’ and ‘Value’. So multiple custom fields would be specified as follows:</p>
+
+<code><pre><span class="symbol">:CustomFields</span> <span class="punct">=&gt;</span> <span class="punct">{</span><span class="symbol">:SubscriberCustomField</span> <span class="punct">=&gt;</span> 
+                    <span class="punct">[</span> <span class="punct">{</span><span class="symbol">:Key</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">is_admin</span><span class="punct">',</span> <span class="symbol">:Value</span> <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">is_admin?</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">},</span>
+                      <span class="punct">{</span><span class="symbol">:Key</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">is_loser</span><span class="punct">',</span> <span class="symbol">:Value</span> <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">is_loser?</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">}]}</span>
+</pre></code>
+
+<p>Some useful links from my first experience consuming a SOAP web service with Ruby:</p>
+
+<ul>
+<li><a href="http://rpheath.com/posts/298-consuming-soap-services-in-ruby">Consuming SOAP services in Ruby</a> by Ryan Heath</li>
+
+<li><a href="http://www.mailbuild.com/api/">MailBuild API</a></li>
+
+<li><a href="http://groups.google.com/group/ruby-talk-google/browse_thread/thread/8c97e5fdf534ad8c">See raw xml in soap4r</a></li>
+
+<li><a href="http://www.brendonwilson.com/blog/2006/04/02/ruby-soap4r-wsdl-hell/">Ruby + SOAP4R + WSDL Hell</a> (wsdl2ruby) by Brendon Wilson</li>
+
+<li><a href="http://markthomas.org/2007/09/12/getting-started-with-soap4r/">Getting Started with SOAP4R</a> by Mark Thomas</li>
+
+<li><a href="http://groups.google.com/group/comp.lang.ruby/browse_thread/thread/ef4653f192455323/ff71f1a44e3e46a8?hl=en&amp;lnk=st&amp;q=ruby+soap+client+arrays#ff71f1a44e3e46a8">Ruby SOAP client communication with Microsoft .NET webservice</a></li>
+
+<li><a href="http://www.getharvest.com">Harvest</a> because that’s why I was looking at this in the first place</li>
+</ul>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1268';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 19, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

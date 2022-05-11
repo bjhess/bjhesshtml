@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Post Redirect Get in Rails :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Post Redirect Get in Rails
+      </h1>
+
+
+
+
+      <div class="flair">
+        <img alt="Post St." src="http://farm4.static.flickr.com/3039/2328731162_c8f837d78a.jpg"><br>
+        <div class="text-backing">&nbsp;</div>
+        <div class="text">Photo by <a href="http://flickr.com/photos/axis/">Terry Bain</a></div>
+      </div>
+      <p>Post/Redirect/Get (PRG) is a <a href="http://en.wikipedia.org/wiki/Post/Redirect/Get">web application design
+          pattern</a> used to supply users with nice, GET-generated results pages that bookmark and reload with ease.
+      </p>
+
+      <p>Say you have a results page with a filtering form at the top. The user might alter filtering options, and
+        submit a form to winnow down her results. This is a POST, meaning params will be hidden from the user (not in
+        the URL), making direct bookmarks to the filtered results impossible. Also, reloading the page will result in a
+        “POSTDATA” warning message (“Do you want to resubmit POST data or would you rather we do a <a
+          href="http://www.youtube.com/watch?v=qLt57bZ9GxU&amp;feature=related">hurkey-jerky dance</a> to confuse you?”)
+        to the user. These are not things people like to deal with. Post/Redirect/Get says that your application should
+        accept the POST command, and redirect to the results page using a GET request.</p>
+
+      <p>This is really quite simple to implement in Rails. Take this example action filter for an expense report
+        controller, reduced to its bare essentials:</p>
+
+      <code>
+        <pre><span class="keyword">class </span><span class="class">ExpenseReportsController</span> <span class="punct">&lt;</span> <span class="constant">ApplicationController</span>
+  <span class="keyword">def </span><span class="method">filtered</span>
+    <span class="ident">redirect_to</span> <span class="ident">fitered_expense_report_path</span><span class="punct">(</span><span class="ident">params</span><span class="punct">)</span> <span class="keyword">and</span> <span class="keyword">return</span> <span class="keyword">if</span> <span class="ident">request</span><span class="punct">.</span><span class="ident">post?</span>
+
+    <span class="comment"># Actual action work here.</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+      <p>Very easy - the trick is really knowing the pattern more than anything. There has been <a
+          href="http://www.ruby-forum.com/topic/154418">some discussion</a> on adapting this to deal with validation
+        failures. In my experience, I’ve only made use of this pattern in non-RESTful controllers. You are sure to do
+        better with it than I.</p>
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1290';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          July 22, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

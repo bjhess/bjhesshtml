@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>A Rails Way to Track Additional Schema Info :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        A Rails Way to Track Additional Schema Info
+      </h1>
+
+
+
+
+      <div class="flair">
+        <img alt="Baked NYC" src="http://farm1.static.flickr.com/28/60990379_d52dd11d69.jpg"><br>
+        <div class="text-backing">&nbsp;</div>
+        <div class="text">Photo by <a href="http://www.flickr.com/photos/progoddess/">rachel is ...</a></div>
+      </div>
+      <p>Right now at <a href="http://getharvest.com/">Harvest</a> we are baking a few pans of <a
+          href="http://twitter.com">Twitter</a> integration. We’re not sure if they’ll turn out moist and delicious, but
+        hopefully they stop short of dry and forgettable. It’s been a fun, and somewhat frustrating, process getting
+        this feature cooking.</p>
+
+      <p>The key interaction Harvest is using is Twitter’s direct message. Send Harvest a message and we’ll pick it up
+        and do something with it. Through the <a
+          href="http://groups.google.com/group/twitter-development-talk/web/api-documentation">Twitter API</a>, one can
+        grab all direct messages since a certain <code>direct_message.id</code>. In this case,
+        <code>direct_message.id</code> is used as a chronology identifier - the larger the <code>id</code>, the newer
+        the message.</p>
+
+      <p>In order to go out and grab a batch of messages, the previous max <code>direct_message.id</code> needed to be
+        tracked somewhere. To me, this felt similar to Rails’ <code>schema_info</code> table -
+        <code>direct_message_info</code> we’ll call it. So with all of those Rails opinions, how do you set up such a
+        schema-tracking table? First, you migrate:</p>
+
+      <code>
+        <pre><span class="keyword">class </span><span class="class">CreateDirectMessageInfo</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Migration</span>
+  <span class="keyword">def </span><span class="method">self.up</span>
+    <span class="ident">create_table</span> <span class="symbol">:direct_message_info</span><span class="punct">,</span> <span class="symbol">:id</span> <span class="punct">=&gt;</span> <span class="constant">false</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">t</span><span class="punct">|</span>
+      <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:last_id</span><span class="punct">,</span> <span class="symbol">:integer</span>
+    <span class="keyword">end</span>
+    <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span><span class="punct">.</span><span class="ident">connection</span><span class="punct">.</span><span class="ident">insert</span><span class="punct">("</span><span class="string">INSERT INTO direct_message_info VALUES(28700000)</span><span class="punct">")</span>
+  <span class="keyword">end</span>
+
+  <span class="keyword">def </span><span class="method">self.down</span>
+    <span class="ident">drop_table</span> <span class="symbol">:twitter_direct_message_info</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+      <p>This migration is fairly simple. When creating the table, we specify that there is no need for the
+        Rails-default <code>id</code> column. Also, insert an initial starting value. I suggest playing with the API and
+        selecting a value reasonably close to the latest <code>id</code> numbers for Twitter’s direct messages.</p>
+
+      <p>Then, throw your ActiveRecord model out the window for <code>models/direct_message_info.rb</code>:</p>
+
+      <code>
+        <pre><span class="keyword">class </span><span class="class">DirectMessageInfo</span>
+
+  <span class="keyword">class </span><span class="punct">&lt;&lt;</span> <span class="constant">self</span>
+    <span class="keyword">def </span><span class="method">get_most_recent_id</span>
+      <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span><span class="punct">.</span><span class="ident">connection</span><span class="punct">.</span><span class="ident">select_one</span><span class="punct">("</span><span class="string">SELECT last_id FROM direct_message_info</span><span class="punct">")["</span><span class="string">last_id</span><span class="punct">"].</span><span class="ident">to_i</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">def </span><span class="method">set_recent_id</span><span class="punct">(</span><span class="ident">last_id</span><span class="punct">)</span>
+      <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span><span class="punct">.</span><span class="ident">connection</span><span class="punct">.</span><span class="ident">update</span><span class="punct">("</span><span class="string">UPDATE direct_message_info SET last_id = <span class="expr">#{last_id}</span></span><span class="punct">")</span> <span class="keyword">if</span> <span class="ident">last_id</span>
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre></code>
+
+      <p>Two pretty simple class methods for getting and setting your new schema info value.</p>
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1274';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          March 31, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

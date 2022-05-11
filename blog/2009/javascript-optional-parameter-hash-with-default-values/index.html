@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>JavaScript Optional Parameter Hash With Default Values :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        JavaScript Optional Parameter Hash With Default Values
+      </h1>
+
+      
+    
+
+
+<p>I have dealt with optional parameters with default values in JavaScript plenty of times in the past. But for some reason it wasn’t immediately obvious to me how to create a nice options hash like I use so frequently when writing my Ruby code. It really is quite simple.</p>
+
+<p>Here are the beginnings of a little function to handle the changing of a timeframe in a dropdown. The very obvious key is to default your options parameter to an empty hash if it comes through as <code>null</code>/<code>undefined</code>. I’m not sure why that eluded me for a while this afternoon. I’m defaulting the possible options in a couple different ways. I’m checking if boolean options are defined before defaulting them. For string options, I’m simply using an <code>||</code> operator.</p>
+
+<code><pre><span class="ident">function</span> <span class="ident">on_timeframe_change</span><span class="punct">(</span><span class="ident">options</span><span class="punct">){</span>
+  <span class="ident">options</span>  <span class="punct">=</span> <span class="ident">options</span> <span class="punct">||</span> <span class="punct">{};</span>
+  <span class="ident">var</span> <span class="ident">hide_selector_on_custom</span> <span class="punct">=</span> <span class="ident">typeof</span><span class="punct">(</span><span class="ident">options</span><span class="punct">['</span><span class="string">hide_selector_on_custom</span><span class="punct">'])</span> <span class="punct">==</span> <span class="punct">'</span><span class="string">undefined</span><span class="punct">'</span> <span class="punct">?</span> 
+    <span class="constant">false</span> <span class="punct">:</span> 
+    <span class="ident">options</span><span class="punct">['</span><span class="string">hide_selector_on_custom</span><span class="punct">'];</span>
+  <span class="ident">var</span> <span class="ident">prefix</span> <span class="punct">=</span> <span class="ident">options</span><span class="punct">['</span><span class="string">prefix</span><span class="punct">']</span> <span class="punct">||</span> <span class="punct">'</span><span class="string"></span><span class="punct">';</span>
+  <span class="ident">var</span> <span class="ident">grab_focus</span> <span class="punct">=</span> <span class="ident">typeof</span><span class="punct">(</span><span class="ident">options</span><span class="punct">['</span><span class="string">grab_focus</span><span class="punct">'])</span> <span class="punct">==</span> <span class="punct">'</span><span class="string">undefined</span><span class="punct">'</span> <span class="punct">?</span> 
+    <span class="constant">true</span> <span class="punct">:</span> 
+    <span class="ident">options</span><span class="punct">['</span><span class="string">grab_focus</span><span class="punct">'];</span>
+
+  <span class="punct">.</span> <span class="punct">.</span> <span class="punct">.</span>
+
+<span class="punct">}</span>
+</pre></code>
+
+<p>Sorry if you cannot handle ternary operators.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1665';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          September 2, 2009
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

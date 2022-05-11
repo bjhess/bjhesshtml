@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Fading Flash Message :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Fading Flash Message
+      </h1>
+
+      
+    
+
+
+<p>Rails apps love flash messages. Little notes providing information, confirmation or warnings to the user. Typically implemented in a partial like so:</p>
+
+<code><pre><span class="punct">&lt;%</span> <span class="keyword">if</span> <span class="ident">flash</span><span class="punct">[</span><span class="symbol">:warning</span><span class="punct">]</span> <span class="punct">-%&gt;</span><span class="string">
+   &lt;div id='warning'</span><span class="punct">&gt;&lt;%=</span><span class="string"> flash[:warning] -%&gt;&lt;/div&gt;
+&lt;% end -%&gt;
+&lt;% if flash[:notice] -%&gt;
+  &lt;div id</span><span class="punct">='</span><span class="string">notice</span><span class="punct">'&gt;&lt;%=</span><span class="string"> flash[:notice] -%&gt;&lt;/div&gt;
+&lt;% end -%&gt;
+</span></pre></code>
+
+<p>There are many cases where the message does not need to stick around for long. Consider a page with lots of AJAX interactions. Perhaps the user sends a message, which causes a page reload with a flash confirmation note (e.g. “You’re message was sent.”). After this the user will remain on the page for a relatively long time, maybe inline editing some properties or settings with AJAX tools.</p>
+
+<p>It sure would be nice if that flash message would fade into the sunset after a few seconds and give back its valuable real estate, yes? Especially without forcing <em>every</em> flash message to disappear like Bobby Fischer.</p>
+
+<p>Ask and receive, my friends. Introducing the <code>fading_flash_message</code> method, to be added to your nearest <code>ApplicationController</code>:</p>
+
+<code><pre><span class="keyword">def </span><span class="method">fading_flash_message</span><span class="punct">(</span><span class="ident">text</span><span class="punct">,</span> <span class="ident">seconds</span><span class="punct">=</span><span class="number">3</span><span class="punct">)</span>
+  <span class="ident">text</span> <span class="punct">+</span>
+    <span class="punct">&lt;&lt;-</span><span class="constant">EOJS</span><span class="string">
+      &lt;script type='text/javascript'&gt;
+        Event.observe(window, 'load',function() { 
+          setTimeout(function() {
+            message_id = $('notice') ? 'notice' : 'warning';
+            new Effect.Fade(message_id);
+          }, <span class="expr">#{seconds*1000}</span>);
+        }, false);
+      &lt;/script&gt;
+</span><span class="constant">    EOJS</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Setting a fading flash message in your controller is simple:</p>
+
+<code><pre><span class="ident">flash</span><span class="punct">[</span><span class="symbol">:notice</span><span class="punct">]</span> <span class="punct">=</span> <span class="ident">fading_flash_message</span><span class="punct">("</span><span class="string">Thank you for your message.</span><span class="punct">",</span> <span class="number">5</span><span class="punct">)</span>
+</pre></code>
+
+<p>This is change we can believe in, my friends.</p>
+
+<p><strong>Update</strong></p>
+
+<p>For Rails 3, this still works with a simple inclusion of the <code>RawOutputHelper</code>.</p>
+
+<code><pre><span class="ident">include</span> <span class="constant">ActionView</span><span class="punct">::</span><span class="constant">Helpers</span><span class="punct">::</span><span class="constant">RawOutputHelper</span>
+<span class="keyword">def </span><span class="method">fading_flash_message</span><span class="punct">(</span><span class="ident">text</span><span class="punct">,</span> <span class="ident">seconds</span><span class="punct">=</span><span class="number">3</span><span class="punct">)</span>
+  <span class="ident">raw</span> <span class="ident">text</span> <span class="punct">+</span>
+    <span class="punct">&lt;&lt;-</span><span class="constant">EOJS</span><span class="string">
+      &lt;script type='text/javascript'&gt;
+        Event.observe(window, 'load',function() { 
+          setTimeout(function() {
+            message_id = $('notice') ? 'notice' : 'warning';
+            new Effect.Fade(message_id);
+          }, <span class="expr">#{seconds*1000}</span>);
+        }, false);
+      &lt;/script&gt;
+</span><span class="constant">    EOJS</span>
+<span class="keyword">end</span>
+</pre></code>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1431';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          October 16, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

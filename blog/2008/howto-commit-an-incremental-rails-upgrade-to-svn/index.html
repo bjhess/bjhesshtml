@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>HOWTO Commit an Incremental Rails Upgrade to SVN :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        HOWTO Commit an Incremental Rails Upgrade to SVN
+      </h1>
+
+      
+    
+
+
+<p>My relationship with <a href="http://subversion.tigris.org/">Subversion</a> is an ever growing one. Right now it is growing itself straight into <a href="http://git.or.cz/">git</a>. I’m not sure how happy Subversion is with me. It’s complicated.</p>
+
+<p>But it is nowhere near as complex as my process for committing a Rails upgrade to SVN used to be. First I would delete my current Rails version from the repository. Then I would <code>rake rails:freeze:edge TAG=rel_2-0-2</code>. Finally I would commit the latest Rails version to the repository.</p>
+
+<p>I admit, that doesn’t sound too complex. Problem is this process leads to a completely undeployable revision sitting in SVN. And I’ve also seen very wonky results when looking at <code>svn status</code> for several minutes after completing such a process. I began to wonder if it wasn’t just coincidence that I sometimes convert the phrase “Subversion repository” into “suppository.” I was feeling it.</p>
+
+<h3 id="rsync_friend_to_the_commandline_idiot">rsync, friend to the command-line idiot</h3>
+
+<p>Enter <a href="http://www.samba.org/ftp/rsync/rsync.html">rsync</a>, the file copy when <code>cp</code> just won’t do. If you’ve ever tried to simply overwrite your <code>vendor/rails</code> directory with a new version, either by using the freeze rake command, a <code>cp</code> command or a simple drag-and-drop in your GUI, you know how much that can mess with your SVN-chi.</p>
+
+<p>Just. Don’t. Do it.</p>
+
+<p>A simple rsync command will take a source directory (a new version of Rails) and copy all new and updated files to a destination directory (an old version of Rails). It will not copy directories themselves, just files. The expectation when using rsync is that you’re dealing with two similar directory trees.</p>
+
+<p>Here is my current process for upgrading an incremental Rails release. From app root:</p>
+<pre>cd vendor
+mv rails rails\_2-0-1
+rake rails:freeze:edge TAG=rel_2-0-2
+mv rails rails\_2-0-2
+cp -rf rails\_2-0-1 rails
+rsync -arv --delete-after --exclude='.svn/' rails_2-0-2/ rails
+</pre>
+<p>And now a blow-by-blow description of this process:</p>
+<pre>cd vendor
+</pre>
+<p>Don’t ask.</p>
+<pre>mv rails rails_2-0-1
+</pre>
+<p>Move your current version of Rails for safe-keeping.</p>
+<pre>rake rails:freeze:edge TAG=rel_2-0-2
+</pre>
+<p>Freeze your new version of Rails. If you didn’t move <code>vendor/rails</code> in the previous step, well, now you need to start over. Sorry, buddy.</p>
+<pre>mv rails rails_2-0-2
+</pre>
+<p>Now move your new version of Rails for safe-keeping.</p>
+<pre>cp -rf rails_2-0-1 rails
+</pre>
+<p>Put the original version of Rails back in place. Don’t be your own worst enemy. Use a copy command so you have a recovery path that doesn’t involve recreating the working copy of your app from SVN.</p>
+<pre>rsync -av --delete-after --exclude='.svn/' rails_2-0-2/ rails
+</pre>
+<p>This is the secret sauce of the process. The last two parameters are the source (<code>rails_2-0-2/</code>) and destination (<code>rails</code>). The trailing forward-slash on the source parameter is important. If you forget that, rsync will basically copy your <code>rails_2-0-2</code> directory into <code>rails/rails_2-0-2</code>. Not all that useful.</p>
+
+<p>The other options:</p>
+
+<ul>
+<li><code>-a</code> - archive mode (want recursion and preserve everything)</li>
+
+<li><code>-v</code> - verbose output</li>
+
+<li><code>--delete-after</code> - After merging the directory trees, delete from the destination what didn’t exist in the source</li>
+
+<li><code>--exclude='.svn/'</code> - Don’t even look at <code>.svn</code> directories. Without this, all of your SVN hooks will be destroyed</li>
+</ul>
+
+<p>After completing everything, running tests, fixing it all, committing to SVN, etc you can delete those two safe-keeping copies of Rails in your <code>vendor</code> directory. Now don’t you feel so fresh and so clean?</p>
+
+<p>NOTE: I revert to the first process I describe above with major releases. Jumping from Rails 1.2.* to Rails 2 was jarring enough that there was no real benefit in keeping revision history of such drastic changes. In fact, I’m not entirely sure my new procedure would even work in such a situation.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1271';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          March 3, 2008
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>
