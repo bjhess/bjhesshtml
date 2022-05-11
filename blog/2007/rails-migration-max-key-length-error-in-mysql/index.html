@@ -21,21 +21,21 @@
         Rails Migration Max Key Length Error in MySQL
       </h1>
 
-      
-    
+
+
 
 
 <p>I created a <a href="../../bjhessblog/2007/09/19/my-foray-into-has_many_polymorphs/index.html">has_many_polymorphs</a> table for a project that contains announcer_id, announcer_type, announeable_id and announceable_type. All those types are a necessity since we’re working double-polymorphic here. I wanted an index, which is unique on those four combined values. This was in my migration:</p>
 
-<code><pre><span class="ident">add_index</span> <span class="symbol">:announcements</span><span class="punct">,</span> 
-          <span class="punct">[</span><span class="symbol">:announcer_id</span><span class="punct">,</span> <span class="symbol">:announcer_type</span><span class="punct">,</span> <span class="symbol">:announceable_id</span><span class="punct">,</span> <span class="symbol">:announceable_type</span><span class="punct">],</span> 
-          <span class="symbol">:unique</span> <span class="punct">=&gt;</span> <span class="constant">true</span><span class="punct">,</span> 
+<code><pre><span class="ident">add_index</span> <span class="symbol">:announcements</span><span class="punct">,</span>
+          <span class="punct">[</span><span class="symbol">:announcer_id</span><span class="punct">,</span> <span class="symbol">:announcer_type</span><span class="punct">,</span> <span class="symbol">:announceable_id</span><span class="punct">,</span> <span class="symbol">:announceable_type</span><span class="punct">],</span>
+          <span class="symbol">:unique</span> <span class="punct">=&gt;</span> <span class="constant">true</span><span class="punct">,</span>
           <span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">index_announcement_polymorphs</span><span class="punct">'</span>
 </pre></code>
 
 <p>Didn’t have any errors migrating this locally (mysql 5.0.41 on OSX) or on my cohort’s machine (presumably 5.x). However, we received this error when deploying to production (mysql 4.1.11 on Debian):</p>
-<pre>Mysql::Error: Specified key was too long; max key length is 1024 bytes: 
-CREATE UNIQUE INDEX `index_announcement_polymorphs` ON announcements 
+<pre>Mysql::Error: Specified key was too long; max key length is 1024 bytes:
+CREATE UNIQUE INDEX `index_announcement_polymorphs` ON announcements
 (`announcer_id`, `announcer_type`, `announceable_id`, `announceable_type`)
 </pre>
 <p>I suspected the issue is described <a href="http://forums.mysql.com/read.php?20,6149,7231#msg-7231">here</a>:</p>
@@ -56,10 +56,10 @@ CREATE UNIQUE INDEX `index_announcement_polymorphs` ON announcements
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 

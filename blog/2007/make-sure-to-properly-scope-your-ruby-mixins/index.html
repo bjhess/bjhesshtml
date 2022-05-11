@@ -21,8 +21,8 @@
         Make Sure to Properly Scope Your Ruby Mixins
       </h1>
 
-      
-    
+
+
 
 <div class="flair">
   <img alt="Matt - rifle" height="160" src="http://farm2.static.flickr.com/1012/1025919868_ebf0df1a71_m.jpg" width="240"><br>
@@ -42,21 +42,21 @@
 <p>Unfortunately things did not go as smoothly as I would have liked. My mixins began stomping on each other. First, take a look at the generalized code in my module:</p>
 
 <code><pre><span class="keyword">module </span><span class="module">RatingTotals::StoryRatingTotals</span>
- 
+
   <span class="keyword">def </span><span class="method">refresh_story_totals</span><span class="punct">(</span><span class="ident">date</span> <span class="punct">=</span> <span class="constant">Date</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span><span class="number">2007</span><span class="punct">,</span> <span class="number">1</span><span class="punct">,</span> <span class="number">1</span><span class="punct">))</span>
     <span class="comment"># Removed most the code.</span>
     <span class="ident">ratings</span> <span class="punct">=</span> <span class="constant">Rating</span><span class="punct">.</span><span class="ident">find</span><span class="punct">(</span><span class="symbol">:all</span><span class="punct">,</span>
          <span class="symbol">:select</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">rateable_id, AVG(rating) as average_rating, COUNT(id) as count </span><span class="punct">',</span>
          <span class="symbol">:conditions</span> <span class="punct">=&gt;</span> <span class="punct">["</span><span class="string">rateable_type = 'story' AND created_at &gt;= ? </span><span class="punct">",</span> <span class="ident">date</span><span class="punct">],</span>
          <span class="symbol">:group</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">rateable_id </span><span class="punct">')</span>
-   
+
     <span class="ident">totals</span> <span class="punct">=</span> <span class="punct">[]</span>
     <span class="ident">ratings</span><span class="punct">.</span><span class="ident">each</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">rating</span><span class="punct">|</span>
       <span class="ident">totals</span> <span class="punct">&lt;&lt;</span> <span class="constant">self</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span><span class="symbol">:story_id</span> <span class="punct">=&gt;</span> <span class="ident">rating</span><span class="punct">.</span><span class="ident">rateable_id</span><span class="punct">,</span>
                          <span class="symbol">:rating</span> <span class="punct">=&gt;</span> <span class="ident">rating</span><span class="punct">.</span><span class="ident">average_rating</span><span class="punct">,</span>
                          <span class="symbol">:count</span> <span class="punct">=&gt;</span> <span class="ident">rating</span><span class="punct">.</span><span class="ident">count</span><span class="punct">)</span>
     <span class="keyword">end</span>
-   
+
     <span class="constant">self</span><span class="punct">.</span><span class="ident">transaction</span> <span class="keyword">do</span>
       <span class="constant">self</span><span class="punct">.</span><span class="ident">delete_all</span>
       <span class="ident">totals</span><span class="punct">.</span><span class="ident">each</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">total</span><span class="punct">|</span>
@@ -73,9 +73,9 @@
 
 <code><pre><span class="keyword">class </span><span class="class">RatingTotals::WeeklyStoryRatingTotal</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
   <span class="ident">belongs_to</span> <span class="symbol">:story</span>
- 
+
   <span class="ident">extend</span> <span class="constant">StoryRatingTotals</span>
- 
+
   <span class="keyword">def </span><span class="method">self.refresh_totals</span>
     <span class="constant">self</span><span class="punct">.</span><span class="ident">refresh_story_totals</span><span class="punct">(</span><span class="number">1</span><span class="punct">.</span><span class="ident">week</span><span class="punct">.</span><span class="ident">ago</span><span class="punct">)</span>
   <span class="keyword">end</span>
@@ -110,10 +110,10 @@
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 

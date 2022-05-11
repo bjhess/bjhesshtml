@@ -21,8 +21,8 @@
         JavaScript Optional Parameter Hash With Default Values
       </h1>
 
-      
-    
+
+
 
 
 <p>I have dealt with optional parameters with default values in JavaScript plenty of times in the past. But for some reason it wasn’t immediately obvious to me how to create a nice options hash like I use so frequently when writing my Ruby code. It really is quite simple.</p>
@@ -31,12 +31,12 @@
 
 <code><pre><span class="ident">function</span> <span class="ident">on_timeframe_change</span><span class="punct">(</span><span class="ident">options</span><span class="punct">){</span>
   <span class="ident">options</span>  <span class="punct">=</span> <span class="ident">options</span> <span class="punct">||</span> <span class="punct">{};</span>
-  <span class="ident">var</span> <span class="ident">hide_selector_on_custom</span> <span class="punct">=</span> <span class="ident">typeof</span><span class="punct">(</span><span class="ident">options</span><span class="punct">['</span><span class="string">hide_selector_on_custom</span><span class="punct">'])</span> <span class="punct">==</span> <span class="punct">'</span><span class="string">undefined</span><span class="punct">'</span> <span class="punct">?</span> 
-    <span class="constant">false</span> <span class="punct">:</span> 
+  <span class="ident">var</span> <span class="ident">hide_selector_on_custom</span> <span class="punct">=</span> <span class="ident">typeof</span><span class="punct">(</span><span class="ident">options</span><span class="punct">['</span><span class="string">hide_selector_on_custom</span><span class="punct">'])</span> <span class="punct">==</span> <span class="punct">'</span><span class="string">undefined</span><span class="punct">'</span> <span class="punct">?</span>
+    <span class="constant">false</span> <span class="punct">:</span>
     <span class="ident">options</span><span class="punct">['</span><span class="string">hide_selector_on_custom</span><span class="punct">'];</span>
   <span class="ident">var</span> <span class="ident">prefix</span> <span class="punct">=</span> <span class="ident">options</span><span class="punct">['</span><span class="string">prefix</span><span class="punct">']</span> <span class="punct">||</span> <span class="punct">'</span><span class="string"></span><span class="punct">';</span>
-  <span class="ident">var</span> <span class="ident">grab_focus</span> <span class="punct">=</span> <span class="ident">typeof</span><span class="punct">(</span><span class="ident">options</span><span class="punct">['</span><span class="string">grab_focus</span><span class="punct">'])</span> <span class="punct">==</span> <span class="punct">'</span><span class="string">undefined</span><span class="punct">'</span> <span class="punct">?</span> 
-    <span class="constant">true</span> <span class="punct">:</span> 
+  <span class="ident">var</span> <span class="ident">grab_focus</span> <span class="punct">=</span> <span class="ident">typeof</span><span class="punct">(</span><span class="ident">options</span><span class="punct">['</span><span class="string">grab_focus</span><span class="punct">'])</span> <span class="punct">==</span> <span class="punct">'</span><span class="string">undefined</span><span class="punct">'</span> <span class="punct">?</span>
+    <span class="constant">true</span> <span class="punct">:</span>
     <span class="ident">options</span><span class="punct">['</span><span class="string">grab_focus</span><span class="punct">'];</span>
 
   <span class="punct">.</span> <span class="punct">.</span> <span class="punct">.</span>
@@ -56,10 +56,10 @@
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 

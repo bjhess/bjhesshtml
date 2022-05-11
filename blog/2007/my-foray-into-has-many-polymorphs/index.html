@@ -21,8 +21,8 @@
         My Foray Into Has_many_polymorphs
       </h1>
 
-      
-    
+
+
 
 
 <p>The great thing about my worklife as of late is seemingly every week I get to learn something new. I don’t necessarily <em>have</em> to learn something new, but I certainly <em>want</em> to. My base of experience is growing and I’m arriving at a place where I can recognize when the unknown thing will likely be worth learning to create a more elegant solution. Thankfully I work with <a href="http://www.iridesco.com">people</a> who have a similar grasp on reality.</p>
@@ -48,9 +48,9 @@
       <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:announceable_id</span><span class="punct">,</span>   <span class="symbol">:integer</span><span class="punct">,</span> <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
       <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:announceable_type</span><span class="punct">,</span> <span class="symbol">:string</span><span class="punct">,</span>  <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
     <span class="keyword">end</span>
-    <span class="ident">add_index</span> <span class="symbol">:announcements</span><span class="punct">,</span> 
-              <span class="punct">[</span><span class="symbol">:ticker_id</span><span class="punct">,</span> <span class="symbol">:announceable_id</span><span class="punct">,</span> <span class="symbol">:announceable_type</span><span class="punct">],</span> 
-              <span class="symbol">:unique</span> <span class="punct">=&gt;</span> <span class="constant">true</span><span class="punct">,</span> 
+    <span class="ident">add_index</span> <span class="symbol">:announcements</span><span class="punct">,</span>
+              <span class="punct">[</span><span class="symbol">:ticker_id</span><span class="punct">,</span> <span class="symbol">:announceable_id</span><span class="punct">,</span> <span class="symbol">:announceable_type</span><span class="punct">],</span>
+              <span class="symbol">:unique</span> <span class="punct">=&gt;</span> <span class="constant">true</span><span class="punct">,</span>
               <span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">index_announcement_polymorphs</span><span class="punct">'</span>
   <span class="keyword">end</span>
 
@@ -63,9 +63,9 @@
 <p><code>Ticker.rb</code>:</p>
 
 <code><pre><span class="keyword">class </span><span class="class">Ticker</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
-  <span class="ident">has_many_polymorphs</span> <span class="symbol">:announceables</span><span class="punct">,</span>  <span class="symbol">:from</span>    <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:events</span><span class="punct">,</span> <span class="symbol">:news_articles</span><span class="punct">],</span> 
+  <span class="ident">has_many_polymorphs</span> <span class="symbol">:announceables</span><span class="punct">,</span>  <span class="symbol">:from</span>    <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:events</span><span class="punct">,</span> <span class="symbol">:news_articles</span><span class="punct">],</span>
                                        <span class="symbol">:through</span> <span class="punct">=&gt;</span> <span class="symbol">:announcements</span>
-                                       
+
 <span class="punct">.</span> <span class="punct">.</span> <span class="punct">.</span>
 </pre></code>
 
@@ -89,9 +89,9 @@
       <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:announceable_id</span><span class="punct">,</span>   <span class="symbol">:integer</span><span class="punct">,</span> <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
       <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:announceable_type</span><span class="punct">,</span> <span class="symbol">:string</span><span class="punct">,</span>  <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
     <span class="keyword">end</span>
-    <span class="ident">add_index</span> <span class="symbol">:announcements</span><span class="punct">,</span> 
-              <span class="punct">[</span><span class="symbol">:announcer_id</span><span class="punct">,</span> <span class="symbol">:announcer_type</span><span class="punct">,</span> <span class="symbol">:announceable_id</span><span class="punct">,</span> <span class="symbol">:announceable_type</span><span class="punct">],</span> 
-              <span class="symbol">:unique</span> <span class="punct">=&gt;</span> <span class="constant">true</span><span class="punct">,</span> 
+    <span class="ident">add_index</span> <span class="symbol">:announcements</span><span class="punct">,</span>
+              <span class="punct">[</span><span class="symbol">:announcer_id</span><span class="punct">,</span> <span class="symbol">:announcer_type</span><span class="punct">,</span> <span class="symbol">:announceable_id</span><span class="punct">,</span> <span class="symbol">:announceable_type</span><span class="punct">],</span>
+              <span class="symbol">:unique</span> <span class="punct">=&gt;</span> <span class="constant">true</span><span class="punct">,</span>
               <span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">index_announcement_polymorphs</span><span class="punct">'</span>
   <span class="keyword">end</span>
 
@@ -104,7 +104,7 @@
 <p><code>Ticker.rb</code> (and other announcers):</p>
 
 <code><pre><span class="keyword">class </span><span class="class">Ticker</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
-  <span class="ident">has_many_polymorphs</span> <span class="symbol">:announceables</span><span class="punct">,</span>  <span class="symbol">:from</span>             <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:events</span><span class="punct">,</span> <span class="symbol">:news_articles</span><span class="punct">],</span> 
+  <span class="ident">has_many_polymorphs</span> <span class="symbol">:announceables</span><span class="punct">,</span>  <span class="symbol">:from</span>             <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:events</span><span class="punct">,</span> <span class="symbol">:news_articles</span><span class="punct">],</span>
                                        <span class="symbol">:through</span>          <span class="punct">=&gt;</span> <span class="symbol">:announcements</span><span class="punct">,</span>
                                        <span class="symbol">:as</span>               <span class="punct">=&gt;</span> <span class="symbol">:announcer</span><span class="punct">,</span>
                                        <span class="symbol">:foreign_key</span>      <span class="punct">=&gt;</span> <span class="symbol">:announcer_id</span><span class="punct">,</span>
@@ -133,8 +133,8 @@
 <code><pre><span class="keyword">class </span><span class="class">Announcement</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
   <span class="ident">belongs_to</span> <span class="symbol">:announcer</span><span class="punct">,</span>    <span class="symbol">:polymorphic</span> <span class="punct">=&gt;</span> <span class="constant">true</span>
   <span class="ident">belongs_to</span> <span class="symbol">:announceable</span><span class="punct">,</span> <span class="symbol">:polymorphic</span> <span class="punct">=&gt;</span> <span class="constant">true</span>
-  
-  <span class="ident">acts_as_double_polymorphic_join</span> <span class="symbol">:announcers</span>    <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:homepages</span><span class="punct">,</span> <span class="symbol">:tickers</span><span class="punct">],</span> 
+
+  <span class="ident">acts_as_double_polymorphic_join</span> <span class="symbol">:announcers</span>    <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:homepages</span><span class="punct">,</span> <span class="symbol">:tickers</span><span class="punct">],</span>
                                   <span class="symbol">:announceables</span> <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:events</span><span class="punct">,</span> <span class="symbol">:news_articles</span><span class="punct">]</span>
 <span class="keyword">end</span>
 </pre></code>
@@ -151,10 +151,10 @@
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 

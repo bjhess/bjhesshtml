@@ -21,8 +21,8 @@
         Calling MailBuild AddWithCustomFields With Ruby
       </h1>
 
-      
-    
+
+
 
 
 <p>Today I had a fun trial-and-error exploration of Ruby SOAP messaging. By “fun” I mean “hair-rippingly excruciating.”</p>
@@ -39,12 +39,12 @@
     <span class="attribute">@api_key</span> <span class="punct">=</span> <span class="ident">api_key</span>
     <span class="attribute">@list_id</span> <span class="punct">=</span> <span class="ident">list_id</span>
   <span class="keyword">end</span>
-  
+
   <span class="keyword">def </span><span class="method">add_subscriber</span><span class="punct">(</span><span class="ident">user</span><span class="punct">)</span>
     <span class="ident">soap</span>     <span class="punct">=</span> <span class="ident">wsdl</span><span class="punct">.</span><span class="ident">create_rpc_driver</span>
     <span class="ident">response</span> <span class="punct">=</span> <span class="ident">soap</span><span class="punct">.</span><span class="ident">addSubscriber</span> \
-                 <span class="symbol">:ApiKey</span>       <span class="punct">=&gt;</span> <span class="ident">api_key</span><span class="punct">,</span> 
-                 <span class="symbol">:ListID</span>       <span class="punct">=&gt;</span> <span class="ident">list_id</span><span class="punct">,</span> 
+                 <span class="symbol">:ApiKey</span>       <span class="punct">=&gt;</span> <span class="ident">api_key</span><span class="punct">,</span>
+                 <span class="symbol">:ListID</span>       <span class="punct">=&gt;</span> <span class="ident">list_id</span><span class="punct">,</span>
                  <span class="symbol">:Email</span>        <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">email</span><span class="punct">,</span>
                  <span class="symbol">:Name</span>         <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">full_name</span>
     <span class="ident">soap</span><span class="punct">.</span><span class="ident">reset_stream</span>
@@ -72,8 +72,8 @@
 <code><pre><span class="keyword">def </span><span class="method">add_with_is_admin_custom_field</span><span class="punct">(</span><span class="ident">user</span><span class="punct">)</span>
   <span class="ident">soap</span>     <span class="punct">=</span> <span class="ident">wsdl</span><span class="punct">.</span><span class="ident">create_rpc_driver</span>
   <span class="ident">response</span> <span class="punct">=</span> <span class="ident">soap</span><span class="punct">.</span><span class="ident">addSubscriberWithCustomFields</span> \
-               <span class="symbol">:ApiKey</span>       <span class="punct">=&gt;</span> <span class="ident">api_key</span><span class="punct">,</span> 
-               <span class="symbol">:ListID</span>       <span class="punct">=&gt;</span> <span class="ident">list_id</span><span class="punct">,</span> 
+               <span class="symbol">:ApiKey</span>       <span class="punct">=&gt;</span> <span class="ident">api_key</span><span class="punct">,</span>
+               <span class="symbol">:ListID</span>       <span class="punct">=&gt;</span> <span class="ident">list_id</span><span class="punct">,</span>
                <span class="symbol">:Email</span>        <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">email</span><span class="punct">,</span>
                <span class="symbol">:Name</span>         <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">full_name</span><span class="punct">,</span>
                <span class="symbol">:CustomFields</span> <span class="punct">=&gt;</span> <span class="punct">{</span><span class="symbol">:SubscriberCustomField</span> <span class="punct">=&gt;</span>
@@ -85,7 +85,7 @@
 
 <p>So the ‘CustomFields’ hash item needed to point to a hash with a ‘SubscriberCustomField’ item, which itself points to an array of hashes containing ‘Key’ and ‘Value’. So multiple custom fields would be specified as follows:</p>
 
-<code><pre><span class="symbol">:CustomFields</span> <span class="punct">=&gt;</span> <span class="punct">{</span><span class="symbol">:SubscriberCustomField</span> <span class="punct">=&gt;</span> 
+<code><pre><span class="symbol">:CustomFields</span> <span class="punct">=&gt;</span> <span class="punct">{</span><span class="symbol">:SubscriberCustomField</span> <span class="punct">=&gt;</span>
                     <span class="punct">[</span> <span class="punct">{</span><span class="symbol">:Key</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">is_admin</span><span class="punct">',</span> <span class="symbol">:Value</span> <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">is_admin?</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">},</span>
                       <span class="punct">{</span><span class="symbol">:Key</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">is_loser</span><span class="punct">',</span> <span class="symbol">:Value</span> <span class="punct">=&gt;</span> <span class="ident">user</span><span class="punct">.</span><span class="ident">is_loser?</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">}]}</span>
 </pre></code>
@@ -118,10 +118,10 @@
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 

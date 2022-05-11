@@ -21,8 +21,8 @@
         Rails Auto Select Text Field Tag
       </h1>
 
-      
-    
+
+
 
 
 <p>On a recent project, I needed to simulate the YouTube-ish text field selection box. You know the one where you can easily select and copy a link or embed code to send on to your friends. You click in the box, the text is automatically selected, and you can quickly copy the text.</p>
@@ -30,9 +30,9 @@
 <p>I created a quite-simple helper for doing such things.</p>
 
 <code><pre><span class="keyword">def </span><span class="method">auto_select_text_field_tag</span><span class="punct">(</span><span class="ident">name</span><span class="punct">,</span> <span class="ident">value</span> <span class="punct">=</span> <span class="constant">nil</span><span class="punct">,</span> <span class="ident">options</span> <span class="punct">=</span> <span class="punct">{})</span>
-  <span class="ident">text_field_tag</span><span class="punct">(</span><span class="ident">name</span><span class="punct">,</span> 
-                 <span class="ident">value</span><span class="punct">,</span> 
-                 <span class="punct">{</span> <span class="symbol">:onclick</span> <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">$('<span class="expr">#{name}</span>').select()</span><span class="punct">",</span> 
+  <span class="ident">text_field_tag</span><span class="punct">(</span><span class="ident">name</span><span class="punct">,</span>
+                 <span class="ident">value</span><span class="punct">,</span>
+                 <span class="punct">{</span> <span class="symbol">:onclick</span> <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">$('<span class="expr">#{name}</span>').select()</span><span class="punct">",</span>
                    <span class="symbol">:readonly</span> <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">true</span><span class="punct">"</span> <span class="punct">}.</span><span class="ident">merge</span><span class="punct">(</span><span class="ident">options</span><span class="punct">))</span>
 <span class="keyword">end</span>
 </pre></code>
@@ -49,10 +49,10 @@
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 

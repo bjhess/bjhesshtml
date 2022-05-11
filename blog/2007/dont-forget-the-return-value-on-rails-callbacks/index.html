@@ -21,8 +21,8 @@
         Don't Forget the Return Value on Rails Callbacks
       </h1>
 
-      
-    
+
+
 
 
 <p>This morning I spent a good while hashing on a problem in some new code I’m updating for a freelance project. I added a couple callbacks to an ActiveRecord model, and things that previously worked were broken. Unfortunately there were no errors in the model or exceptions in the system to give me a hint as to what went wrong. When I finally uncovered the problem, I was thankful that it was something I had never run into before.</p>
@@ -30,9 +30,9 @@
 <p>That being said, I sure don’t want to make the mistake again. The offending code looked similar to this:</p>
 
 <code><pre><span class="ident">before_save</span> <span class="symbol">:update_show_on_navigation</span>
-   
+
 <span class="ident">private</span>
- 
+
    <span class="keyword">def </span><span class="method">update_show_on_navigation</span>
      <span class="keyword">if</span> <span class="punct">!</span><span class="constant">self</span><span class="punct">.</span><span class="ident">navigation</span><span class="punct">.</span><span class="ident">blank?</span>
        <span class="constant">self</span><span class="punct">.</span><span class="ident">navigation</span><span class="punct">.</span><span class="ident">show_on_nav</span> <span class="punct">=</span> <span class="constant">self</span><span class="punct">.</span><span class="ident">published?</span>  <span class="comment"># If published, show on nav</span>
@@ -50,7 +50,7 @@
 
 <code><pre><span class="ident">before_save</span> <span class="symbol">:update_show_on_navigation</span>
 <span class="ident">private</span>
- 
+
    <span class="keyword">def </span><span class="method">update_show_on_navigation</span>
      <span class="keyword">if</span> <span class="punct">!</span><span class="constant">self</span><span class="punct">.</span><span class="ident">navigation</span><span class="punct">.</span><span class="ident">blank?</span>
        <span class="constant">self</span><span class="punct">.</span><span class="ident">navigation</span><span class="punct">.</span><span class="ident">show_on_nav</span> <span class="punct">=</span> <span class="constant">self</span><span class="punct">.</span><span class="ident">published?</span>  <span class="comment"># If published, show on nav</span>
@@ -69,10 +69,10 @@
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 

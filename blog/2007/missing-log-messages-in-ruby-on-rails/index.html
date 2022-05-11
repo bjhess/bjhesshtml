@@ -21,17 +21,17 @@
         Missing Log Messages in Ruby on Rails
       </h1>
 
-      
-    
+
+
 
 
 <p>Recently I had a fun problem where my log messages in Ruby on Rails were not outputting at all. This included ActiveRecord/internal Rails messages as well as messages I defined. Particularly, I was receiving header information, but not the message itself, which should have been a pretty big clue. Messages looked something like this:</p>
 <pre>INFO Tue Feb 06 04:42:22 -0800 2007 (1539)
- 
+
 DEBUG Tue Feb 06 04:42:22 -0800 2007 (1539)
- 
+
 DEBUG Tue Feb 06 04:42:22 -0800 2007 (1539)
- 
+
 INFO Tue Feb 06 04:42:22 -0800 2007 (1539)
 </pre>
 <p>If I had any brains, I would have remembered that the default logging behavior does not include a snazzy header with detailed information like the above. This means that I had overridden the message format. I had the following code in my environment.rb file:</p>
@@ -66,10 +66,10 @@ end
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 

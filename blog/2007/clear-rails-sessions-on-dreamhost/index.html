@@ -21,8 +21,8 @@
         Clear Rails Sessions on Dreamhost
       </h1>
 
-      
-    
+
+
 
 
 <p>Following the advice of the <a href="http://www.pragmaticprogrammer.com/titles/rails/">Agile Web Development with Rails</a> book, I sought to clear out sessions periodically from the <a href="http://www.scrawlers.com">Scrawlers</a> database. I also took a hint from <a href="http://www.realityforge.org/articles/2006/03/01/removing-stale-rails-sessions">RealityForge.org</a> and put the work directly in Rails, using script/runner to execute. Specifically I created a new model class: SessionCleaner (/app/models/session_cleaner.rb).</p>
@@ -30,7 +30,7 @@
 <pre><code>class SessionCleaner
   def self.remove_stale_sessions
     CGI::Session::ActiveRecordStore::Session.
-      destroy_all( ['updated_at &lt; ?', 12.hours.ago] ) 
+      destroy_all( ['updated_at &lt; ?', 12.hours.ago] )
   end
 end</code></pre>
 
@@ -53,10 +53,10 @@ end</code></pre>
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 

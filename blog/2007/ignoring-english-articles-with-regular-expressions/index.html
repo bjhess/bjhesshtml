@@ -21,8 +21,8 @@
         Ignoring English Articles With Regular Expressions
       </h1>
 
-      
-    
+
+
 
 
 <p>During some freelance work, we had a special requirement that I imagine a lot of people run into. A list of items returned from the database needed to be sorted by name while ignoring English articles: “a,” “an,” and “the.” Though I hate them with a passion, I knew regular expressions were the solution.</p>
@@ -36,7 +36,7 @@
 
 <p>The above regular expression results in a return value of name, sans any leading articles. Since I hate regular expressions, and perhaps you do, too, here’s a run down of each thing defined besides the ‘/’ characters.</p>
 <pre>^          - Matches the beginning of a line
-(the|a|an) - Matches the strings "the", "a", or "an"   
+(the|a|an) - Matches the strings "the", "a", or "an"
 i          - Case insensitive.  Ignores case in the string and regular expression.
 </pre>
 <p>And there you are. Regardless of capitalization, the <code>normalized_name</code> method will return the original name with English articles stripped off the front.</p>
@@ -56,10 +56,10 @@ i          - Case insensitive.  Ignores case in the string and regular expressio
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 

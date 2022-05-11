@@ -21,8 +21,8 @@
         A Rails Way to Popup Secondary Windows
       </h1>
 
-      
-    
+
+
 
 
 <p>I had to solve a hairy problem recently. For a select number of pages on a site, I needed to pop up a secondary window along with the current action. This window contained a request for filling out a survey (held at a third party site). The survey URL was variable depending on the page I arrived at.</p>
@@ -40,7 +40,7 @@
   <span class="keyword">if</span> <span class="ident">survey</span> <span class="punct">&amp;&amp;</span> <span class="punct">!</span><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">].</span><span class="ident">to_s</span><span class="punct">.</span><span class="ident">split</span><span class="punct">('</span><span class="string">,</span><span class="punct">').</span><span class="ident">include?</span><span class="punct">(</span><span class="ident">survey</span><span class="punct">.</span><span class="ident">id</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">)</span>
     <span class="attribute">@survey</span> <span class="punct">=</span> <span class="ident">survey</span>
   <span class="keyword">end</span>
-  
+
   <span class="keyword">if</span> <span class="attribute">@survey</span>
     <span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">]</span> <span class="punct">=</span> <span class="punct">{</span> <span class="symbol">:value</span> <span class="punct">=&gt;</span> <span class="punct">[</span><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">],</span> <span class="attribute">@survey</span><span class="punct">.</span><span class="ident">id</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">].</span><span class="ident">compact</span><span class="punct">.</span><span class="ident">join</span><span class="punct">('</span><span class="string">,</span><span class="punct">'),</span>
                                 <span class="symbol">:expires</span> <span class="punct">=&gt;</span> <span class="constant">Time</span><span class="punct">.</span><span class="ident">now</span> <span class="punct">+</span> <span class="number">10</span><span class="punct">.</span><span class="ident">years</span> <span class="punct">}</span>
@@ -55,7 +55,7 @@
 
 <p>I wanted to deal with an array, but cookies store strings. As you can see further down in the code, I’m storing the survey ids separated by commas. So getting an array is as easy as <code>split(',')</code>. The <code>to_s</code> call immediately after grabbing the cookie protects from an error in the <code>nil</code> case - when no <code>surveys_taken</code> cookie is found.</p>
 
-<code><pre><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">]</span> <span class="punct">=</span> <span class="punct">{</span> <span class="symbol">:value</span> <span class="punct">=&gt;</span> <span class="punct">[</span><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">],</span> <span class="attribute">@survey</span><span class="punct">.</span><span class="ident">id</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">].</span><span class="ident">compact</span><span class="punct">.</span><span class="ident">join</span><span class="punct">('</span><span class="string">,</span><span class="punct">'),</span> 
+<code><pre><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">]</span> <span class="punct">=</span> <span class="punct">{</span> <span class="symbol">:value</span> <span class="punct">=&gt;</span> <span class="punct">[</span><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">],</span> <span class="attribute">@survey</span><span class="punct">.</span><span class="ident">id</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">].</span><span class="ident">compact</span><span class="punct">.</span><span class="ident">join</span><span class="punct">('</span><span class="string">,</span><span class="punct">'),</span>
                             <span class="symbol">:expires</span> <span class="punct">=&gt;</span> <span class="constant">Time</span><span class="punct">.</span><span class="ident">now</span> <span class="punct">+</span> <span class="number">10</span><span class="punct">.</span><span class="ident">years</span> <span class="punct">}</span>
 </pre></code>
 
@@ -72,10 +72,10 @@
   <span class="comment"># ending with and without '/'.</span>
   <span class="keyword">def </span><span class="method">find_by_request_uri_part</span><span class="punct">(</span><span class="ident">uri_part</span><span class="punct">)</span>
     <span class="ident">last_slash_regex</span>     <span class="punct">=</span> <span class="punct">/</span><span class="regex"><span class="escape">\/</span>$</span><span class="punct">/</span>
-    <span class="ident">alternative_uri_part</span> <span class="punct">=</span> <span class="ident">uri_part</span><span class="punct">.</span><span class="ident">match</span><span class="punct">(</span><span class="ident">last_slash_regex</span><span class="punct">)</span> <span class="punct">?</span> 
+    <span class="ident">alternative_uri_part</span> <span class="punct">=</span> <span class="ident">uri_part</span><span class="punct">.</span><span class="ident">match</span><span class="punct">(</span><span class="ident">last_slash_regex</span><span class="punct">)</span> <span class="punct">?</span>
                              <span class="ident">uri_part</span><span class="punct">.</span><span class="ident">sub</span><span class="punct">(</span><span class="ident">last_slash_regex</span><span class="punct">,</span> <span class="punct">'</span><span class="string"></span><span class="punct">')</span> <span class="punct">:</span>
                              <span class="ident">uri_part</span> <span class="punct">+</span> <span class="punct">'</span><span class="string">/</span><span class="punct">'</span>
-    <span class="ident">find</span><span class="punct">(</span><span class="symbol">:first</span><span class="punct">,</span> 
+    <span class="ident">find</span><span class="punct">(</span><span class="symbol">:first</span><span class="punct">,</span>
          <span class="symbol">:conditions</span> <span class="punct">=&gt;</span> <span class="punct">{</span> <span class="symbol">:request_uri</span> <span class="punct">=&gt;</span> <span class="punct">[</span><span class="ident">uri_part</span><span class="punct">,</span> <span class="ident">alternative_uri_part</span><span class="punct">]</span> <span class="punct">})</span>
   <span class="keyword">end</span>
 <span class="keyword">end</span>
@@ -115,10 +115,10 @@
   </script>
   <div id="comments">
     <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      <script type="text/javascript" src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
   </div>
 
-  
+
 
       <hr>
 
