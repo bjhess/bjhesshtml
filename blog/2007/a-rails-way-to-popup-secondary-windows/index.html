@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>A Rails Way to Popup Secondary Windows :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        A Rails Way to Popup Secondary Windows
+      </h1>
+
+      
+    
+
+
+<p>I had to solve a hairy problem recently. For a select number of pages on a site, I needed to pop up a secondary window along with the current action. This window contained a request for filling out a survey (held at a third party site). The survey URL was variable depending on the page I arrived at.</p>
+
+<p>In the database, a survey had two basic parts: <code>request_uri</code> (e.g. “/home/about”) and <code>url</code> (e.g. “http://www.madeupsurvey.com/survey_1”). For every request, I needed to detect if the current URI had a survey entry, and if so I needed to popup the request page. Oh, and once I bothered the user for a particular survey, I needed to stop bothering her going forward.</p>
+
+<h3 id="dip_your_toe_in_and_test_the_water">Dip your toe in and test the water</h3>
+
+<p>In <code>application.rb</code> I added a <code>before_filter</code> to determine if a survey was in the cards for a particular request:</p>
+
+<code><pre><span class="ident">before_filter</span> <span class="symbol">:detect_survey</span>
+<span class="keyword">def </span><span class="method">detect_survey</span>
+  <span class="ident">survey</span> <span class="punct">=</span> <span class="constant">Survey</span><span class="punct">.</span><span class="ident">find_by_request_uri_part</span><span class="punct">(</span><span class="ident">request</span><span class="punct">.</span><span class="ident">env</span><span class="punct">['</span><span class="string">REQUEST_URI</span><span class="punct">'])</span>
+
+  <span class="keyword">if</span> <span class="ident">survey</span> <span class="punct">&amp;&amp;</span> <span class="punct">!</span><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">].</span><span class="ident">to_s</span><span class="punct">.</span><span class="ident">split</span><span class="punct">('</span><span class="string">,</span><span class="punct">').</span><span class="ident">include?</span><span class="punct">(</span><span class="ident">survey</span><span class="punct">.</span><span class="ident">id</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">)</span>
+    <span class="attribute">@survey</span> <span class="punct">=</span> <span class="ident">survey</span>
+  <span class="keyword">end</span>
+  
+  <span class="keyword">if</span> <span class="attribute">@survey</span>
+    <span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">]</span> <span class="punct">=</span> <span class="punct">{</span> <span class="symbol">:value</span> <span class="punct">=&gt;</span> <span class="punct">[</span><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">],</span> <span class="attribute">@survey</span><span class="punct">.</span><span class="ident">id</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">].</span><span class="ident">compact</span><span class="punct">.</span><span class="ident">join</span><span class="punct">('</span><span class="string">,</span><span class="punct">'),</span>
+                                <span class="symbol">:expires</span> <span class="punct">=&gt;</span> <span class="constant">Time</span><span class="punct">.</span><span class="ident">now</span> <span class="punct">+</span> <span class="number">10</span><span class="punct">.</span><span class="ident">years</span> <span class="punct">}</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>A couple lines in the above code could use some further discussion. First:</p>
+
+<code><pre><span class="keyword">if</span> <span class="ident">survey</span> <span class="punct">&amp;&amp;</span> <span class="punct">!</span><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">].</span><span class="ident">to_s</span><span class="punct">.</span><span class="ident">split</span><span class="punct">('</span><span class="string">,</span><span class="punct">').</span><span class="ident">include?</span><span class="punct">(</span><span class="ident">survey</span><span class="punct">.</span><span class="ident">id</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">)</span>
+</pre></code>
+
+<p>I wanted to deal with an array, but cookies store strings. As you can see further down in the code, I’m storing the survey ids separated by commas. So getting an array is as easy as <code>split(',')</code>. The <code>to_s</code> call immediately after grabbing the cookie protects from an error in the <code>nil</code> case - when no <code>surveys_taken</code> cookie is found.</p>
+
+<code><pre><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">]</span> <span class="punct">=</span> <span class="punct">{</span> <span class="symbol">:value</span> <span class="punct">=&gt;</span> <span class="punct">[</span><span class="ident">cookies</span><span class="punct">[</span><span class="symbol">:surveys_taken</span><span class="punct">],</span> <span class="attribute">@survey</span><span class="punct">.</span><span class="ident">id</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">].</span><span class="ident">compact</span><span class="punct">.</span><span class="ident">join</span><span class="punct">('</span><span class="string">,</span><span class="punct">'),</span> 
+                            <span class="symbol">:expires</span> <span class="punct">=&gt;</span> <span class="constant">Time</span><span class="punct">.</span><span class="ident">now</span> <span class="punct">+</span> <span class="number">10</span><span class="punct">.</span><span class="ident">years</span> <span class="punct">}</span>
+</pre></code>
+
+<p>This is the line where the cookie is stored. Again, I wanted to work with an array so I could use a snazzy <code>join(',')</code> call. To protect against a missing cookie (<code>nil</code>), I <code>compact</code> the array before joining it.</p>
+
+<p>The end result is twofold. <code>@survey</code> holds the survey if one is found <em>and</em> it has not yet been presented to the user. Also, the <code>surveys_taken</code> cookie is updated with the latest accumulation of information.</p>
+
+<h3 id="catch_all_your_urls">Catch all your URLs</h3>
+
+<p>In my Survey model, I added one finder, which is used by the above <code>application.rb</code> code:</p>
+
+<code><pre><span class="keyword">class </span><span class="punct">&lt;&lt;</span> <span class="constant">self</span>
+  <span class="comment"># Find first survey with url_part.  Search for both url styles, </span>
+  <span class="comment"># ending with and without '/'.</span>
+  <span class="keyword">def </span><span class="method">find_by_request_uri_part</span><span class="punct">(</span><span class="ident">uri_part</span><span class="punct">)</span>
+    <span class="ident">last_slash_regex</span>     <span class="punct">=</span> <span class="punct">/</span><span class="regex"><span class="escape">\/</span>$</span><span class="punct">/</span>
+    <span class="ident">alternative_uri_part</span> <span class="punct">=</span> <span class="ident">uri_part</span><span class="punct">.</span><span class="ident">match</span><span class="punct">(</span><span class="ident">last_slash_regex</span><span class="punct">)</span> <span class="punct">?</span> 
+                             <span class="ident">uri_part</span><span class="punct">.</span><span class="ident">sub</span><span class="punct">(</span><span class="ident">last_slash_regex</span><span class="punct">,</span> <span class="punct">'</span><span class="string"></span><span class="punct">')</span> <span class="punct">:</span>
+                             <span class="ident">uri_part</span> <span class="punct">+</span> <span class="punct">'</span><span class="string">/</span><span class="punct">'</span>
+    <span class="ident">find</span><span class="punct">(</span><span class="symbol">:first</span><span class="punct">,</span> 
+         <span class="symbol">:conditions</span> <span class="punct">=&gt;</span> <span class="punct">{</span> <span class="symbol">:request_uri</span> <span class="punct">=&gt;</span> <span class="punct">[</span><span class="ident">uri_part</span><span class="punct">,</span> <span class="ident">alternative_uri_part</span><span class="punct">]</span> <span class="punct">})</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Basically, if the request URI is <code>/news</code>, the method will look for surveys destined for <code>/news</code> and <code>/news/</code>, and visa-versa.</p>
+
+<h3 id="popup_your_secondary_window_with_javascript">Popup your secondary window with JavaScript</h3>
+
+<p>There ain’t no gettin’ around using JavaScript to open a second window, initiating a second request. I put this logic in a partial and included it at the very bottom of all appropriate layouts. Here’s what the partial looks like:</p>
+
+<code><pre><span class="punct">&lt;%</span> <span class="ident">popup_survey_if_necessary</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">survey_id</span><span class="punct">|</span> <span class="punct">-%&gt;</span><span class="string">
+  &lt;script type="text/javascript"</span><span class="punct">&gt;</span>
+    <span class="ident">window</span><span class="punct">.</span><span class="ident">open</span><span class="punct">('</span><span class="string">&lt;%= "/surveys/#{survey_id}" %&gt;</span><span class="punct">',</span> <span class="punct">'</span><span class="string">_survey</span><span class="punct">',</span> <span class="punct">'</span><span class="string">height=400,width=300,status=no,menubar=no,location=no,toolbar=no</span><span class="punct">');</span>
+  <span class="punct">&lt;/</span><span class="regex">script&gt;
+&lt;% end -%&gt;
+</span></pre></code>
+
+<p>As you can see, I’m using a helper method to make the code nice and readable. This is in my <code>application_helper.rb</code>:</p>
+
+<code><pre><span class="keyword">def </span><span class="method">popup_survey_if_necessary</span><span class="punct">(&amp;</span><span class="ident">block</span><span class="punct">)</span>
+  <span class="keyword">if</span> <span class="attribute">@survey</span>
+    <span class="ident">block</span><span class="punct">.</span><span class="ident">call</span> <span class="attribute">@survey</span><span class="punct">.</span><span class="ident">id</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Looking at it now, that helper may be overkill. For some reason it seems more self-documenting, though. In any case, once JavaScript kicks open the new window, Rails takes over again and you’re on your merry way.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1244';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          November 12, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

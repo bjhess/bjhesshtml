@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Syntax Highlighting With WordPress and Markdown :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Syntax Highlighting With WordPress and Markdown
+      </h1>
+
+      
+    
+
+
+<p>When I started frequently publishing blog posts that contained code, I immediately searched for a syntax highlighting plugin to <a href="http://wordpress.org/">WordPress</a>. I found a pretty good one rather easily in <a href="http://erik.range-it.de/wordpress/plugins/syntaxhighlighter/">SyntaxHighlighter</a>. It worked well and was fairly intuitive.</p>
+
+<p>Then I realized that I would blog more if I <a href="../../bjhessblog/2007/03/08/textmate-blogging-wordpress-and-dreamhost/index.html">used the wonderful TextMate</a> to make blogging quick and easy. Along with that came the adoption of a convenient markup language, called <a href="http://daringfireball.net/projects/markdown/">Markdown</a>. Using Markdown in TextMate was fairly straightforward. Implementing Markdown on my blog was also easy with the <a href="http://www.michelf.com/projects/php-markdown/">PHP Markdown</a> plugin.</p>
+
+<p>Life was good.</p>
+
+<h2 id="syntaxhighlighter_with_markdown_causes_problems">SyntaxHighlighter with Markdown causes problems</h2>
+
+<p>Life was good <em>until</em> I realized the PHP Markdown plugin and and the SyntaxHighlighter plugins conflict with each other. In a phrase, SyntaxHighlighter was broken by PHP Markdown’s parsing of posts.</p>
+
+<p>Here’s the problem. SyntaxHighlighter’s syntax is pretty customized. The opening definition of code to be highlighted is <code>[source:language]</code>. Well, when Markdown goes through the post to translate all its clever shortcuts into HTML, it doesn’t really recognize <code>[source:language]</code> as anything special. Markdown proceeds to markup everything within the code block. I realized getting SyntaxHighlighter and Markdown to play nice together would be difficult.</p>
+
+<h2 id="deans_code_highlighter_works_with_markdown">Dean’s Code Highlighter works with Markdown</h2>
+
+<p>Enter, stage left, an alternative code highlighting plugin, <a href="http://www.deanlee.cn/wordpress/code_highlighter_plugin_for_wordpress/">Dean’s Code Highlighter</a>. Dean’s makes use of the <a href="http://qbnz.com/highlighter/">GeSHi</a> General Syntax Highlighter to do its work. Why does Dean’s “just work” with Markdown? It’s the clever syntax.</p>
+
+<p>Dean’s makes use of the basic HTML <code>&lt;code&gt;
+</code>. Markdown knows to stay far, far away from <code>&lt;pre&gt;</code> tags. It leaves your code blocks alone to be formatted by Dean’s default CSS. And naturally you’re free to update that as you see fit.</p>
+
+<p>The nice side-effect of using a plain old <code>&lt;pre&gt;</code> tag is that Dean’s should degrade nicely if the plugin is ever inadvertently uninstalled. The code may not be highlighted all pretty, but at least it will be in a fixed-width font and somewhat readable.</p>
+
+<p>As you can see, the <a href="../../bjhessblog/2007/07/25/stubbing-objects-in-radiant/index.html">output looks nice</a>.</p>
+<!--adsense-->
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1197';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          August 15, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

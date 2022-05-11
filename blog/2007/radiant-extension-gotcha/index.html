@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Radiant Extension Gotcha :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Radiant Extension Gotcha
+      </h1>
+
+      
+    
+
+
+<p>In my current work I am getting the opportunity to play with <a href="http://radiantcms.org/">Radiant</a>. It’s a fairly powerful, Rails-based Content Management Systeme (CMS).</p>
+
+<p>I ran into a maddening problem. An extension that I had never checked in to Subversion was being deployed out to the production server, causing errors because expected database tables were not being found. When beginning the project, I had brought in the <a href="http://seancribbs.com/svn/rails/plugins/extensions/page_attachments/">page_attachments extension</a> thinking I needed it, and I ran some <a href="http://dev.radiantcms.org/radiant/wiki/Extensions">svn:externals stuff</a> at that time so syncing with the remote source would be simple.</p>
+
+<p>When I realized I would not need the extension, I just deleted the code before committing anything to the Subversion repository. Unfortunately, I forgot to backout that svn:externals definition I had setup initially. So when pulling the archive fresh to my machine, the phantom extension came with. And when deploying the archive to the production server with Capistrano, the phantom extension came with. Note this “svn status” output:</p>
+
+<pre><code>theMacBook:~/site/ bjhess$ svn status
+X      trunk/vendor/extensions/page_attachments</code></pre>
+
+<p>That ‘X’ status <a href="http://www.macdevcenter.com/pub/a/mac/2004/08/10/subversion.html?page=2">stands for</a> “Item is unversioned, but is used by an externals definition.” Ah! So I executed the command:</p>
+
+<pre><code>svn propedit svn:externals vendor/extensions</code></pre>
+
+<p>…and deleted the reference to the page_attachments extension. That mean ‘X’ disappeared. I did need to commit a modification to my /vendor/extensions archive, however.</p>
+
+<p>What an annoying gotcha!</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1156';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          May 3, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

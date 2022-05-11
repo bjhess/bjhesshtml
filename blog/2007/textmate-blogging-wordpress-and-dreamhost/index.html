@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>TextMate, Blogging, Wordpress, and Dreamhost :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        TextMate, Blogging, Wordpress, and Dreamhost
+      </h1>
+
+
+
+
+
+      <p>Did I mention that I love <a href="http://www.macromates.com">TextMate</a>? If not, let’s just say I want to
+        have its elegant and feature-rich baby. I could spend several weeks learning numerous ways TextMate can make my
+        life easier and still not crack the surface of its features.</p>
+
+      <p>When I saw that TextMate had <a
+          href="http://macromates.com/blog/archives/2006/06/19/blogging-from-textmate/">powerful blogging features</a>
+        baked in I had to give it a try. Naturally it wasn’t as easy as I had hoped.</p>
+
+      <p>First I had to setup blogging through the TextMate Bundles:Blogging:Setup Blogs menu. Setup for a wordpress
+        blog looks something like this:</p>
+
+      <pre><code>Blog Name   URL
+bjhess      http://username@blog.com/url/xmlrpc.php</code></pre>
+
+      <p>When you first hit your blog, you will be prompted for a password which will be saved in your keyring going
+        forward. To test that you’re up and running, try Bundles:Blogging:Fetch to grab an old blog post.</p>
+
+      <p>Following the screencast provided by the TextMate people, I tried uploading a blog post written in <a
+          href="http://daringfireball.net/projects/markdown/">Markdown</a>. That was an utter failure. The snazzy,
+        helpful Markdown syntax was not translated to HTML for me and things looked ugly. Enter the wonderful <a
+          href="http://www.michelf.com/projects/php-markdown/">PHP Markdown</a> plugin. Install that puppy and activate
+        it in your Wordpress blog and now you’re cooking with fire.</p>
+
+      <p>Yet my experience was still negative. As is often the case, <a href="http://www.dreamhost.com">Dreamhost</a>
+        got in the way of my assumed happiness. See, whenever I’d send a post from TextMate to my blog at Dreamhost, I’d
+        get a nasty timeout error. The post would be visible when I refreshed my blog, but the timeout meant that other
+        cool TextMate features aborted before they could happen. (The cool features are updating the TextMate version of
+        the post with new headers and automatically showing your new post in a browser.)</p>
+
+      <p>I opened a support ticket with the good people at Macromates and waited for a response. The discussion was
+        quick and to the point (did I mention I love TextMate?). After a few iterations it was recommended that I turn
+        off automatic pingbacks, which occur at post time. These were probably a part of the reason my posting activity
+        was soooo sloooow causing a timeout on the TextMate side of things.</p>
+
+      <p>Finding this option within Wordpress was surprisingly confusing. It wasn’t available in Options:General,
+        Options:Writing, or Options:Miscellaneous. It ended up being in Options:Discussion, I imagine because pingbacks
+        facilitate intercommunication between blogs. So I unticked that option:</p>
+
+      <p><img src="../../bjhessblog/wp-content/uploads/2007/03/disable-pingbacks-in-wordpress1.png"
+          alt="Disable Pingbacks in Wordpress"></p>
+
+      <p>Now blaming Dreamhost for this slowness probably isn’t the best idea. But even without the pingback option
+        checked, posting a blog entry is painfully slow with Dreamhost. TextMate no longer experienced a timeout error,
+        at least on my test posts, but it really wouldn’t surprise me if I do hit a timeout now and again even with the
+        pingback option out of the picture.</p>
+
+      <p>Now if only TextMate would <a href="http://zeo.unic.net.my/notes/lightbox-js-version-20/">lightboxify</a>
+        images for me…</p>
+
+      <p><strong>Update:</strong> When I posted this entry through TextMate I experienced the same timeout failure
+        described here.</p>
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1109';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          March 8, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

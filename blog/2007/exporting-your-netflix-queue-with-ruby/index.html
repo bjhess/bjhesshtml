@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Exporting Your Netflix Queue With Ruby :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Exporting Your Netflix Queue With Ruby
+      </h1>
+
+
+
+
+
+      <p>I have been with <a href="http://www.netflix.com">Netflix</a> for over seven years now. Or I should say, I had
+        been up until last Friday. Ultimately, it came down to none of us having enough time to actually watch DVDs from
+        Netflix. When time was available to view films, we either needed to kowtow to The Kid’s viewability needs (she’s
+        only 3, after all) or else we had such a large pool of movies we haven’t seen that larger immediate choice
+        became key.</p>
+
+      <p>The decision boiled down to either increasing the size of our Netflix commitment to allow us to break up our
+        account into three separate queues (one for me, one for The Wife and one for The Kid) or simply eliminating the
+        thing entirely. We chose the latter.</p>
+
+      <p>As you can imagine, I had a significant queue built up; 345 DVDs to be precise. I just couldn’t <em>delete</em>
+        that queue. I don’t know if Netflix will reinstate it upon my eventual return? Or will they obliterate it and
+        make me rebuild it? In any case, I’d like to have the option to revisit that original queue, culled over seven
+        glorious years of membership. (I found the answer after canceling - they retain your queue for 2 years.)</p>
+
+      <p>Ruby and <a href="http://www.germane-software.com/software/rexml/">REXML</a> to the rescue!</p>
+
+      <p>First, I saved my <a href="http://www.netflix.com/RSSFeeds">queue RSS feed</a> (that link should work if you
+        have an account) to my local machine. The feed looks something like this:</p>
+
+      <code>
+        <pre>  <span class="punct">&lt;</span><span class="ident">channel</span><span class="punct">&gt;</span>
+    <span class="punct">&lt;</span><span class="ident">title</span><span class="punct">&gt;</span><span class="constant">Netflix</span> <span class="constant">Queue</span><span class="punct">&lt;/</span><span class="regex">title&gt;
+    &lt;ttl&gt;60&lt;</span><span class="punct">/</span><span class="ident">ttl</span><span class="punct">&gt;</span>
+    <span class="punct">&lt;</span><span class="ident">link</span><span class="punct">&gt;</span><span class="ident">http</span><span class="punct">:/</span><span class="regex"></span><span class="punct">/</span><span class="ident">www</span><span class="punct">.</span><span class="ident">netflix</span><span class="punct">.</span><span class="ident">com</span><span class="punct">/</span><span class="constant">Queue</span><span class="punct">&lt;/</span><span class="regex">link&gt;
+    &lt;description&gt;DVDs in your Netflix Queue&lt;</span><span class="punct">/</span><span class="ident">description</span><span class="punct">&gt;</span>
+    <span class="punct">&lt;</span><span class="ident">language</span><span class="punct">&gt;</span><span class="ident">en</span><span class="punct">-</span><span class="ident">us</span><span class="punct">&lt;/</span><span class="regex">language&gt;
+    &lt;item&gt;
+      &lt;title&gt;1- The Good Shepherd&lt;</span><span class="punct">/</span><span class="ident">title</span><span class="punct">&gt;</span>
+      <span class="punct">&lt;</span><span class="ident">link</span><span class="punct">&gt;</span>
+        <span class="ident">http</span><span class="punct">:/</span><span class="regex"></span><span class="punct">/</span><span class="ident">www</span><span class="punct">.</span><span class="ident">netflix</span><span class="punct">.</span><span class="ident">com</span><span class="punct">/</span><span class="constant">Movie</span><span class="punct">/</span><span class="constant">The_Good_Shepherd</span><span class="punct">/</span><span class="number">70044695</span><span class="char">?t</span><span class="ident">rkid</span><span class="punct">=</span><span class="number">134852</span>
+      <span class="punct">&lt;/</span><span class="regex">link&gt;
+      &lt;description&gt;
+        Matt Damon and Robert De Niro (who also directs) star in this partially fact-based drama that examines the early history of the CIA as seen through the eyes of a dedicated agent. An upstanding, sharp-minded Yale student, Edward Wilson (Damon) is recruited to work for the fledgling CIA during World War II. Though loyal to his country, Wilson begins to feel the job eroding his ideals, filling him with distrust and destroying his personal life.
+      &lt;</span><span class="punct">/</span><span class="ident">description</span><span class="punct">&gt;</span>
+    <span class="punct">&lt;/</span><span class="regex">item&gt;
+	  &lt;item&gt;
+      &lt;title&gt;2- Deja Vu&lt;</span><span class="punct">/</span><span class="ident">title</span><span class="punct">&gt;</span>
+      <span class="punct">&lt;</span><span class="ident">link</span><span class="punct">&gt;</span>
+        <span class="ident">http</span><span class="punct">:/</span><span class="regex"></span><span class="punct">/</span><span class="ident">www</span><span class="punct">.</span><span class="ident">netflix</span><span class="punct">.</span><span class="ident">com</span><span class="punct">/</span><span class="constant">Movie</span><span class="punct">/</span><span class="constant">Deja_Vu</span><span class="punct">/</span><span class="number">70052696</span><span class="char">?t</span><span class="ident">rkid</span><span class="punct">=</span><span class="number">134852</span>
+      <span class="punct">&lt;/</span><span class="regex">link&gt;
+      &lt;description&gt;
+        Deja vu -- that powerful but fleeting sense that you've been here, or met someone, before. ATF agent Doug Carlin (Denzel Washington) finds himself dogged by that feeling as he investigates a bombing on a New Orleans ferry. Should he shrug off the unsettling sensation, or can it help him unravel the clues he needs to save hundreds of innocent people from disaster? Directed by Tony Scott, this thriller also stars James Caviezel and Val Kilmer.
+      &lt;</span><span class="punct">/</span><span class="ident">description</span><span class="punct">&gt;</span>
+    <span class="punct">&lt;/</span><span class="regex">item&gt;
+  . . .
+</span></pre></code>
+
+      <p>The next task, assuming you have Ruby installed on your machine (you do own a Mac, right?), is to create the
+        code to process your downloaded queue XML document. I created a new text file and saved it in the same directory
+        as my XML file sits, calling it “parse-netflix-titles.rb”.</p>
+
+      <p>The code is quite simple.</p>
+
+      <code>
+        <pre><span class="ident">require</span> <span class="punct">'</span><span class="string">rexml/document</span><span class="punct">'</span>
+<span class="ident">include</span> <span class="constant">REXML</span>
+<span class="ident">doc</span> <span class="punct">=</span> <span class="constant">Document</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span><span class="constant">File</span><span class="punct">.</span><span class="ident">new</span><span class="punct">("</span><span class="string">QueueRSS.xml</span><span class="punct">"))</span>
+<span class="ident">root</span> <span class="punct">=</span> <span class="ident">doc</span><span class="punct">.</span><span class="ident">root</span>
+<span class="ident">aFile</span> <span class="punct">=</span> <span class="constant">File</span><span class="punct">.</span><span class="ident">new</span><span class="punct">("</span><span class="string">netflix-queue-titles.txt</span><span class="punct">",</span> <span class="punct">'</span><span class="string">w</span><span class="punct">')</span>
+<span class="ident">root</span><span class="punct">.</span><span class="ident">each_element</span><span class="punct">('</span><span class="string">channel/item</span><span class="punct">')</span> <span class="punct">{</span> <span class="punct">|</span><span class="ident">item</span><span class="punct">|</span>
+  <span class="ident">aFile</span><span class="punct">.</span><span class="ident">puts</span><span class="punct">(</span><span class="ident">item</span><span class="punct">.</span><span class="ident">elements</span><span class="punct">['</span><span class="string">title</span><span class="punct">'].</span><span class="ident">text</span><span class="punct">)</span>
+<span class="punct">}</span>
+<span class="ident">aFile</span><span class="punct">.</span><span class="ident">close</span>
+</pre></code>
+
+      <p>Assuming you didn’t change the default name of the XML file, this should output a file called
+        “netflix-queue-titles.txt” to the same directory as the XML file. There’s one downside, however. Each title is
+        prefixed with a number representing its order in the queue. I didn’t care, but I’m sure someone with regular
+        expression skills could eliminate that rather quickly.</p>
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1182';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          June 27, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

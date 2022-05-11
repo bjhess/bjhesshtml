@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Rails Maintenance Page With Images and Styles :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Rails Maintenance Page With Images and Styles
+      </h1>
+
+      
+    
+
+
+<p>Recently I implemented a true maintenance page on <a href="http://www.scrawlers.com">Scrawlers</a> using <a href="http://clarkware.com/cgi/blosxom/2007/01/05">Mike Clark’s excellent HOWTO</a>. Clark’s directions show you how to create a more dynamic maintenance page than the standard HTML version we all know and love. It’s a good technique.</p>
+
+<p>With those clear directions, I was most of the way there. But I still wanted our maintenance page to make use of the existing logo and stylesheets we have already created for Scrawlers. Since I’m pretty much an Apache idiot, it took some time, but I finally came up with something workable.</p>
+
+<p>The maintenance rewrite conditions and rules for Apache mod_rewrite are all over the web. I’ll reprint them here for posterity.</p>
+<pre># Check for maintenance file and redirect all requests
+RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+RewriteRule ^.*$ /system/maintenance.html [L]
+</pre>
+<p>Unfortunately, these rules do not allow for proper loading of stylesheets and images on a maintenance page. I simply repeated the above conditions, and added a <code>RewriteRule</code> just for stylesheets and images. JavaScript came along, too.</p>
+<pre># Check for maintenance file and allow images, styles and javascripts
+RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+RewriteRule "^/(images|stylesheets|javascripts)/?(.*)" "$0" [L]
+
+# Check for maintenance file and redirect all requests
+RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+RewriteRule ^.*$ /system/maintenance.html [L]
+</pre>
+<p>Of course, the DRY piece of me believes there must be a way to eliminate those redundant conditions. Near as I can tell, rewrite conditions are only applicable for the rewrite rule directly following them. So when I tried to make use of a single set of conditions to impact both rules above, well, it just didn’t work. With any luck, someone will stop by this post and show us all an improvement to this Apache configuration file.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1200';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          August 6, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

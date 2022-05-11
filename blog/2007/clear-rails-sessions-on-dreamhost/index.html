@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Clear Rails Sessions on Dreamhost :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Clear Rails Sessions on Dreamhost
+      </h1>
+
+      
+    
+
+
+<p>Following the advice of the <a href="http://www.pragmaticprogrammer.com/titles/rails/">Agile Web Development with Rails</a> book, I sought to clear out sessions periodically from the <a href="http://www.scrawlers.com">Scrawlers</a> database. I also took a hint from <a href="http://www.realityforge.org/articles/2006/03/01/removing-stale-rails-sessions">RealityForge.org</a> and put the work directly in Rails, using script/runner to execute. Specifically I created a new model class: SessionCleaner (/app/models/session_cleaner.rb).</p>
+
+<pre><code>class SessionCleaner
+  def self.remove_stale_sessions
+    CGI::Session::ActiveRecordStore::Session.
+      destroy_all( ['updated_at &lt; ?', 12.hours.ago] ) 
+  end
+end</code></pre>
+
+<p>I figured I’d clear any sessions that are 12 hours old or greater. Good deal. I don’t need to run this cleaner too frequently, so I scheduled it to run on Dreamhost every hour in my staging and production environment. Each job will run on 1/2 hour offsets.</p>
+<pre>#minute hour mday month wday command
+0 */1 * * * ruby ~/dev.scrawlers.com/current/script/runner -e staging "SessionCleaner.remove_stale_sessions"
+30 */1 * * * ruby ~/www.scrawlers.com/current/script/runner -e production "SessionCleaner.remove_stale_sessions"
+</pre>
+<p>The above is a cron specification; cron being used to schedule jobs in the *nix environment. I created it in ~/mycrontab. Using the shell command “crontab ~/mycrontab”, I was able to add my newly created specification to the schedule. If I make any updates to ~/mycrontab I’ll need to resubmit the specification to the schedule. (I checked out the <a href="http://blog.dreamhosters.com/kbase/index.cgi?area=2506">helpful Dreamhost knowledge base</a> to make sure I was croning as Dreamhost wanted me to cron.)</p>
+
+<p>One thing to keep in mind: do not allow those cron specifications to wrap to a second line. There will be no scheduled jobs in your future if you do. This is a little skitchy using nano as an editor because it likes to wrap things around. I’m sure you’ll figure out how to fool little old nano, though.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1110';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          March 9, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

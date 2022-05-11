@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Adding a Mongrel Instance to a Slicehost Rails App :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Adding a Mongrel Instance to a Slicehost Rails App
+      </h1>
+
+      
+    
+
+<div class="flair">
+  <img alt="Cindy" height="160" src="http://farm1.static.flickr.com/204/524123975_bed8ab7cbb_m.jpg" width="240"><br>
+  <div class="text-backing">&nbsp;</div>
+  <div class="text">Photo by <a href="http://flickr.com/photos/georgiap/r">caribbean</a></div>
+</div>
+<p>Let’s say you have a Ruby on Rails <a href="http://www.scrawlers.com">website</a> hosted at <a href="http://www.slicehost.com">Slicehost</a>. Let’s also say you used the <a href="http://wiki.slicehost.com/doku.php?id=automated_rails_install_and_deployment_with_deprec_capistrano">snazzy deprec instructions</a> to install said web site. And finally, let’s say said website is <a href="http://www.scrawlers.com/blog/?p=34">receiving increased traffic</a>. Well, you may very well need to add another mongrel instance so your site’s performance remains acceptable.</p>
+
+<p>That’s easy!</p>
+
+<ul>
+<li>Add 1 to the “servers” parameter in <code>/etc/mongrel_cluster/appname.yml</code>.</li>
+</ul>
+
+<code><pre><span class="ident">servers</span><span class="punct">:</span> <span class="number">3</span>  <span class="comment"># previously was 2</span>
+</pre></code>
+
+<ul>
+<li>Add another balance member to <code>/usr/local/apache2/conf/apps/appname.conf</code>:</li>
+</ul>
+
+<code><pre><span class="constant">BalancerMember</span> <span class="ident">http</span><span class="punct">:/</span><span class="regex"></span><span class="punct">/</span><span class="number">127.0</span><span class="punct">.</span><span class="number">0.1</span><span class="punct">:</span><span class="number">8000</span>
+<span class="ident">BalancerMember</span> <span class="ident">http</span><span class="punct">:/</span><span class="regex"></span><span class="punct">/</span><span class="number">127.0</span><span class="punct">.</span><span class="number">0.1</span><span class="punct">:</span><span class="number">8001</span>  <span class="comment"># Added this one</span>
+</pre></code>
+
+<ul>
+<li>Restart the mongrel cluster using Capistrano:</li>
+</ul>
+
+<code><pre><span class="ident">cap</span> <span class="ident">restart_mongrel_cluster</span>
+</pre></code>
+
+<ul>
+<li>Restart the apache server using Capistrano:</li>
+</ul>
+
+<code><pre><span class="ident">cap</span> <span class="ident">restart_apache</span>   <span class="comment"># or cap apache_restart</span>
+</pre></code>
+
+<p>You’re done!</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1204';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          August 29, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

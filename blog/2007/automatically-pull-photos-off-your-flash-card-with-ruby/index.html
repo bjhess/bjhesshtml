@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Automatically Pull Photos Off Your Flash Card With Ruby :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Automatically Pull Photos Off Your Flash Card With Ruby
+      </h1>
+
+      
+    
+
+
+<p>For several years now, I’ve been using a VBA script on my Windows PC to pull photo files off my compact flash card, rename them, place them into handy folders, and copy them out to my photo storage area. When I switched to Mac, I knew the VBA script was going to be short lived. This weekend I finally laid it to rest.</p>
+
+<p>The result I was looking for with this script is that all photo files on the compact flash card end up in a destination directory, placed in folders named YYYY-MM-DD. The files themselves would be named YYYY-MM-DD(hh.mm.ss). Some may prefer a deeper folder structure, like YYYY/MM/DD for instance. My script could be easily updated to do such a thing.</p>
+
+<p>Since I’m now a Ruby on Rails coder, I figured this would be a great time to learn about using Ruby for scripting. I’ve always heard that Ruby is great for such a purposes, and it turns out that statement is very true.</p>
+
+<p>Before I added the handy option parser to the Ruby script, there were only 18 lines to do what 61 lines of (poorly written) VBA code used to do. Actually, the Ruby script did even more than the original script would do. The original script could only copy from a single directory at a time. The Ruby script copies all photo files from all subdirectories. Basic usage is:</p>
+
+<code><pre><span class="ident">ruby</span> <span class="ident">copypics</span><span class="punct">.</span><span class="ident">rb</span> <span class="punct">./</span><span class="ident">source_directory</span><span class="punct">/</span> <span class="punct">./</span><span class="regex">destination_directory</span><span class="punct">/</span>
+</pre></code>
+
+<p>The way the script is written, those trailing ‘/’ characters are required. To ease the chance of typos, I suggest an alias (in OS X, add an alias to <code>~/.bash_profile</code>). I have aliases for grabbing pictures from my card reader as well as The Kid’s kidd-o Fisher Price digital camera:</p>
+
+<code><pre><span class="keyword">alias</span> <span class="ident">pics</span><span class="punct">="</span><span class="string">ruby ~/code/copypics.rb /Volumes/Card_Reader/ photos_directory/</span><span class="punct">"</span>
+<span class="keyword">alias</span> <span class="ident">picskid</span><span class="punct">="</span><span class="string">ruby ~/code/copypics.rb /Volumes/Kid_Camera/ kid_photos_directory/</span><span class="punct">"</span>
+</pre></code>
+
+<p>Note: You’ll need to be explicit about the script location, source, and destination directories when defining your alias.</p>
+
+<p>Using an excellent options parser, <a href="http://ruby.about.com/od/scripting/a/commandline_arg_2.htm">found at about.com</a> of all places, the script is able to support the -v (–verbose) and -h (–help) flags. Verbose mode will print out the source and destination of all copied pictures. You would call the script with the verbose flag like so:</p>
+
+<code><pre><span class="ident">ruby</span> <span class="ident">copypics</span><span class="punct">.</span><span class="ident">rb</span> <span class="punct">-</span><span class="ident">v</span> <span class="punct">./</span><span class="ident">source_directory</span><span class="punct">/</span> <span class="punct">./</span><span class="regex">destination_directory</span><span class="punct">/</span>
+</pre></code>
+
+<p>Source code:</p>
+
+<p><a href="../../bjhessblog/wp-content/uploads/2007/06/copypics.rb">copypics.rb</a> <a href="../../bjhessblog/wp-content/uploads/2007/06/getpics.vbs">getpics.vbs</a> (shudder)</p>
+<!--adsense-->
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1190';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          July 11, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

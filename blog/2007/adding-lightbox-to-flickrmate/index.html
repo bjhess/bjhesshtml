@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Adding Lightbox to FlickrMate :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Adding Lightbox to FlickrMate
+      </h1>
+
+      
+    
+
+
+<p>There’s a cute little [TextMate][TextMate] bundle called [FlickrMate][FlickrMate]. It might just get me to post a few [more][p1] [pictures][p2] to this here blog. But it’s just short of perfect for my purposes. I want to integrate the handy [lightbox][lightbox] plugin to the FlickrMate output. That’s easy - assuming you’ve already incorporated lightbox into your blog. A WordPress blog, [for instance][wp-lightbox]. Oh, I’m also assuming you’ve already installed FlickrMate.</p>
+
+<p>To add some lightbox-fu to the FlickrMate bundle, open the bundle editor (Bundles | Bundle Editor | Show Bundle Editor). You will probably wish to modify the HTML output for three FlickrMate commands: Flickr Text Search, Flickr Tag Search, and Browse Your Flickr Photos. To see the command code for these commands, simply pop open the FlickrMate bundle:</p>
+
+<p><img src="../../bjhessblog/wp-content/uploads/2007/06/flickrmate-1.png" alt="Flickrmate 1"></p>
+
+<p>Editing a command is as easy as selecting a command and modifying the command code presented. I’m sure I should tell you to back things up and all that. For each of the commands I mention above, you’ll want to scroll to the bottom of the command code and look for the following bit:</p>
+
+<code><pre><span class="keyword">if</span> <span class="ident">linkurl</span>
+  <span class="ident">print</span> <span class="punct">%Q{</span><span class="string">&lt;a href="<span class="expr">#{linkurl}</span>" title="<span class="expr">#{description}</span>"&gt;
+  	   &lt;img src="<span class="expr">#{url}</span>" width="<span class="expr">#{width}</span>" height="<span class="expr">#{height}</span>" alt="<span class="expr">#{title}</span>" /&gt;&lt;/a&gt;</span><span class="punct">}</span>
+<span class="keyword">else</span>
+  <span class="ident">print</span> <span class="punct">%Q{</span><span class="string">&lt;img src="<span class="expr">#{url}</span>" width="<span class="expr">#{width}</span>" height="<span class="expr">#{height}</span>" alt="<span class="expr">#{title}</span>" /&gt;</span><span class="punct">}</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>This is really simple. I shouldn’t even be typing this. To bring lightbox into the fold, just add the required <code>rel="lightbox"</code> to the anchor tag in the <code>if linkurl</code> portion of the code.</p>
+
+<code><pre><span class="keyword">if</span> <span class="ident">linkurl</span>
+  <span class="ident">print</span> <span class="punct">%Q{</span><span class="string">&lt;a href="<span class="expr">#{linkurl}</span>" title="<span class="expr">#{description}</span>" rel="lightbox"&gt;
+  	   &lt;img src="<span class="expr">#{url}</span>" width="<span class="expr">#{width}</span>" height="<span class="expr">#{height}</span>" alt="<span class="expr">#{title}</span>" /&gt;&lt;/a&gt;</span><span class="punct">}</span>
+<span class="keyword">else</span>
+  <span class="ident">print</span> <span class="punct">%Q{</span><span class="string">&lt;img src="<span class="expr">#{url}</span>" width="<span class="expr">#{width}</span>" height="<span class="expr">#{height}</span>" alt="<span class="expr">#{title}</span>" /&gt;</span><span class="punct">}</span>
+<span class="keyword">end</span>
+</pre></code>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1172';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          June 7, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

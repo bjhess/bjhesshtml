@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>A Model Diagram for Your Rails Application :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        A Model Diagram for Your Rails Application
+      </h1>
+
+      
+    
+
+
+<p>Recently I started working on a fairly large existing application. Lots of stuff going on, and I wanted a visualization of both the model and controller classes to make me feel that indeed the application could be encapsulated. In my search, I ran into two libraries that could help me do such a thing. The first was <a href="http://rubyforge.org/projects/rav/">Rails Application Visualizer</a> and the second was <a href="http://railroad.rubyforge.org">Railroad</a>. Both use the <a href="http://graphviz.org">GraphViz</a> library to do the grunt work. I chose Railroad mainly because it was a gem and nonintrusive to the application.</p>
+
+<p>The first requirement in using Railroad is to get GraphViz installed. Eventually I found this <a href="http://www.ryandesign.com/graphviz/">excellent series of Mac builds</a> from <a href="http://www.ryandesign.com">RyanDesign</a>. They are easily installed and he has a <a href="http://www.ryandesign.com/graphviz/faq.php">great FAQ</a> describing everything you need or may wish to do to setup the GraphViz library on your Mac.</p>
+
+<p>Here is the process <em>I</em> went through:</p>
+
+<h3 id="install_graphviz">Install GraphViz</h3>
+
+<p>I downloaded the <a href="http://www.ryandesign.com/graphviz/">latest Intel Mac</a> build and installed it. For me, GraphViz ended up in <code>/usr/local/graphviz-2.12/</code>. Then I created a symlink:</p>
+
+<code><pre><span class="ident">cd</span> <span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span>
+<span class="ident">sudo</span> <span class="ident">ln</span> <span class="punct">-</span><span class="ident">s</span> <span class="ident">graphviz</span><span class="punct">-</span><span class="number">2.12</span> <span class="ident">graphviz</span>
+</pre></code>
+
+<p>Then I updated <code>~/.bash_profile</code> to bring GraphViz into my path. This allowed me to call <code>dot</code> and <code>neato</code> on the command line.</p>
+
+<code><pre><span class="ident">export</span> <span class="constant">PATH</span><span class="punct">=/</span><span class="regex">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">graphviz</span><span class="punct">/</span><span class="ident">bin</span><span class="symbol">:$PATH</span>
+</pre></code>
+
+<p>Finally, I reloaded bash so all the exports were refreshed:</p>
+
+<code><pre><span class="ident">source</span> ~<span class="punct">/.</span><span class="ident">bash_profile</span>
+</pre></code>
+
+<h3 id="install_railroad">Install Railroad</h3>
+
+<p>Pretty easy:</p>
+
+<code><pre><span class="ident">gem</span> <span class="ident">install</span> <span class="punct">-</span><span class="ident">y</span> <span class="ident">railroad</span>
+</pre></code>
+
+<h3 id="generate_model_and_controller_diagrams">Generate model and controller diagrams</h3>
+
+<p>After quite a bit of playing around, I settled on the following calls to generate my model and controller diagrams. My biggest hurdle is that I don’t have a way to tile print super-large PDF’s, given I’m only using base OSX tools (i.e. Preview). So these commands gave me the most printable output. Luckily I just bought a new laser printer!</p>
+
+<p>Generating a model diagram:</p>
+
+<code><pre><span class="ident">railroad</span> <span class="punct">-</span><span class="constant">Mal</span> <span class="punct">|</span> <span class="ident">dot</span> <span class="punct">-</span><span class="constant">Tpdf</span> <span class="punct">&gt;</span> <span class="ident">models</span><span class="punct">.</span><span class="ident">pdf</span>
+</pre></code>
+
+<p>The ‘M’ switch tells railroad to create a model diagram. The ‘a’ switch includes all models, not just <code>ActiveRecord::Base</code> models. And the ‘l’ switch throws a label on the diagram about when it was created and which migration version it represents. The PDF diagram seemed cleanest and it printed decently on a single page - if I squint.</p>
+
+<p>And a controller diagram:</p>
+
+<code><pre> <span class="ident">railroad</span> <span class="punct">-</span><span class="constant">Cl</span> <span class="punct">|</span> <span class="ident">neato</span> <span class="punct">-</span><span class="constant">Tpng</span> <span class="punct">&gt;</span> <span class="ident">controllers</span><span class="punct">.</span><span class="ident">png</span>
+</pre></code>
+
+<p>On the other hand, the controller diagram did not work well in PDF. Since none of the controllers were interrelated, the results were a single “line” of controllers spreading out horizontally. Not printable. The PNG format fit all the classes onto a page rather nicely.</p>
+
+<p>The Railroad site has plenty of <a href="http://railroad.rubyforge.org/#usage">good documentation</a> and <a href="http://railroad.rubyforge.org/#examples">examples</a> for you to play with. So why don’t you go visualize your app already?</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1233';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          October 1, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

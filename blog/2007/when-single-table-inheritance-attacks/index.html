@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>When Single-Table Inheritance Attacks :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        When Single-Table Inheritance Attacks
+      </h1>
+
+      
+    
+
+<div class="flair">
+  <img alt="Broken Ping-Pong Table" height="180" src="http://farm1.static.flickr.com/31/46196140_010d9aeff9_m.jpg" width="240"><br>
+  <div class="text-backing">&nbsp;</div>
+  <div class="text">Photo by <a href="http://flickr.com/photos/darlingsnail/">DarlingSnail</a></div>
+</div>
+<p>Rails provides a very quick and easy way to <a href="http://www.juixe.com/techknow/index.php/2006/06/03/rails-single-table-inheritance/">implement single-table inheritance</a> (STI). The implementation of STI in Rails is so trivial as to make gotchas nearly unavoidable. I’ve spent a couple weeks ignoring, and later dealing with, one of these issues.</p>
+
+<p>As described previously, I’ve been <a href="../../bjhessblog/2007/09/19/my-foray-into-has_many_polymorphs/index.html">monkeying around with has_many_polymorphs</a> (HMP). Finally I had HMP configured just right and I started seeing strange errors when hitting pages referencing the parents side of my HMP relationship:</p>
+<pre>LoadError (Expected script/../config/../app/models/ticker.rb to define Ticker)
+</pre>
+<p>Hmmm…let me see. Do I have a <code>app/models/ticker.rb</code> file? Check. Does that file have a class <code>Ticker</code> defined? Check. Am I free of typos? Check.</p>
+
+<p>One more strange behavior is that, upon server startup, the first load of said page works beautifully. The above error only occurs on subsequent loads.</p>
+
+<p>Oh, and another thing. If you cache your classes in <code>development.rb</code>, your pages should load fine.</p>
+<pre>config.cache_classes = true
+</pre>
+<p><em>What the hell!</em></p>
+
+<h3 id="a_model_loaderror_for_every_controller">A model LoadError for every controller</h3>
+
+<p>Surfing around, I found the LoadError to happen in each controller action referencing either of my STI subclasses. This looked to be an STI problem, not a HMP problem. Time to expose my basic STI modeling:</p>
+
+<code><pre><span class="comment"># app/models/announcer.rb</span>
+<span class="keyword">class </span><span class="class">Announcer</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="comment"># Various useful methods defined</span>
+<span class="keyword">end</span>
+
+<span class="comment"># app/models/ticker.rb</span>
+<span class="keyword">class </span><span class="class">Ticker</span> <span class="punct">&lt;</span> <span class="constant">Announcer</span>
+  <span class="comment"># Various additional useful methods defined</span>
+<span class="keyword">end</span>
+
+<span class="comment"># app/models/news_module.rb</span>
+<span class="keyword">class </span><span class="class">NewsModule</span> <span class="punct">&lt;</span> <span class="constant">Announcer</span>
+  <span class="comment"># Various additional useful methods defined</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Pretty straightforward, I think.</p>
+
+<h3 id="resolving_the_sti_loaderror_problem">Resolving the STI LoadError problem</h3>
+
+<p>Through some Google searching, blog reading and experimentation, I found that I must do something special to make a controller aware of these STI subclasses. I don’t know if this can rightly be called a bug, or if it is more of a non-ideal situation in a framework that is frequently ideal, but I can say the solution suffers from near-non-existent documentation.</p>
+
+<p>In all controllers that reference the STI subclasses, I had to do the following:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">TickerController</span> <span class="punct">&lt;</span> <span class="constant">ApplicationController</span>
+  <span class="comment"># Rails does not pull out single-table inheritance subclasses properly on its own.</span>
+  <span class="comment"># Must require the STI superclass explicitly in controllers.</span>
+  <span class="ident">require_dependency</span> <span class="punct">'</span><span class="string">announcer</span><span class="punct">'</span>
+  
+  <span class="comment"># More handy methods</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>This gets to be a little smelly, as I now have <code>require_dependency</code> lines in several controllers. While the quantity of controllers is still small relative to my total number of controllers, I’m considering moving the <code>require_dependency</code> line up to <code>ApplicationController</code> so developers on this app don’t run into the same problem in the future.</p>
+
+<p>The problem of limited STI visibility in controllers is described <em>much</em> more succinctly at the bottom of the <a href="http://wiki.rubyonrails.org/rails/pages/SingleTableInheritance">Rails wiki STI page</a>:</p>
+
+<blockquote>
+<p>Gang, this’ll save you some hours of frustration. Your controllers may not see your STI subclasses unless you include the following in your controller files:</p>
+
+<p><code>require_dependency 'model'</code></p>
+
+<p>…where ‘model’ is the name of the parent class.</p>
+</blockquote>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1236';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          October 15, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

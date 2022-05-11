@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Ignoring English Articles With Regular Expressions :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Ignoring English Articles With Regular Expressions
+      </h1>
+
+      
+    
+
+
+<p>During some freelance work, we had a special requirement that I imagine a lot of people run into. A list of items returned from the database needed to be sorted by name while ignoring English articles: “a,” “an,” and “the.” Though I hate them with a passion, I knew regular expressions were the solution.</p>
+
+<p>Imagine the following method in the model needing sorted:</p>
+
+<code><pre><span class="keyword">def </span><span class="method">normalized_name</span>
+ <span class="constant">self</span><span class="punct">.</span><span class="ident">name</span><span class="punct">.</span><span class="ident">gsub</span><span class="punct">(/</span><span class="regex">^(the|a|an)<span class="escape">\s</span></span><span class="punct">/</span><span class="ident">i</span><span class="punct">,</span> <span class="punct">'</span><span class="string"></span><span class="punct">')</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>The above regular expression results in a return value of name, sans any leading articles. Since I hate regular expressions, and perhaps you do, too, here’s a run down of each thing defined besides the ‘/’ characters.</p>
+<pre>^          - Matches the beginning of a line
+(the|a|an) - Matches the strings "the", "a", or "an"   
+i          - Case insensitive.  Ignores case in the string and regular expression.
+</pre>
+<p>And there you are. Regardless of capitalization, the <code>normalized_name</code> method will return the original name with English articles stripped off the front.</p>
+
+<p>To do the actual sorting in Ruby on Rails, try the following:</p>
+
+<code><pre><span class="constant">Item</span><span class="punct">.</span><span class="ident">find</span><span class="punct">(</span><span class="symbol">:all</span><span class="punct">).</span><span class="ident">sort_by</span><span class="punct">{|</span><span class="ident">item</span><span class="punct">|</span> <span class="ident">item</span><span class="punct">.</span><span class="ident">normalized_name</span><span class="punct">}</span>
+</pre></code>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1205';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          August 20, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

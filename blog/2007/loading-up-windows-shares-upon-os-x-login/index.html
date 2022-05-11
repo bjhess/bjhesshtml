@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Loading Up Windows Shares Upon OS X Login :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Loading Up Windows Shares Upon OS X Login
+      </h1>
+
+      
+    
+
+
+<p>Big problem for me with my <a href="../../bjhessblog/2007/01/16/when-to-purchase-a-macbook/index.html">Mac conversion</a> has been loading up the Windows shared directories out on my network. Actually, these “Windows” shares reside on a couple Ubuntu servers that serve as network accessible storage devices (I should really write about that at some point). It’s just easier to share the contents of these servers with Samba server (looks like a Windows server on the network), especially while I use an Xbox with <a href="http://www.xboxmediacenter.com/">XBMC</a> as a media server.</p>
+<!--more-->
+<p>Early on I built an <a href="http://www.apple.com/macosx/features/automator/">Automator</a> script on my MacBook to connect to and mount Windows shares. Mounting a specific share looks something like this in Automator:</p>
+
+<p><img src="../../bjhessblog/wp-content/uploads/2007/04/auto-mounting.png" alt="Automator mounting of Windows shares"></p>
+
+<p>Finally, I took the time to figure out how to make things I want mounted available immediately upon login. It’s really quite easy. A simple visit to the Accounts area of System Preferences leads you to an area for defining login tasks. Click on Login Items and drag-and-drop the app version of that Automator script you created above to achieve login nirvana.</p>
+
+<p><img src="../../bjhessblog/wp-content/uploads/2007/04/account-login-items.png" alt="Account Login Items"></p>
+
+<p>Of course, I actually would like three different shares to mount upon login. And I don’t really need them each to popup a new finder window. So I simplified to a single Automator script designed to establish a connection to the shares I desire without being so in-my-face.</p>
+
+<p><img src="../../bjhessblog/wp-content/uploads/2007/04/automator-mounting-multiples.png" alt="Automator Mounting Multiples"></p>
+
+<p>I haven’t put this technique through any rigid testing. I’m not sure if it degrades nicely when the network isn’t available, though I suspect it does. I also don’t know what will happen when my MacBook comes out of a few hours of sleep mode. If all else fails, I have a <a href="http://www.43folders.com/2006/02/13/quicksilver-triggers/">Quicksilver trigger</a> setup on F1 to reconnect to all shares.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1139';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          April 27, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

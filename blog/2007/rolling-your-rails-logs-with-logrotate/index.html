@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Rolling Your Rails Logs With Logrotate :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Rolling Your Rails Logs With Logrotate
+      </h1>
+
+      
+    
+
+
+<p>Now that I’m managing <a href="http://www.scrawlers.com">Scrawlers</a>‘ server, I have the power to use a more appropriate Rails log rotation technique than I was allowed at Dreamhost. Specifically, I can use <a href="http://www.linuxcommand.org/man_pages/logrotate8.html">logrotate</a> on my Ubuntu <a href="http://www.slice.com">Slicehost</a> slice.</p>
+
+<p>In my setup, logrotate was already automatically running every night around 1:40AM. (Honestly, I’m not sure how, but I didn’t need to setup CRON.) My first attempt at configuring a new rotation was to handle all of my Rails apps with one configuration file. <code>/etc/logrotate.d/rails_apps</code>:</p>
+
+<pre><code>/var/www/apps/*/shared/log/*.log {
+ daily
+ missingok
+ rotate 14
+ compress
+ delaycompress
+ notifempty
+ copytruncate
+ postrotate
+   /etc/init.d/mongrel_cluster restart
+ endscript
+}</code></pre>
+
+<p>The “daily” specification says rotate the logs daily. The “rotate 14” specification tells logrotate to keep 14 days of files. The “postrotate” specification is stopping and starting the mongrel cluster after each and every rotation.</p>
+<!--more-->
+<p>You can execute a debug run of logrotate with:</p>
+
+<code><pre><span class="ident">logrotate</span> <span class="punct">-</span><span class="ident">d</span> <span class="punct">/</span><span class="ident">etc</span><span class="punct">/</span><span class="ident">logrotate</span><span class="punct">.</span><span class="ident">d</span><span class="punct">/</span><span class="ident">rails_apps</span>
+</pre></code>
+
+<p>You can force an rotations with:</p>
+
+<code><pre><span class="ident">logrotate</span> <span class="punct">-</span><span class="ident">f</span> <span class="punct">/</span><span class="ident">etc</span><span class="punct">/</span><span class="ident">logrotate</span><span class="punct">.</span><span class="ident">d</span><span class="punct">/</span><span class="ident">rails_apps</span>
+</pre></code>
+
+<p>Here is where the beautiful generality (see the ‘*’ characters) hurts. The “postrotate” specification will execute for every log that is rotated in your Rails shared logs directory. In my case, this includes a production.log as well as a mongrel.log. And since I wildcarded what would be my base app directory, this would happen for every Rails app on the server. That means the entire Mongrel cluster is restarted multiple times. What you’ll see is while one restart is happening another kicks off and errors:</p>
+
+<pre><code>Restarting all mongrel_clusters...
+Restarting all mongrel_clusters...
+!!! PID file log/mongrel.8000.pid does not exist.  Not running?
+mongrel::stop reported an error. Use mongrel_rails mongrel::stop -h to get help.</code></pre>
+
+<p>The fix is pretty simple. I needed to add a “sharedscripts” directive. This tells “postrotate” to only execute once for all logs referenced. So now we have:</p>
+
+<pre><code>/var/www/apps/*/shared/log/*.log {
+ daily
+ missingok
+ rotate 14
+ compress
+ delaycompress
+ notifempty
+ copytruncate
+ sharedscripts
+ postrotate
+   /etc/init.d/mongrel_cluster restart
+ endscript
+}</code></pre>
+
+<p>As with anything Linux, another option appears to be eliminating “postrotate” and “sharedscripts”, replacing them with the “lastaction” block directive, which also tells logrotate not to execute until all logs have been addressed. “lastaction” executes after “postrotate” and <em>only</em> if at least one log is rotated.</p>
+
+<p>Of course, while I was at it, I also chose to start rotating my Apache and MySQL logs.</p>
+
+<p>Apache:</p>
+
+<pre><code>/usr/local/apache2/logs/*_log {
+ missingok
+ rotate 10
+ size=100k
+ compress
+ delaycompress
+ notifempty
+ copytruncate
+}</code></pre>
+
+<p>In this case, I chose to rotate based on log size rather than daily. This should allow me to keep log data for longer in the Apache realm.</p>
+
+<p>As for MySQL, apparently a logrotate definition was already setup on my server. I imagine this is from my <a href="http://wiki.slicehost.com/doku.php?id=automated_rails_install_and_deployment_with_deprec_capistrano">deprec installation</a> of Rails.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1199';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          August 1, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

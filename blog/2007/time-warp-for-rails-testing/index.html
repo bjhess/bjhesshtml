@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Time Warp for Rails Testing :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Time Warp for Rails Testing
+      </h1>
+
+      
+    
+
+<div class="flair">
+  <img alt="Time Warp" height="173" src="http://farm1.static.flickr.com/117/314372109_b52e8550b9_m_d.jpg" width="240"><br>
+  <div class="text-backing">&nbsp;</div>
+  <div class="text">Photo by <a href="http://www.flickr.com/photos/kt/314372109/">The Rocketeer</a></div>
+</div>
+<p><em><strong>Update</strong>: This has been <a href="../2008/11/11/announcing-time-warp-ruby-gem/index.html">turned into a gem</a> for plug-and-play reuse.</em></p>
+
+<p>In my freelance time I find myself working with an internationalized site used in over 50 countries. Of course, users of the site wanted to deal with things in a localized time zone. Adding time zone awareness brings a special angle to testing and it saddled me with some errors I had not seen before.</p>
+
+<p>To start, I made use of some <a href="http://snippets.dzone.com/posts/show/1738">excellent time warp code</a> for the unit tests I had written up. It worked beautifully. That is, it worked beautifully until I ran <code>rake</code> or, more specifically, <code>rake test:functionals</code>.</p>
+<!--more-->
+<p>My functional tests were dying hard with these new, handy additions to <code>test_helper.rb</code>. From the execution of the first test, I was seeing “stack trace too deep” errors.</p>
+<pre>./test/functional/../test_helper.rb:13:in `real_now': stack level too deep (SystemStackError)
+        from ./test/functional/../test_helper.rb:13:in `real_now'
+        from ./test/functional/cms/../../test_helper.rb:13:in `now'
+        from /usr/local/lib/ruby/1.8/logger.rb:327:in `add'
+        from /usr/local/lib/ruby/1.8/logger.rb:348:in `debug'
+        from /Users/bjhess/Sites/iridesco/afs/trunk/config/../vendor/rails/actionpack/lib/action_controller/helpers.rb:114:in `default_helper_module!'
+        from /Users/bjhess/Sites/iridesco/afs/trunk/config/../vendor/rails/actionpack/lib/action_controller/helpers.rb:124:in `send'
+        from /Users/bjhess/Sites/iridesco/afs/trunk/config/../vendor/rails/actionpack/lib/action_controller/helpers.rb:124:in `inherited'
+        from /Users/bjhess/Sites/iridesco/afs/trunk/config/../app/controllers/cms/email_controller.rb:1
+         ... 9 levels...
+        from /Users/bjhess/Sites/iridesco/afs/trunk/config/../vendor/rails/activerecord/lib/../../activesupport/lib/active_support/dependencies.rb:489:in `load'
+        from /usr/local/lib/ruby/gems/1.8/gems/rake-0.7.3/lib/rake/rake_test_loader.rb:5
+        from /usr/local/lib/ruby/gems/1.8/gems/rake-0.7.3/lib/rake/rake_test_loader.rb:5:in `each'
+        from /usr/local/lib/ruby/gems/1.8/gems/rake-0.7.3/lib/rake/rake_test_loader.rb:5
+rake aborted!
+Command failed with status (1): [/usr/local/bin/ruby -Ilib:test "/usr/local...]
+</pre>
+<p>The specific bit of code appeared to be the <code>real_now</code> call on the line <code>real_now - testing_offset</code>:</p>
+
+<code><pre><span class="ident">alias_method</span> <span class="symbol">:real_now</span><span class="punct">,</span> <span class="symbol">:now</span>
+<span class="keyword">def </span><span class="method">now</span>
+  <span class="ident">real_now</span> <span class="punct">-</span> <span class="ident">testing_offset</span>
+<span class="keyword">end</span>
+<span class="ident">alias_method</span> <span class="symbol">:new</span><span class="punct">,</span> <span class="symbol">:now</span>
+</pre></code>
+
+<p>My workaround was to move all of the time warp code into its own <code>time_helper.rb</code> file.</p>
+
+<code><pre><span class="constant">ENV</span><span class="punct">["</span><span class="string">RAILS_ENV</span><span class="punct">"]</span> <span class="punct">=</span> <span class="punct">"</span><span class="string">test</span><span class="punct">"</span>
+<span class="ident">require</span> <span class="constant">File</span><span class="punct">.</span><span class="ident">expand_path</span><span class="punct">(</span><span class="constant">File</span><span class="punct">.</span><span class="ident">dirname</span><span class="punct">(</span><span class="constant">__FILE__</span><span class="punct">)</span> <span class="punct">+</span> <span class="punct">"</span><span class="string">/../config/environment</span><span class="punct">")</span>
+
+<span class="keyword">class </span><span class="class">Time</span> <span class="comment">#:nodoc:</span>
+  <span class="keyword">class </span><span class="punct">&lt;&lt;</span><span class="constant">self</span><span class="string">
+    attr_accessor :testing_offset
+    alias_method :real_now, :now
+    def now
+      real_now - testing_offset
+    end
+    alias_method :new, :now
+  end
+end
+Time.testing_offset = 0
+
+class Test::Unit::TestCase
+
+  def pretend_now_is(time)
+    begin
+      Time.testing_offset = Time.now - time
+      yield
+    ensure
+      Time.testing_offset = 0
+    end
+  end
+end
+</span></pre></code>
+
+<p>Then I simply included the <code>time_helper</code> file along with <code>test_helper</code> in any test that required time warping:</p>
+
+<code><pre><span class="ident">require</span> <span class="constant">File</span><span class="punct">.</span><span class="ident">dirname</span><span class="punct">(</span><span class="constant">__FILE__</span><span class="punct">)</span> <span class="punct">+</span> <span class="punct">'</span><span class="string">/../test_helper</span><span class="punct">'</span>
+<span class="ident">require</span> <span class="constant">File</span><span class="punct">.</span><span class="ident">dirname</span><span class="punct">(</span><span class="constant">__FILE__</span><span class="punct">)</span> <span class="punct">+</span> <span class="punct">'</span><span class="string">/../time_helper</span><span class="punct">'</span>
+
+<span class="keyword">class </span><span class="class">EventTest</span> <span class="punct">&lt;</span> <span class="constant">Test</span><span class="punct">::</span><span class="constant">Unit</span><span class="punct">::</span><span class="constant">TestCase</span>
+  <span class="punct">.</span> <span class="punct">.</span> <span class="punct">.</span>
+<span class="ident">end</span>
+</pre></code>
+
+<p>This worked beautifully. Unfortunately I’m at a loss as to why the initial setup had problems and I really wish I did know why. I don’t like being in the dark on problems.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1211';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          August 12, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

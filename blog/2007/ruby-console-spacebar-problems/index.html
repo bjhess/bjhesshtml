@@ -1,0 +1,155 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Ruby Console Spacebar Problems :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Ruby Console Spacebar Problems
+      </h1>
+
+      
+    
+
+
+<p>Since early this summer, I have had a severely annoying problem with my Ruby consoles (irb and script/console). My spacebar quit functioning, making quick testing of Ruby and Rails functionality quite limited and in some cases impossible. I’ll give you two versions of my story. First the short version.</p>
+
+<h3 id="readline_you_bane_of_my_existence">Readline, you bane of my existence</h3>
+<div class="flair">
+  <img alt="Helvetica Notebook" height="240" src="http://farm2.static.flickr.com/1283/1062254317_1ba8d2c874_m.jpg" width="180"><br>
+  <div class="text-backing">&nbsp;</div>
+  <div class="text">Photo by <a href="http://flickr.com/photos/stewf/">Stewf</a></div>
+</div>
+<p>Long, long ago I installed my Mac OS X Rails environment as described in the excellent <a href="http://hivelogic.com/narrative/articles/ruby-rails-mongrel-mysql-osx">Hivelogic instructions</a>, written by Dan Benjamin. Life was good and my environment was isolated in <a href="http://hivelogic.com/narrative/articles/using_usr_local"><code>/usr/local</code></a>. But then in June the spacebar stopped working and I became unhappy. I tried posting the problem to a few Ruby targeted groups, both <a href="http://ruby.mn/">near</a> and <a href="http://groups.google.com/group/rubyonrails-talk">far</a>, but no one had a suggestion.</p>
+
+<p>After lots of head-banging (not <a href="http://en.wikipedia.org/wiki/Headbanging">this kind</a>, unfortunately), I solved the problem by removing my <code>/usr/local</code> version of <a href="http://www.rtr.com/winpak/Documentation/readline.htm">readline</a>, which I installed through the Hivelogic instructions. These are the files I removed:</p>
+
+<ul>
+<li><code>/usr/local/include/readline</code></li>
+
+<li><code>/usr/local/lib/ruby/1.8/i686-darwin8.10.1/readline.bundle</code></li>
+
+<li><code>/usr/local/lib/ruby/1.8/i686-darwin8.8.3/readline.bundle</code></li>
+</ul>
+
+<p>Since the Hivelogic instructions explicitly connect the Ruby install with the <code>/usr/local</code> version of readline, I needed to recompile Ruby. These steps assume you did not remove the original source you downloaded when installing Ruby at the outset:</p>
+
+<code><pre><span class="ident">cd</span> <span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span><span class="punct">/</span><span class="ident">src</span><span class="punct">/</span><span class="ident">ruby</span><span class="punct">-</span><span class="number">1.8</span><span class="punct">.</span><span class="number">6</span>
+<span class="ident">make</span> <span class="ident">distclean</span>
+<span class="punct">./</span><span class="regex">configure --prefix=</span><span class="punct">/</span><span class="ident">usr</span><span class="punct">/</span><span class="ident">local</span> <span class="punct">--</span><span class="ident">enable</span><span class="punct">-</span><span class="ident">pthread</span> <span class="punct">--</span><span class="ident">enable</span><span class="punct">-</span><span class="ident">shared</span>
+<span class="ident">make</span>
+<span class="ident">sudo</span> <span class="ident">make</span> <span class="ident">install</span>
+</pre></code>
+
+<p>Notice in the ./configure line I did not include the <code>--with-readline-dir=/usr/local</code> switch shown in the Hivelogic instructions. (If you have deleted the Ruby source files, merging the above with the Hivelogic instructions should get things done for you.)</p>
+
+<p>Recently a similar issue appeared with my MySQL console. I suppose that’s the next hurdle.</p>
+<!--more-->
+<h3 id="my_detailed_path_to_uncovering_a_readline_problem">My detailed path to uncovering a readline problem</h3>
+<div class="flair">
+  <img alt="Path Along the Viottolone - Giardino di Boboli" height="240" src="http://farm1.static.flickr.com/104/292097382_124310270c_m_d.jpg" width="160"><br>
+  <div class="text-backing">&nbsp;</div>
+  <div class="text">Photo by <a href="http://flickr.com/photos/51267780@N00/">IceNineJon</a></div>
+</div>
+<p>I tried to resolve this spacebar problem a couple times in the past few months, but recently I became motivated to finally remove this monkey from my back. I <a href="http://railsforum.com/viewtopic.php?pid=42385#p42385">posted something</a> to the great Rails forum, which was the first community that offered some ideas.</p>
+
+<p>First I logged in to OS X under The Wife’s account and found that irb did not have any spacebar issues. Useful information. In my local account, I tried running irb under the csh, tcsh, and zsh shells, and it had the same problem throughout. Thanks to <a href="http://www.scidept.com/">B.J. Clark</a> for those ideas.</p>
+
+<p>So then I dug into my <code>~/.bash_profile</code> file, eliminating line-by-line until I made my irb spacebar problem go away. I found that if I changed this export statement:</p>
+
+<code><pre><span class="ident">export</span> <span class="constant">PATH</span><span class="punct">="</span><span class="string">/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH</span><span class="punct">"</span>
+</pre></code>
+
+<p>To this (by removing <code>/usr/local/bin</code>):</p>
+
+<code><pre><span class="ident">export</span> <span class="constant">PATH</span><span class="punct">="</span><span class="string">/usr/local/sbin:/usr/local/mysql/bin:$PATH</span><span class="punct">"</span>
+</pre></code>
+
+<p>The irb spacebar problems went away again. Thanks to <a href="http://railscasts.com/">Ryan Bates</a> for that tip.</p>
+
+<p>Naturally, if I remove <code>/usr/local/bin</code> from my PATH, I’m reverting to OS X’s default Ruby and irb binaries. This is not really a solution; I need a later version of Ruby on the system. Something must be corrupted in my <code>/usr/local</code> area.</p>
+
+<h3 id="many_tries_at_reinstalling_ruby">Many tries at reinstalling Ruby</h3>
+
+<p>Thinking I just needed a freshly minted version in place, I tried reinstalling several versions of Ruby in a couple different ways:</p>
+
+<ul>
+<li>Reinstalled ruby-1.8.6.tar.gz</li>
+
+<li>Didn’t help</li>
+
+<li>Installed ruby-1.8.6-p110.tar.gz</li>
+
+<li>Didn’t help</li>
+
+<li>Installed ruby-1.8.5-p114.tar.gz</li>
+
+<li>Didn’t help</li>
+
+<li>Installed via <a href="http://rubyosx.rubyforge.org/">one-click installer</a> (1.8.6, patchlevel 0 - just like Hivelogic)</li>
+
+<li>Didn’t help</li>
+</ul>
+
+<p>For “fun,” I copied over the default version of Ruby (<code>/usr/bin/ruby</code>) over to <code>/usr/local/bin/ruby</code>. This eliminated the spacebar problem, but it still just was not a solution. Since my install of OS X has Ruby version 1.8.2, I tried:</p>
+
+<ul>
+<li>Installed ruby-1.8.2.tar.gz</li>
+
+<li>Didn’t help</li>
+</ul>
+
+<p>That’s when I started thinking it wasn’t a Ruby issue. Yes, I know I’m a genius so don’t bother commenting along those lines. Perhaps it was an irb binary issue. Again, I copied over the default version of irb to <code>/usr/local/bin/irb</code>. Spacebar problems disappeared. However, script/console failed, and command history was unavailable (that’s what readline is for).</p>
+
+<h3 id="crazy_little_thing_called_readline">Crazy little thing called readline</h3>
+
+<p>Next I reverted back to the proper <code>/usr/local</code> irb binary and called with <code>irb --noreadline</code>. The spacebar worked again, this time using my original <code>/usr/local</code> version of irb and Ruby.</p>
+
+<p>Thinking it must be a readline problem, I upgraded readline to 5.2 and even reinstalled Ruby 1.8.6. In this case, irb with readline still did not recognize my spacebar.</p>
+
+<p>Confident that readline was the issue, I happened on the solution outlined at the beginning of this article. I imagine this sends me back to the OS X system default readline. <em>Technically</em> I no longer have control over all stuff that’s being used in my coding environment. But I think I’ll leave it be for now. Readline is low-impact, and it really seems unlikely that I’ll be needing the latest and greatest version anytime soon. My guess is the problem is in some specific OS X configuration thing that needs to be done when compiling readline, and frankly I just don’t have the energy.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1239';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          October 22, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

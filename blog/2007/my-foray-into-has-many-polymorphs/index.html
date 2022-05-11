@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>My Foray Into Has_many_polymorphs :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        My Foray Into Has_many_polymorphs
+      </h1>
+
+      
+    
+
+
+<p>The great thing about my worklife as of late is seemingly every week I get to learn something new. I don’t necessarily <em>have</em> to learn something new, but I certainly <em>want</em> to. My base of experience is growing and I’m arriving at a place where I can recognize when the unknown thing will likely be worth learning to create a more elegant solution. Thankfully I work with <a href="http://www.iridesco.com">people</a> who have a similar grasp on reality.</p>
+<div class="flair">
+  <img alt="World's Biggest (Polymorphic) Bat" height="180" src="http://farm1.static.flickr.com/4/5835767_f91048bcb0_m.jpg" width="240"><br>
+  <div class="text-backing">&nbsp;</div>
+  <div class="text">Photo by <a href="http://flickr.com/photos/merfam/">merfam</a></div>
+</div>
+<p>I’ve run across very positive comments about the <a href="http://blog.evanweaver.com/files/doc/fauna/has_many_polymorphs/files/README.html">has_many_polymorphs plugin</a> in the past. Over the past week I’ve been presented with a problem that floated over the plate and begged for me to whack it with my has_many_polymorphs bat. First I had to <a href="http://m.onkey.org/2007/8/14/excuse-me-wtf-is-polymorphs">make the bat</a>.</p>
+<h3>What problem are you solving?</h3>
+<p>Glad you asked. The site in question has a snazzy little JavaScript ticker that displays announcements at an interval. I’m not sure if this is clever or just happenstance, but these announcements are not their own thing. In fact, there is much more information to an announcement than just a date and title. Something that is announceable is likely serving a greater purpose elsewhere in the site. And one announceable thing is not necessarily all that similar to another annouceable thing.</p>
+
+<p>has_many_polymorphs allows you to tie together that connecting information into a single table representing the relationship. In it’s basic form, has_many_polymorphs is a has_many relationship where the “many” can be of multiple different types. In the above example, an announcer (snazzy little JavaScript ticker) can announce several different announceables as represented by multiple unique class-types.</p>
+<h3>Putting has_many_polymorphs together</h3>
+<p>In reality, the site currently has two announceables: news and events. We’re working with a few models here. A <strong>Ticker</strong> can announce things. An <strong>Event</strong> and <strong>NewsArticle</strong> are announceable. And the <strong>Announcement</strong> ties things together. Building this should be rote. (Note: we’re not on Edge with this project)</p>
+<!--more-->
+<p>Migration:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">CreateAnnouncements</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Migration</span>
+  <span class="keyword">def </span><span class="method">self.up</span>
+    <span class="ident">create_table</span> <span class="symbol">:announcements</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">t</span><span class="punct">|</span>
+      <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:ticker_id</span><span class="punct">,</span>         <span class="symbol">:integer</span><span class="punct">,</span> <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
+      <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:announceable_id</span><span class="punct">,</span>   <span class="symbol">:integer</span><span class="punct">,</span> <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
+      <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:announceable_type</span><span class="punct">,</span> <span class="symbol">:string</span><span class="punct">,</span>  <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
+    <span class="keyword">end</span>
+    <span class="ident">add_index</span> <span class="symbol">:announcements</span><span class="punct">,</span> 
+              <span class="punct">[</span><span class="symbol">:ticker_id</span><span class="punct">,</span> <span class="symbol">:announceable_id</span><span class="punct">,</span> <span class="symbol">:announceable_type</span><span class="punct">],</span> 
+              <span class="symbol">:unique</span> <span class="punct">=&gt;</span> <span class="constant">true</span><span class="punct">,</span> 
+              <span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">index_announcement_polymorphs</span><span class="punct">'</span>
+  <span class="keyword">end</span>
+
+  <span class="keyword">def </span><span class="method">self.down</span>
+    <span class="ident">drop_table</span> <span class="symbol">:announcements</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p><code>Ticker.rb</code>:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">Ticker</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="ident">has_many_polymorphs</span> <span class="symbol">:announceables</span><span class="punct">,</span>  <span class="symbol">:from</span>    <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:events</span><span class="punct">,</span> <span class="symbol">:news_articles</span><span class="punct">],</span> 
+                                       <span class="symbol">:through</span> <span class="punct">=&gt;</span> <span class="symbol">:announcements</span>
+                                       
+<span class="punct">.</span> <span class="punct">.</span> <span class="punct">.</span>
+</pre></code>
+
+<p><code>Announcement.rb</code>:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">Announcement</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="ident">belongs_to</span> <span class="symbol">:ticker</span>
+  <span class="ident">belongs_to</span> <span class="symbol">:announceable</span><span class="punct">,</span> <span class="symbol">:polymorphic</span> <span class="punct">=&gt;</span> <span class="constant">true</span>
+<span class="keyword">end</span>
+</pre></code>
+<h3>Polymorphic parents and has_many_polymorphs</h3>
+<p>Of course, it’s never that easy, is it? The ticker isn’t the only announcer in the app. The homepage is also effective at announcing things, thank you very much. So what we really want is a has_many_polymorphs relationship that allows numerous different announcers to announce numerous different announceables. Once I figured this out, it was pretty straightforward.</p>
+
+<p>Migration:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">CreateAnnouncements</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Migration</span>
+  <span class="keyword">def </span><span class="method">self.up</span>
+    <span class="ident">create_table</span> <span class="symbol">:announcements</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">t</span><span class="punct">|</span>
+      <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:announcer_id</span><span class="punct">,</span>      <span class="symbol">:integer</span><span class="punct">,</span> <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
+      <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:announcer_type</span><span class="punct">,</span>    <span class="symbol">:string</span><span class="punct">,</span>  <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
+      <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:announceable_id</span><span class="punct">,</span>   <span class="symbol">:integer</span><span class="punct">,</span> <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
+      <span class="ident">t</span><span class="punct">.</span><span class="ident">column</span> <span class="symbol">:announceable_type</span><span class="punct">,</span> <span class="symbol">:string</span><span class="punct">,</span>  <span class="symbol">:null</span> <span class="punct">=&gt;</span> <span class="constant">false</span>
+    <span class="keyword">end</span>
+    <span class="ident">add_index</span> <span class="symbol">:announcements</span><span class="punct">,</span> 
+              <span class="punct">[</span><span class="symbol">:announcer_id</span><span class="punct">,</span> <span class="symbol">:announcer_type</span><span class="punct">,</span> <span class="symbol">:announceable_id</span><span class="punct">,</span> <span class="symbol">:announceable_type</span><span class="punct">],</span> 
+              <span class="symbol">:unique</span> <span class="punct">=&gt;</span> <span class="constant">true</span><span class="punct">,</span> 
+              <span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">index_announcement_polymorphs</span><span class="punct">'</span>
+  <span class="keyword">end</span>
+
+  <span class="keyword">def </span><span class="method">self.down</span>
+    <span class="ident">drop_table</span> <span class="symbol">:announcements</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p><code>Ticker.rb</code> (and other announcers):</p>
+
+<code><pre><span class="keyword">class </span><span class="class">Ticker</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="ident">has_many_polymorphs</span> <span class="symbol">:announceables</span><span class="punct">,</span>  <span class="symbol">:from</span>             <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:events</span><span class="punct">,</span> <span class="symbol">:news_articles</span><span class="punct">],</span> 
+                                       <span class="symbol">:through</span>          <span class="punct">=&gt;</span> <span class="symbol">:announcements</span><span class="punct">,</span>
+                                       <span class="symbol">:as</span>               <span class="punct">=&gt;</span> <span class="symbol">:announcer</span><span class="punct">,</span>
+                                       <span class="symbol">:foreign_key</span>      <span class="punct">=&gt;</span> <span class="symbol">:announcer_id</span><span class="punct">,</span>
+                                       <span class="symbol">:foreign_type_key</span> <span class="punct">=&gt;</span> <span class="symbol">:announcer_type</span>
+
+ <span class="punct">.</span> <span class="punct">.</span> <span class="punct">.</span>
+</pre></code>
+
+<p><em>Note: Unlike other areas of Rails, you must specify <code>:as</code>, <code>:foreign_key</code> and <code>:foreign_type_key</code> to get the parent polymorphism working.</em></p>
+
+<p><code>Announcement.rb</code>:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">Announcement</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="ident">belongs_to</span> <span class="symbol">:homepage</span>
+  <span class="ident">belongs_to</span> <span class="symbol">:ticker</span>
+  <span class="ident">belongs_to</span> <span class="symbol">:announceable</span><span class="punct">,</span> <span class="symbol">:polymorphic</span> <span class="punct">=&gt;</span> <span class="constant">true</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Naturally it would be nice to DRY up that has_many_polymorphs declaration since it will be identical for all parents in this polymorphic-polymorphic relationship. But there are other things to DRY up as well, and I’ll do my best in Part II of this series: <a href="../../bjhessblog/2007/10/08/has_many_polymorphs-and-checkboxes/index.html">has_many_polymorphs and checkboxes</a>.</p>
+
+<p><strong>Update</strong></p>
+
+<p>Based on comments, I have DRY’d up the has_many_polymorphs declaration… by removing it entirely. <code>Ticker.rb</code> (and other announcers) no longer needs to do anything to get polymorphic. <code>Announcement.rb</code> has all the code.</p>
+
+<code><pre><span class="keyword">class </span><span class="class">Announcement</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="ident">belongs_to</span> <span class="symbol">:announcer</span><span class="punct">,</span>    <span class="symbol">:polymorphic</span> <span class="punct">=&gt;</span> <span class="constant">true</span>
+  <span class="ident">belongs_to</span> <span class="symbol">:announceable</span><span class="punct">,</span> <span class="symbol">:polymorphic</span> <span class="punct">=&gt;</span> <span class="constant">true</span>
+  
+  <span class="ident">acts_as_double_polymorphic_join</span> <span class="symbol">:announcers</span>    <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:homepages</span><span class="punct">,</span> <span class="symbol">:tickers</span><span class="punct">],</span> 
+                                  <span class="symbol">:announceables</span> <span class="punct">=&gt;</span> <span class="punct">[</span><span class="symbol">:events</span><span class="punct">,</span> <span class="symbol">:news_articles</span><span class="punct">]</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Essentially, “announcers” are parents and “announceables” are children in this two-way polymorphic relationship. In thinking of “announcers” as parents, I also got caught singularizing the symbols in that array (e.g. <code>[:homepage, :ticker]</code>). Dontdothatitwontwork. Pluralize all receivers of the polymorph.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1229';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          September 19, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

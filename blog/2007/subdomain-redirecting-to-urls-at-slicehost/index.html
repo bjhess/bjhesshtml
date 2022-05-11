@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Redirecting a Subdomain to a URL at Slicehost :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Redirecting a Subdomain to a URL at Slicehost
+      </h1>
+
+      
+    
+
+
+<p>With Dreamhost as my web host, I had gotten in the habit of using subdomain redirects to create convenient URL’s, both for users and myself. So to get to the <a href="http://blog.scrawlers.com">Scrawlers blog</a> one could enter “blog.scrawlers.com” in one’s web browser. For my own convenience, I’d typically have a subdomain to redirect to the blog’s administration panels. And so on.</p>
+
+<p>Now that I’m with a real VPS, <a href="https://manage.slicehost.com/customers/signup?referrer=140825505">Slicehost</a> (referral link), I need to get more hands-on in managing these subdomain redirects. In a word, I need to start using Apache virtual hosts.</p>
+
+<p>But first, I needed to setup a DNS record for the subdomain. This assumes you have your other DNS stuff for your domain working. Navigate through your Slice’s DNS record menus to create a new record for the target domain.</p>
+
+<ul>
+<li>Under the Slices tab, click “DNS Records”</li>
+
+<li>For the target domain, click “records”</li>
+
+<li>Click “new record”</li>
+</ul>
+
+<p>In this example, I’m going to forward goog.scrawlers.com to the main Google search page. So enter “goog” as the Name and your Slice’s IP address as the IP Address. Clearly my IP Address is made up.</p>
+
+<p><img src="http://img.skitch.com/20100201-b2i3kw9kcej2u8tt1ch2ab5unr.jpg" alt="Dns Setup"></p>
+
+<p>Now to update Apache to handle redirecting. I used the excellent <a href="http://wiki.slicehost.com/doku.php?id=automated_rails_install_and_deployment_with_deprec_capistrano">deprec tutorial</a> to install my Rails stack, so Apache resides in /usr/local/apache2 on my slice. For redirection, I chose to make a new directory in the configuration area, and create a virtual hosts file per domain. My virtual host file, in this case, is located at /usr/local/apache2/conf/redirects/scrawlers.com.conf. This definition is pretty simplistic</p>
+
+<pre><code>&lt;VirtualHost *:80&gt;
+  ServerName goog.scrawlers.com
+  Redirect permanent / http://www.google.com
+&lt;/VirtualHost&gt;</code></pre>
+
+<p>In reality I have about 8 VirtualHost definitions in my scrawlers.com.conf file. If you had defined multiple subdomains to redirect to the same place, say to account for typos or pluralization, there is no need to define multiple VirtualHosts. Simply use the ServerAlias keyword. For example:</p>
+
+<pre><code>&lt;VirtualHost *:80&gt;
+  ServerName goog.scrawlers.com
+  ServerAlias googs.scrawlers.com
+  ServerAlias googoo.scrawlers.com
+  Redirect permanent / http://www.google.com
+&lt;/VirtualHost&gt;</code></pre>
+
+<p>Finally, you need to edit your base Apache config to include all configurations defined in the “redirects” directory. In my case, this base config file is at /usr/local/apache2/conf/httpd.conf. At the end of this file, add the line:</p>
+
+<pre><code>Include conf/redirects/</code></pre>
+
+<p>Now restart Apache, either through capistrano (cap apache_restart) or directly on the server. Depending on how quickly you work, you may need to give DNS some time to sort itself out. It shouldn’t take more than an hour, though. <!--adsense--></p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1194';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          July 18, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

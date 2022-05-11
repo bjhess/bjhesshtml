@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Rails Auto Select Text Field Tag :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Rails Auto Select Text Field Tag
+      </h1>
+
+      
+    
+
+
+<p>On a recent project, I needed to simulate the YouTube-ish text field selection box. You know the one where you can easily select and copy a link or embed code to send on to your friends. You click in the box, the text is automatically selected, and you can quickly copy the text.</p>
+
+<p>I created a quite-simple helper for doing such things.</p>
+
+<code><pre><span class="keyword">def </span><span class="method">auto_select_text_field_tag</span><span class="punct">(</span><span class="ident">name</span><span class="punct">,</span> <span class="ident">value</span> <span class="punct">=</span> <span class="constant">nil</span><span class="punct">,</span> <span class="ident">options</span> <span class="punct">=</span> <span class="punct">{})</span>
+  <span class="ident">text_field_tag</span><span class="punct">(</span><span class="ident">name</span><span class="punct">,</span> 
+                 <span class="ident">value</span><span class="punct">,</span> 
+                 <span class="punct">{</span> <span class="symbol">:onclick</span> <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">$('<span class="expr">#{name}</span>').select()</span><span class="punct">",</span> 
+                   <span class="symbol">:readonly</span> <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">true</span><span class="punct">"</span> <span class="punct">}.</span><span class="ident">merge</span><span class="punct">(</span><span class="ident">options</span><span class="punct">))</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Pretty easy when it’s all said and done. (It looks better on one line.)</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1225';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          September 12, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

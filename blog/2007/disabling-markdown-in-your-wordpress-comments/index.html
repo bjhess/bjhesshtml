@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Disabling Markdown in Your WordPress Comments :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Disabling Markdown in Your WordPress Comments
+      </h1>
+
+      
+    
+
+
+<p>Sometimes I post things to this blog that are well documented elsewhere. During research I’ll Google a phrase without any immediate results. Then I’ll dig in a little more until I find what I’m looking for. Finally I’ll make a blog post with a title that mimics my Google search.</p>
+
+<p>This is a mutually beneficial. Since I searched for such a phrase, there’s a reasonable chance that other folks are making the same search. And since I didn’t find anything appropriate with my search, there’s a reasonable chance a post with said phrase will float to the top of Google. So theoretically I help someone out while also climbing a Google niche. And often someone who arrives here will help me improve my technique.</p>
+
+<p>I guess when I type it out it sounds more selfish than anything.</p>
+
+<h3 id="get_on_with_the_markdown">Get on with the Markdown!</h3>
+
+<p>Sorry about that. Here’s a little tip for you. It’s <a href="http://michelf.com/projects/php-markdown/">well documented</a>, but slightly buried. If you’re using <a href="http://michelf.com/projects/php-markdown/">PHP Markdown</a> to ease your blogging markup, you may have noticed that <a href="http://daringfireball.net/projects/markdown/">Markdown</a> has also snuck into your comments. I guess this is fine unless your <a href="../../bjhessblog/2007/09/19/my-foray-into-has_many_polymorphs/index.html#comments">comments</a> necessarily have a bunch of underscores, for instance.</p>
+
+<p>From the Configuration section of PHP Markdown site:</p>
+
+<blockquote>
+<p>By default, the Markdown plugin applies to both posts and comments on your WordPress weblog. To deactivate one or the other, edit the MARKDOWN_WP_POSTS or MARKDOWN_WP_COMMENTS definitions under the “WordPress setting” header at the start of the “markdown.php” file.</p>
+</blockquote>
+
+<p>It’ll be obvious when you checkout <code>markdown.php</code>, but just to be complete:</p>
+
+<code><pre><span class="comment"># Change to false to remove Markdown from posts and/or comments.</span>
+<span class="attribute">@define</span><span class="punct">(</span> <span class="punct">'</span><span class="string">MARKDOWN_WP_POSTS</span><span class="punct">',</span>      <span class="constant">true</span> <span class="punct">);</span>
+<span class="attribute">@define</span><span class="punct">(</span> <span class="punct">'</span><span class="string">MARKDOWN_WP_COMMENTS</span><span class="punct">',</span>   <span class="constant">false</span> <span class="punct">);</span>
+</pre></code>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1231';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          September 26, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

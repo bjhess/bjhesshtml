@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Transferring Your "Cached" WordPress Blog :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Transferring Your "Cached" WordPress Blog
+      </h1>
+
+      
+    
+
+
+<p>This weekend I mostly wrapped up the process of transferring <a href="http://www.scrawlers.com">Scrawlers</a> from <a href="http://www.dreamhost.com">Dreamhost</a> to <a href="http://www.slicehost.com">Slicehost</a>. Dreamhost just is not appropriate for a Ruby on Rails application, and so moves Scrawlers.</p>
+
+<p>The process has not been easy. I had gotten the <a href="http://www.scrawlers.com/blog">WordPress blog</a> <a href="http://mike.bailey.net.au/blog/?p=5">integrated with Rails</a>. It was all upgraded and ready for <a href="http://svnbook.red-bean.com/en/1.1/ch07s05.html">vendor branch management</a>. The final bit of annoyance was when I started the blog up and began receiving what appeared to be <a href="http://mnm.uib.es/gallir/wp-cache-2/">wp-cache</a> errors with the following various keywords:</p>
+
+<blockquote>
+<p>Permission denied, couldn’t write, wp-cache, fopen</p>
+</blockquote>
+
+<p>This just didn’t make sense because, well, like a good little WordPress administrator I disabled all of my plugins, including wp-cache, before transferring the blog’s code to Slicehost. The <a href="http://forums.asmallorange.com/index.php?showtopic=8386&amp;pid=58394&amp;mode=threaded&amp;start=">forum at asmallorange.com</a> to the rescue:</p>
+
+<blockquote>
+<p>Edit wp-config.php and remove both of these:</p>
+
+<p>define(‘WP_CACHE’, true); define(‘ENABLE_CACHE’, true);</p>
+</blockquote>
+
+<p>In my case, I only had the “WP_CACHE” line in my wp-config.php file, but it has since been removed and there was much rejoicing.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1192';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          July 16, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

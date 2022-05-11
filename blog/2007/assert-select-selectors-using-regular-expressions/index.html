@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Assert_select Selectors Using Regular Expressions :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Assert_select Selectors Using Regular Expressions
+      </h1>
+
+      
+    
+
+
+<p>Occasionally in Rails I will run into something that I know should be available even though I can’t remember running into it in the past. The beauty of the Rails OSS community is that most times the thing I want has already been implemented. Recently I ran into a situation where my <a href="http://www.amazon.com/Agile-Web-Development-Rails-2nd/dp/0977616630">bible</a>, or should I say <a href="http://www.amazon.com/Rails-Way-Addison-Wesley-Professional-Ruby/dp/0321445619">bible_s_</a>, did not uncover the Rails magic for me.* The last step, as always, is to look in the API.</p>
+
+<p>In testing, I like to verify that JavaScript UI bits are all wired up properly. In this case I wanted check what was in an anchor tag’s onclick parameter in a generalized way. A perfect situation for a regular expression, but heck if I knew how to sick the regular expression on an onclick parameter. Enter the examples section on <a href="http://api.rubyonrails.org/classes/ActionController/Assertions/SelectorAssertions.html#M000360"><code>assert_select</code></a> in the API. Witness <code>assert_select</code> substitution values:</p>
+
+<code><pre><span class="comment"># Use substitution values</span>
+<span class="ident">assert_select</span> <span class="punct">"</span><span class="string">ol&gt;li#?</span><span class="punct">",</span> <span class="punct">/</span><span class="regex">item-<span class="escape">\d</span>+</span><span class="punct">/</span>
+
+<span class="comment"># All input fields in the form have a name</span>
+<span class="ident">assert_select</span> <span class="punct">"</span><span class="string">form input</span><span class="punct">"</span> <span class="keyword">do</span>
+  <span class="ident">assert_select</span> <span class="punct">"</span><span class="string">[name=?]</span><span class="punct">",</span> <span class="punct">/</span><span class="regex">.+</span><span class="punct">/</span>  <span class="comment"># Not empty</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Eureka!</p>
+
+<p>This allows me to check my JavaScript wiring:</p>
+
+<code><pre><span class="keyword">def </span><span class="method">test_report_filter_button_should_be_wired_to_toggle_filter_div</span>
+  <span class="ident">get</span> <span class="symbol">:index</span>
+  <span class="ident">assert_select</span> <span class="punct">"</span><span class="string">#filter_button a[onclick*=?]</span><span class="punct">",</span> <span class="punct">/</span><span class="regex">report_filter.+toggle</span><span class="punct">/</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Basically, this selector looks in the element with the id of “filter_button”. From there it looks for a link whose onclick parameter includes “report_filter” and “toggle”. So something like the following would match:</p>
+
+<code><pre><span class="punct">&lt;</span><span class="ident">div</span> <span class="ident">id</span><span class="punct">='</span><span class="string">filter_button</span><span class="punct">'&gt;</span>
+  <span class="punct">&lt;</span><span class="ident">a</span> <span class="ident">href</span><span class="punct">="</span><span class="string">#</span><span class="punct">"</span> <span class="ident">onclick</span><span class="punct">="</span><span class="string">$('report_filter').toggle();false;</span><span class="punct">"&gt;</span>
+<span class="punct">&lt;/</span><span class="regex">div&gt;
+</span></pre></code>
+
+<p>Pretty convenient.</p>
+
+<p>* I only checked my Rails books in a reference-manual-like manner. In my cursory search I did not see any reference to substitution values for <code>assert_select</code>.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1253';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          December 26, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

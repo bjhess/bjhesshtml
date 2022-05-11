@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Stubbing Objects in Radiant :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Stubbing Objects in Radiant
+      </h1>
+
+      
+    
+
+
+<p>On a recent <a href="http://radiantcms.org">Radiant</a> customization project, I needed to write some tests for a front-end extension. One situation called for a stub object, so I built out the pathing and created the stub object as I’m used to doing in Rails. In <code>extensions/extension_name/test/mocks/test</code> I created a <code>some_mailer.rb</code> object to mock a mailer model, overriding the mailer’s <code>deliver_mail</code> method:</p>
+
+<code><pre><span class="ident">require</span> <span class="constant">File</span><span class="punct">.</span><span class="ident">dirname</span><span class="punct">(</span><span class="constant">__FILE__</span><span class="punct">)</span> <span class="punct">+</span> <span class="punct">'</span><span class="string">/../../../app/models/some_mailer</span><span class="punct">'</span>
+
+<span class="keyword">class </span><span class="class">SomeMailer</span>
+  <span class="keyword">def </span><span class="method">self.deliver_mail</span><span class="punct">(</span><span class="ident">mail</span><span class="punct">)</span>
+    <span class="attribute">@mail_posted</span> <span class="punct">=</span> <span class="constant">true</span>
+  <span class="keyword">end</span>
+
+  <span class="keyword">def </span><span class="method">self.mail_posted</span>
+    <span class="attribute">@mail_posted</span>
+  <span class="keyword">end</span>
+
+  <span class="keyword">def </span><span class="method">self.reset_posted</span>
+    <span class="attribute">@mail_posted</span> <span class="punct">=</span> <span class="constant">false</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>The other two methods are used in my functional test to detect if the <code>deliver_mail</code> method has been called.</p>
+
+<p>Unfortunately, Radiant doesn’t handle the load path like traditional Rails. In Rails, the classes in <code>test/mocks/test</code> are loaded before anything else, allowing one to stub out any file they like. Radiant doesn’t load these stubs/mocks at all.</p>
+
+<p>It’s fairly simple to resolve this however. Simply add some <code>requires</code> in your <code>extensions/extension\_name/test/test_helper.rb</code> file:</p>
+
+<code><pre><span class="constant">Dir</span><span class="punct">[</span><span class="constant">File</span><span class="punct">.</span><span class="ident">dirname</span><span class="punct">(</span><span class="constant">__FILE__</span><span class="punct">)</span> <span class="punct">+</span> <span class="punct">"</span><span class="string">/mocks/test/*.rb</span><span class="punct">"].</span><span class="ident">each</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">file</span><span class="punct">|</span>
+ <span class="ident">require</span> <span class="ident">file</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Another note. If you have any unit tests relating to the model that’s been stubbed, you’ll need to explicitly require the real model. Something like:</p>
+
+<code><pre><span class="ident">require</span> <span class="constant">File</span><span class="punct">.</span><span class="ident">dirname</span><span class="punct">(</span><span class="constant">__FILE__</span><span class="punct">)</span> <span class="punct">+</span> <span class="punct">'</span><span class="string">/../../app/models/some_mailer</span><span class="punct">'</span>
+</pre></code>
+
+<p>Thanks to <a href="http://seancribbs.com/">Sean Cribbs</a> for helping me square this away.</p>
+<!--adsense-->
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1196';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          July 25, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

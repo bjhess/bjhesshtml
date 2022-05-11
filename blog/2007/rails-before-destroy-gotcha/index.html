@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Rails Before_destroy Gotcha :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Rails Before_destroy Gotcha
+      </h1>
+
+      
+    
+
+
+<p>So there’s a Category that has many Expenses. The expenses for a category are destroyed when the category is destroyed. Elsewhere in my logic I would like to know if the category is removable based on whether it has any expenses and, if it does, whether any of the expenses it has are greater than zero.</p>
+
+<code><pre><span class="keyword">class </span><span class="class">Category</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="ident">has_many</span>   <span class="symbol">:items</span><span class="punct">,</span> <span class="symbol">:dependent</span> <span class="punct">=&gt;</span> <span class="symbol">:destroy</span>
+
+  <span class="keyword">def </span><span class="method">removable?</span>
+    <span class="constant">self</span><span class="punct">.</span><span class="ident">expenses</span><span class="punct">.</span><span class="ident">find</span><span class="punct">(</span><span class="symbol">:first</span><span class="punct">,</span> <span class="symbol">:conditions</span> <span class="punct">=&gt;</span> <span class="punct">['</span><span class="string">total_cost &gt; ?</span><span class="punct">',</span> <span class="number">0</span><span class="punct">],</span> <span class="symbol">:select</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">id</span><span class="punct">').</span><span class="ident">nil?</span>
+  <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Should really get closer to the vest when protecting the data. So I added a callback to protect the category. Conveniently I can reuse the <code>removable?</code> method:</p>
+
+<code><pre><span class="ident">before_destroy</span> <span class="symbol">:removable?</span>
+</pre></code>
+
+<p>Let’s test it:</p>
+
+<code><pre><span class="keyword">def </span><span class="method">test_should_destroy__when_removable</span>
+  <span class="ident">assert_difference</span><span class="punct">(</span><span class="constant">Category</span><span class="punct">,</span> <span class="symbol">:count</span><span class="punct">,</span> <span class="punct">-</span><span class="number">1</span><span class="punct">)</span> <span class="keyword">do</span>
+    <span class="attribute">@category</span><span class="punct">.</span><span class="ident">destroy</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Yay!</p>
+
+<code><pre><span class="constant">Loaded</span> <span class="ident">suite</span> <span class="punct">/</span><span class="constant">Users</span><span class="punct">/</span><span class="ident">bjhess</span><span class="punct">/</span><span class="constant">Sites</span><span class="punct">/.../</span><span class="regex">test</span><span class="punct">/</span><span class="ident">unit</span><span class="punct">/</span><span class="ident">category_test</span>
+<span class="constant">Started</span>
+<span class="punct">.</span>
+<span class="ident">Finished</span> <span class="ident">in</span> <span class="number">1.950119</span> <span class="ident">seconds</span><span class="punct">.</span>
+
+<span class="number">1</span> <span class="ident">tests</span><span class="punct">,</span> <span class="number">3</span> <span class="ident">assertions</span><span class="punct">,</span> <span class="number">0</span> <span class="ident">failures</span><span class="punct">,</span> <span class="number">0</span> <span class="ident">errors</span>
+</pre></code>
+
+<p>And the other test:</p>
+
+<code><pre><span class="keyword">def </span><span class="method">test_should_not_destroy__when_not_removable</span>
+  <span class="ident">create_expense</span><span class="punct">(</span><span class="symbol">:total_cost</span> <span class="punct">=&gt;</span> <span class="number">50.00</span><span class="punct">)</span>
+  <span class="ident">assert_no_difference</span><span class="punct">(</span><span class="constant">Category</span><span class="punct">,</span> <span class="symbol">:count</span><span class="punct">)</span> <span class="keyword">do</span>
+    <span class="attribute">@category</span><span class="punct">.</span><span class="ident">destroy</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>NO!</p>
+
+<code><pre><span class="constant">Loaded</span> <span class="ident">suite</span> <span class="punct">/</span><span class="constant">Users</span><span class="punct">/</span><span class="ident">bjhess</span><span class="punct">/</span><span class="constant">Sites</span><span class="punct">/.../</span><span class="regex">test</span><span class="punct">/</span><span class="ident">unit</span><span class="punct">/</span><span class="ident">expense_category_test</span>
+<span class="constant">Started</span>
+<span class="constant">F</span>
+
+<span class="constant">Finished</span> <span class="keyword">in</span> <span class="number">1.965099</span> <span class="ident">seconds</span><span class="punct">.</span>
+
+  <span class="number">1</span><span class="punct">)</span> <span class="ident">Failure</span><span class="punct">:</span>
+<span class="ident">test_should_not_destroy__when_not_removable</span><span class="punct">(</span><span class="constant">CategoryTest</span><span class="punct">)</span>
+<span class="ident">method</span> <span class="ident">assert_no_difference</span> <span class="keyword">in</span> <span class="ident">test_helper</span><span class="punct">.</span><span class="ident">rb</span> <span class="ident">at</span> <span class="ident">line</span> <span class="number">58</span>
+<span class="ident">method</span> <span class="ident">test_should_not_destroy__when_not_removable</span> <span class="keyword">in</span> <span class="ident">category_test</span><span class="punct">.</span><span class="ident">rb</span> <span class="ident">at</span> <span class="ident">line</span> <span class="number">66</span>
+<span class="punct">&lt;</span><span class="number">8</span><span class="punct">&gt;</span> <span class="ident">expected</span> <span class="ident">but</span> <span class="ident">was</span>
+<span class="punct">&lt;</span><span class="number">7</span><span class="punct">&gt;.</span>
+
+<span class="number">1</span> <span class="ident">tests</span><span class="punct">,</span> <span class="number">2</span> <span class="ident">assertions</span><span class="punct">,</span> <span class="number">1</span> <span class="ident">failures</span><span class="punct">,</span> <span class="number">0</span> <span class="ident">errors</span>
+</pre></code>
+
+<p>What the crap? Apparently the conditional in my <code>removable?</code> method must be working within the transactional space of the destroy call. See, a category has many expenses, set with <code>:dependent =&gt; :destroy</code>. In terms of the transaction, all of my expenses have already been destroyed and the category is indeed removable.</p>
+
+<p>If I were to work entirely in memory, things come out alright.</p>
+
+<code><pre><span class="ident">before_destroy</span> <span class="symbol">:check_expenses_total</span>
+
+<span class="ident">private</span>
+
+  <span class="keyword">def </span><span class="method">check_expenses_total</span>
+    <span class="constant">self</span><span class="punct">.</span><span class="ident">expenses</span><span class="punct">.</span><span class="ident">inject</span><span class="punct">(</span><span class="number">0</span><span class="punct">){</span> <span class="punct">|</span><span class="ident">sum</span><span class="punct">,</span> <span class="ident">expense</span><span class="punct">|</span> <span class="ident">sum</span> <span class="punct">+</span> <span class="ident">expense</span><span class="punct">.</span><span class="ident">total_cost</span> <span class="punct">}</span> <span class="punct">&lt;=</span> <span class="number">0</span>
+  <span class="keyword">end</span>
+</pre></code>
+
+<p>So the lesson, I suppose, is be careful how DB-interactive you’re being in your destroy callbacks. Oh, and test.</p>
+
+<p>(Another weird thing. <code>self.expenses.sum(&amp;:total_cost)</code> didn’t seem to work. I had to use inject.)</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1248';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          November 28, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Subversion GUI on OS X :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Subversion GUI on OS X
+      </h1>
+
+      
+    
+
+
+<p>With a new MacBook comes a need for a whole new environment for developing web applications. OK, I guess that need is not inherent unless one is also converting from Windows XP to OS X. So, clearly, with a new operating system comes a need for a whole new environment.</p>
+
+<p>So now that is cleared up, what was the latest hurdle I had to jump in my conversion process? Tying a GUI client up to my subversion repository on Dreamhost webhosting. In case you’ve been under a rock for the last couple years, subversion is an open source version control system and it is excellent. In the past I’ve used MKS Source Integrity Enterprise, which is pretty good, but it’s not free. Of course, at this point I’m not really collaborating with anyone on my projects, so I have not put subversion through all of its paces yet.</p>
+
+<p>My first try at a GUI was <a href="http://www.apple.com/downloads/macosx/development_tools/svnx.html">svnX</a>. It came highly recommended, and it was free. I bet you can see a theme here. Unfortunately, whenever I attempted to connect to my subversion repository the application either froze or spun or locked up or simply didn’t work. I had to “Force Quit” the thing three times just to get it shut down.</p>
+
+<p>Setting up my repository in svnX seemed easy enough. I simply entered the path to the repository, an HTTP path in Dreamhost’s case, my username, and password. No dice.</p>
+
+<p>So next I jumped over to <a href="http://zigzig.com/content/view/15/29/">ZigVersion</a>. The big downside is the price tag - there is one. Of course, a price tag would be fine if it netted some features, but near as I can tell ZigVersion has fewer features than svnX. For instance, there is no ability to compare my working copy of a file with an older version in the repository, nor can I compare older versions of a file (or the whole repository) with each other. I suspect that’s a feature for the future, but right now ZigVersion is a bit lacking for a commercial product.</p>
+
+<p>The upside with ZigVersion is that it sorta worked right out of the box. I used it to access my <a href="http://www.scrawlers.com">Scrawlers</a> repository for a couple of weeks. But now <em>something</em> I did is making it complain about subversion version mismatching somewhere (in the repository, I believe). I’m pretty sure this is the result of something I did, but I’m not sure what.</p>
+
+<p>Then I started wondering if there was some inconsistency between my subversion versions on Dreamhost and locally. I’m still not sure if this would matter, but my little “svn –version” command showed me at version 1.3.2 on both sides of the glass. I’m also pretty sure this proves that the Dreamhost folks didn’t change the version of subversion they had installed for me, either, unless they moved it back in time.</p>
+
+<p>Finally, I pulled down the repository all over again with no luck. I received the same version inconsistency errors, specifically:</p>
+<blockquote>
+This client is too old to work with working copy '.'; please get a newer Subversion client
+</blockquote>
+<p>With my distaste for paying money for things I headed back to svnX. This has to work, doesn’t it? Google was not telling me that anything unusual is going on between svnX and Dreamhost repositories.</p>
+
+<p>First, I tried to connect to the repository through the <a href="http://wiki.dreamhost.com/index.php/Subversion#Connecting_to_Subversion_Repository">"svn+ssh" protocol</a> rather than HTTP. No dice. In fact, svnX locked up even better than it had previously.</p>
+
+<p>I happened upon a general <a href="http://www.joshbuhler.com/2005/07/05/setting-up-the-subversion-client-on-mac-os-x/">step-by-step subversion on OS X setup document</a> by Josh Buhler, and noticed that in svnX’s preferences it may have defined the incorrect path to my local subversion binaries. Sure enough, when visiting svnX’s preferences I found the path defined as “/Users/bjhess/Applications”. Hello! So I updated this path to “/usr/local/bin”, entered the HTTP URL to my Dreamhost repository and connected.</p>
+
+<p>And now I have all the goodness that an open-source subversion GUI client lends me. Revision-to-revision comparisons and merges, browsing of past revisions, and more.</p>
+
+<p>(It turns out the version inconsistency problem was something I did. When I was trying to repull the repository, I copied my working versions of the files to another folder. After pulling the files from the repository, I wholly copied over them with my working version. I think that was causing the issue.)</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1084';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 16, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

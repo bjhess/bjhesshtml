@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Has_many_polymorphs and Checkboxes :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Has_many_polymorphs and Checkboxes
+      </h1>
+
+      
+    
+
+
+<p>Previously I discussed <a href="../../bjhessblog/2007/09/19/my-foray-into-has_many_polymorphs/index.html">getting my feet wet with has_many_polymorphs</a>. In that article I promised a follow-up dealing with checkboxes in a polymorphic world. As I started keying the article, I ran into a much better description of the overall issue by Dylan Fareed (I presume) at <a href="http://www.iamstillalive.net/">I Am Still Alive</a>. Take a look at his <a href="http://www.iamstillalive.net/notes/2007/04/has_many_through_with_has_many_polymorphs">has_many_polymorphs overview</a>.</p>
+
+<p>Reading Fareed’s post, the key bit of code he developed is the <code>abstract_id_assignement</code> method. See, when you’re working with a typical <code>has_and_belongs_to_many</code> Rails relationship, the collection objects get some assignment methods for free. So given:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">People</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="ident">has_and_belongs_to_many</span> <span class="symbol">:foibles</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>You will get a <code>foible_ids=(id_list)</code> method for free. Not so in the has_many_polymorphs world. A similar topic was <a href="http://railsforum.com/viewtopic.php?id=803">discussed in the Rails Forum</a>. Fareed provides a nice solution to that issue. Once the code is in place, you can pretty much DRY up your arrays of checkboxes as described by <a href="http://railscasts.com/episodes/17">Ryan Bates’s Railscast</a>.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1235';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          October 8, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

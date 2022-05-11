@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Make Sure to Properly Scope Your Ruby Mixins :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Make Sure to Properly Scope Your Ruby Mixins
+      </h1>
+
+      
+    
+
+<div class="flair">
+  <img alt="Matt - rifle" height="160" src="http://farm2.static.flickr.com/1012/1025919868_ebf0df1a71_m.jpg" width="240"><br>
+  <div class="text-backing">&nbsp;</div>
+  <div class="text">Photo by <a href="http://flickr.com/photos/amagill/">AMagill</a></div>
+</div>
+<p>Early on in writing <a href="http://www.scrawlers.com">Scrawlers</a> I realized I needed to improve the manner in which we calculated our <a href="http://www.scrawlers.com/scrawlings/top_rated">bestseller list</a>. In true Agile(tm) form, I had built the site to dynamically calculate the bestsellers at the given moment a reader queried. Not so bad with ten stories. Not so good otherwise, especially since this method precluded paging of the results.</p>
+
+<h2 id="ruby_mixins_to_the_rescue">Ruby mixins to the rescue</h2>
+
+<p>It was clear that the code necessary to calculate top rated stories would be similar for each duration: all time, monthly, and weekly. The technique was to populate summary tables using scheduled jobs running in the background. Each duration would get its own table. Separation of this data would lead to simplicity.</p>
+
+<p>With a <a href="http://www.juixe.com/techknow/index.php/2006/06/15/mixins-in-ruby/">basic HOWTO</a> in hand, I sought to learn the techniques I could leverage in Ruby to <a href="http://en.wikipedia.org/wiki/Don't_repeat_yourself">DRY</a> up my code a bit. The Java-me would fall into the abstract class model, but Ruby on Rails is my new world. I settled on a mixin technique - mixing a module with a class. Specifically, my classes would “extend” the module, which essentially makes the module methods class-level methods, rather than object-level methods.</p>
+<!--more-->
+<h2 id="when_mixins_conflict">When mixins conflict</h2>
+
+<p>Unfortunately things did not go as smoothly as I would have liked. My mixins began stomping on each other. First, take a look at the generalized code in my module:</p>
+
+<code><pre><span class="keyword">module </span><span class="module">RatingTotals::StoryRatingTotals</span>
+ 
+  <span class="keyword">def </span><span class="method">refresh_story_totals</span><span class="punct">(</span><span class="ident">date</span> <span class="punct">=</span> <span class="constant">Date</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span><span class="number">2007</span><span class="punct">,</span> <span class="number">1</span><span class="punct">,</span> <span class="number">1</span><span class="punct">))</span>
+    <span class="comment"># Removed most the code.</span>
+    <span class="ident">ratings</span> <span class="punct">=</span> <span class="constant">Rating</span><span class="punct">.</span><span class="ident">find</span><span class="punct">(</span><span class="symbol">:all</span><span class="punct">,</span>
+         <span class="symbol">:select</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">rateable_id, AVG(rating) as average_rating, COUNT(id) as count </span><span class="punct">',</span>
+         <span class="symbol">:conditions</span> <span class="punct">=&gt;</span> <span class="punct">["</span><span class="string">rateable_type = 'story' AND created_at &gt;= ? </span><span class="punct">",</span> <span class="ident">date</span><span class="punct">],</span>
+         <span class="symbol">:group</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">rateable_id </span><span class="punct">')</span>
+   
+    <span class="ident">totals</span> <span class="punct">=</span> <span class="punct">[]</span>
+    <span class="ident">ratings</span><span class="punct">.</span><span class="ident">each</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">rating</span><span class="punct">|</span>
+      <span class="ident">totals</span> <span class="punct">&lt;&lt;</span> <span class="constant">self</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span><span class="symbol">:story_id</span> <span class="punct">=&gt;</span> <span class="ident">rating</span><span class="punct">.</span><span class="ident">rateable_id</span><span class="punct">,</span>
+                         <span class="symbol">:rating</span> <span class="punct">=&gt;</span> <span class="ident">rating</span><span class="punct">.</span><span class="ident">average_rating</span><span class="punct">,</span>
+                         <span class="symbol">:count</span> <span class="punct">=&gt;</span> <span class="ident">rating</span><span class="punct">.</span><span class="ident">count</span><span class="punct">)</span>
+    <span class="keyword">end</span>
+   
+    <span class="constant">self</span><span class="punct">.</span><span class="ident">transaction</span> <span class="keyword">do</span>
+      <span class="constant">self</span><span class="punct">.</span><span class="ident">delete_all</span>
+      <span class="ident">totals</span><span class="punct">.</span><span class="ident">each</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">total</span><span class="punct">|</span>
+        <span class="ident">total</span><span class="punct">.</span><span class="ident">save</span>
+      <span class="keyword">end</span>
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>As you can see, I collect all the ratings for the duration. Then I create total lines, which will be of class types for which the module is mixed in (see below). I do all of this in memory. Finally, a transaction deletes the preexisting totals and writes the new total lines to the summary table.</p>
+
+<p>An example of one of the associated classes:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">RatingTotals::WeeklyStoryRatingTotal</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="ident">belongs_to</span> <span class="symbol">:story</span>
+ 
+  <span class="ident">extend</span> <span class="constant">StoryRatingTotals</span>
+ 
+  <span class="keyword">def </span><span class="method">self.refresh_totals</span>
+    <span class="constant">self</span><span class="punct">.</span><span class="ident">refresh_story_totals</span><span class="punct">(</span><span class="number">1</span><span class="punct">.</span><span class="ident">week</span><span class="punct">.</span><span class="ident">ago</span><span class="punct">)</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>Seems simple enough. Extending my module, I have access to a class-level refresh_story_totals method. Cool. Or not.</p>
+
+<p>When testing through the console, I could only execute a single one of the class methods ( e.g. <code>MonthlyStoryRatingTotal.refresh_totals</code>). Whichever class method I invoke first can be executed ad naseum, but if I try to execute one of the other class refresh_totals methods they are blocked out with the most classic of error messages:</p>
+
+<code><pre><span class="constant">ArgumentError</span><span class="punct">:</span> <span class="constant">RatingTotals</span> <span class="ident">is</span> <span class="keyword">not</span> <span class="ident">missing</span> <span class="ident">constant</span> <span class="constant">StoryRatingTotals</span><span class="punct">!</span>
+</pre></code>
+
+<h2 id="when_mixins_error_check_your_scope">When mixins error, check your scope</h2>
+
+<p>If you looked at those class and module definitions closely, you may have noticed that I have an extended scope (e.g. <code>RatingTotals::StoryRatingTotals</code>). Yes, these models are stored in a “rating_totals” directory. Since my problem involved the code “half” working, I had a lot of trouble uncovering the source of the problem. If the errors were complete and total, I think I would have found the issue rather quickly.</p>
+
+<p>The problem is that in my “extend” definitions in the classes, I did not properly scope the module reference. I should have:</p>
+
+<code><pre><span class="ident">extend</span> <span class="constant">RatingTotals</span><span class="punct">::</span><span class="constant">StoryRatingTotals</span>
+</pre></code>
+
+<p>That solved the problem. And now Scrawlers is much happier.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1201';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          August 27, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

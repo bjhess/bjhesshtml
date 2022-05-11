@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Missing Log Messages in Ruby on Rails :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Missing Log Messages in Ruby on Rails
+      </h1>
+
+      
+    
+
+
+<p>Recently I had a fun problem where my log messages in Ruby on Rails were not outputting at all. This included ActiveRecord/internal Rails messages as well as messages I defined. Particularly, I was receiving header information, but not the message itself, which should have been a pretty big clue. Messages looked something like this:</p>
+<pre>INFO Tue Feb 06 04:42:22 -0800 2007 (1539)
+ 
+DEBUG Tue Feb 06 04:42:22 -0800 2007 (1539)
+ 
+DEBUG Tue Feb 06 04:42:22 -0800 2007 (1539)
+ 
+INFO Tue Feb 06 04:42:22 -0800 2007 (1539)
+</pre>
+<p>If I had any brains, I would have remembered that the default logging behavior does not include a snazzy header with detailed information like the above. This means that I had overridden the message format. I had the following code in my environment.rb file:</p>
+
+<code><pre><span class="keyword">class </span><span class="class">Logger</span>
+  <span class="keyword">def </span><span class="method">format_message</span><span class="punct">(</span><span class="ident">severity</span><span class="punct">,</span> <span class="ident">timestamp</span><span class="punct">,</span> <span class="ident">msg</span><span class="punct">,</span> <span class="ident">progname</span><span class="punct">)</span>
+    <span class="punct">"</span><span class="string"><span class="expr">#{severity}</span> <span class="expr">#{timestamp}</span> (<span class="expr">#{$$}</span>)<span class="escape">\n</span> <span class="expr">#{msg}</span><span class="escape">\n</span></span><span class="punct">"</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre></code>
+
+<p>To troubleshoot, I tried using the formats presented at <a href="http://michaelmarth.blogspot.com/2006/07/rubys-classes-are-dynamic.html">two</a> <a href="http://dev.rubyonrails.org/ticket/2245">other</a> web sites. Eventually I happened onto a description of how <a href="http://devblog.famundo.com/articles/2006/09/22/improving-the-rails-logger">Ruby 1.8.3 had transposed the msg and progname arguments</a> in the format_message method. Bingo!</p>
+
+<p>Now I have a format_message definition that aligns better with the <a href="http://wiki.rubyonrails.com/rails/pages/HowtoConfigureLogging">one posted to the Ruby on Rails Wiki</a>:</p>
+<pre>class Logger
+  def format_message(severity, timestamp, progname, msg)
+    "#{severity} #{timestamp} (#{$$})\n #{msg}\n"
+  end
+end
+</pre>
+<p>Why did my log messages work and then stop working? Well, I first noticed this problem locally when I moved to my MacBook as a development environment. Naturally, I thought the OS X environment was to blame. Well, with the change I also moved to the newest version of Ruby, where the transposition happened. My host, Dreamhost, also moved to the newest version of Ruby around that time, making log messages stop working there. This lent a general thought that I had messed up my app when in fact I just hadn’t adapted to the changes in Ruby 1.8.3.</p>
+
+<p>I have not uncovered more information on why the parameters for format_message where transposed. Accident? Intentional (perhaps there is new method overloading in place)?</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1086';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 20, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Detect Alphanumeric in Ruby via Regular Expressions :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Detect Alphanumeric in Ruby via Regular Expressions
+      </h1>
+
+
+
+
+
+      <p>I do not understand <a
+          href="http://www.google.com/search?q=define%3Aregular+expressions&amp;ie=utf-8&amp;oe=utf-8&amp;rls=org.mozilla:en-US:official&amp;client=firefox-a">regular
+          expressions</a>. It’s on my list to get to know them better and make some use of them to gain understanding,
+        but I have not done it yet. It’s a deficiency that I am aware of.</p>
+
+      <p>All I wished to do was verify that a user-keyed login and password were fully alphanumeric (including ‘<em>‘).
+          I found <a href="http://www.juixe.com/techknow/index.php/2006/07/29/rails-model-validators/">one reference</a>
+          out on the InterWeb, though there was a bug in that code. I went with the following validation code in my
+          Rails model class:</em></p>
+
+      <code>
+        <pre><span class="ident">validates_format_of</span> <span class="symbol">:login</span><span class="punct">,</span> <span class="symbol">:password</span><span class="punct">,</span> <span class="symbol">:display_name</span><span class="punct">,</span>
+                    <span class="symbol">:with</span> <span class="punct">=&gt;</span> <span class="punct">/</span><span class="regex">^<span class="escape">\w</span>+$</span><span class="punct">/</span><span class="ident">i</span><span class="punct">,</span>
+                    <span class="symbol">:message</span> <span class="punct">=&gt;</span> <span class="punct">"</span><span class="string">can only contain letters and numbers.</span><span class="punct">"</span>
+
+</pre></code>
+
+      <p>Wow, do I look like an idiot posting this - what a breakthrough I must say! But understand there will be other
+        idiots like me digging for the same solution. Hopefully those idiots will run into this post and be on their
+        merry way.</p>
+
+      <p>TextMate actually has <a href="http://macromates.com/textmate/manual/regular_expressions">a nice regular
+          expression manual</a> online that aligns pretty well with Ruby’s implementation. I enjoyed looking at that a
+        lot more than the Pragmatic Ruby Programming book.</p>
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1090';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 24, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Anchor Tag and Element ID Standards :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Anchor Tag and Element ID Standards
+      </h1>
+
+      
+    
+
+
+<p>Yesterday, I <a href="http://bjhess.com/bjhessblog/?p=1075">complained</a> about some markup issues I was having while developing <a href="http://www.scrawlers.com">Scrawlers.com</a>.</p>
+
+<p>It appears that I was breaking HTML standards. The combined list of anchor names and element ID’s <em>should</em> be unique <a href="http://www.w3.org/TR/html401/struct/links.html#h-12.2.3" rel="nofollow">according to W3C</a>. I find this a little confusing, but I can adjust.</p>
+
+<p>It appears to me that element ID’s are meant to be a sort of alias that can be used like an anchor name (along with many other functions). I don’t get the sense that anchor names are meant to be aliases for element ID’s, however. I base that opinion on this statement in the spec, meant to describe why an anchor ID may be a better choice than an anchor name in some situations:</p>
+<blockquote>The id attribute can act as more than just an anchor name.</blockquote>
+<p>They did not say “the anchor name can act as more than just an anchor name.” :)</p>
+
+<p>An interesting effect, brought to my attention via an email from a reader, is that one can use element ID’s in lieu of anchor names to link within documents. This means that I’ll be going through Scrawlers and eliminating a bunch of anchor tags, minimizing markup and accelerating page loads.</p>
+
+<p>I still think IE6 could have degraded more elegantly. You know, like all the other browsers.</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1077';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          February 9, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>

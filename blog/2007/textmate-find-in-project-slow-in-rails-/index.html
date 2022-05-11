@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>TextMate Find in Project Slow in Rails :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        TextMate Find in Project Slow in Rails
+      </h1>
+
+
+
+
+
+      <p><strong>Update:</strong> Don’t bother with the crap I spewed below. Just head over to <a
+          href="http://railspikes.com/2007/11/13/textmate-rails-remove-vendor-files">Rail Spikes</a>. There are a couple
+        options if you read the post and comments.</p>
+
+      <p>I do a ton of project finds when programming in Rails using TextMate. “Find in project” (cmd-shift-F) is my
+        master. If you do the same thing, you probably have noticed that over time this feature becomes slower and
+        slower. What is the most likely cause?</p>
+      <h3>Log files bring you down</h3>
+      <div class="flair">
+        <img alt="Log roll" src="http://farm1.static.flickr.com/167/482275289_d089fb87a7.jpg"><br>
+        <div class="text-backing">&nbsp;</div>
+        <div class="text">Photo by <a href="http://flickr.com/photos/goldberg/482275289/">goldberg</a></div>
+      </div>
+      <p>The lowest hanging fruit on the slow-TextMate tree are log files. TextMate loads just about everything into
+        memory as it’s searching. If you’re not careful, log files can become large and quite literally in charge. You
+        have a couple options to make things nice.</p>
+
+      <p>The most obvious solution to a Rails programmer would be to execute <code>rake log:clear</code>. Snip snip and
+        your log files are no longer a resource hog.</p>
+
+      <p>A more permanent solution is to right-click on the the log file in your TextMate project and select “Remove
+        from project.” At the prompt, simply tell TextMate to “Delete References.” Even with this nuclear solution in
+        place, it’s still probably a good idea to <code>rake log:clear</code> on occasion.</p>
+
+
+
+
+      <script>
+        var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+        var idcomments_post_id = '1223';
+        var idcomments_post_url;
+      </script>
+      <div id="comments">
+        <span id="IDCommentsPostTitle" style="display:none"></span>
+        <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+      </div>
+
+
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          September 5, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

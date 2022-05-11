@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>Installing HAML Bundle for TextMate :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr>
+      <h1>
+        Installing HAML Bundle for TextMate
+      </h1>
+
+      
+    
+
+
+<p>There is currently a TextMate bundle in process for the templating language, <a href="http://haml.hamptoncatlin.com/">Haml</a>. It doesn’t come built-in, however. Installation is fairly simple once you figure it out.</p>
+
+<p>(Keep in mind, my TextMate application location may vary from yours. This is simply what I found works for me.)</p>
+
+<p>First, browse to your bundles area in Terminal. You may need to create some of these directories on your system.</p>
+
+<code><pre><span class="ident">cd</span> ~<span class="punct">/"</span><span class="string">Library/Application Support/TextMate/Pristine Copy/Bundles/</span><span class="punct">"</span>
+</pre></code>
+
+<p>Then check out the TextMate bundle from <a href="http://macromates.com/svn/Bundles/trunk/Bundles/">MacroMates' bundle repository</a>:</p>
+
+<code><pre><span class="ident">svn</span> <span class="ident">co</span> <span class="punct">"</span><span class="string">http://svn.textmate.org/trunk/Bundles/Ruby Haml.tmbundle</span><span class="punct">"</span>
+</pre></code>
+
+<p>Or if you prefer git:</p>
+
+<code><pre><span class="ident">git</span> <span class="ident">clone</span> <span class="ident">git</span><span class="punct">:/</span><span class="regex"></span><span class="punct">/</span><span class="ident">github</span><span class="punct">.</span><span class="ident">com</span><span class="punct">/</span><span class="ident">textmate</span><span class="punct">/</span><span class="ident">ruby</span><span class="punct">-</span><span class="ident">haml</span><span class="punct">.</span><span class="ident">tmbundle</span><span class="punct">.</span><span class="ident">git</span>
+</pre></code>
+
+<p>Then, reload your bundles in TextMate (Bundles | Bundle Editor | Reload Bundles).</p>
+
+<p>Finally, for some reason tabbing isn’t set properly by default when editing a Haml file, which is important for this white-space-aware templating language. Perhaps the expectation is that you will always use your space bar? In any case, after opening a .haml file, look along the bottom bar of the TextMate interface. Be sure the Haml bundle is selected, and change your tabbing to Soft Tabs at 2 spaces per tab.</p>
+
+<p><img alt="Haml tabbing" src="http://img.skitch.com/20100201-1uhxsafptwhjtga9qifk2qjes8.jpg"></p>
+
+<p><strong>Update</strong>: Here are instructions for installing the Sass TextMate bundle:</p>
+
+<code><pre><span class="ident">cd</span> ~<span class="punct">/"</span><span class="string">Library/Application Support/TextMate/Pristine Copy/Bundles/</span><span class="punct">"</span>
+<span class="ident">svn</span> <span class="ident">co</span> <span class="punct">"</span><span class="string">http://macromates.com/svn/Bundles/trunk/Review/Bundles/Ruby Sass.tmbundle</span><span class="punct">"</span>
+</pre></code>
+
+<p>For both the Haml and Sass bundles, you may prefer to install the bundles in your “personalized” bundle area. Simply replace the <code>cd</code> commands above with:</p>
+
+
+
+
+  <script>
+  var idcomments_acct = 'eda7048939fc5f5d23053a7f26789643';
+  var idcomments_post_id = '1166';
+  var idcomments_post_url;
+  </script>
+  <div id="comments">
+    <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type="text/javascript" src="http://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
+  </div>
+
+  
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date">
+          May 30, 2007
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+
+
+
+</body></html>
