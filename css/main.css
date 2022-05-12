@@ -74,9 +74,9 @@ h6 {
   --color-bg-alt: #f0fcfb;
   --color-post-border: #ddd;
   --color-hr: #ccc;
-  --color-txt: rgb(35, 28, 51);
+  --color-txt: gb(35, 28, 51);
   --color-txt-link: #a221c2;
-  --color-txt-link-highlight: #f5f1ce;
+  --color-txt-highlight: #f5f1ce;
   --color-txt-meta: #888;
   --color-pre-bg: #222;
   --color-code-bg: #ddd;
@@ -257,8 +257,8 @@ ul {
   font-family: var(--font-sans-serif);
 }
 
-a.highlight {
-  background-color: var(--color-txt-link-highlight);
+.highlight {
+  background-color: var(--color-txt-highlight);
   padding: 0.3rem;
   border-radius: var(--inline-border-radius);
 }
