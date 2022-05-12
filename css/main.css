@@ -263,6 +263,12 @@ ul {
   border-radius: var(--inline-border-radius);
 }
 
+aside {
+  font-style: italic;
+  font-size: var(--font-size-S);
+  color: var(--color-txt-meta)
+}
+
 /******************************************************************************
   Quotes heavily borrowed from https: //davesmyth.com
 ******************************************************************************/
