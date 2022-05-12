@@ -132,7 +132,7 @@ posts.each do |key, value|
   toc_doc += %{  <ul>\n}
   posts[key].each do |post_meta|
     toc_doc += %{    <li>\n}
-    toc_doc += %{      <time datetime"#{post_meta[0].strftime("%Y-%m-%d")}T00:00:00-05:00">#{post_meta[0].strftime("%b %-d")}</time>\n}
+    toc_doc += %{      <time datetime="#{post_meta[0].strftime("%Y-%m-%d")}T00:00:00-05:00">#{post_meta[0].strftime("%b %-d")}</time>\n}
     toc_doc += %{      <a href="/blog/#{post_meta[0].strftime("%Y")}/#{post_meta[1]}/">#{post_meta[2]}</a>\n}
     toc_doc += %{    </li>\n}
   end
