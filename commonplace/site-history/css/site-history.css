@@ -59,3 +59,13 @@ p {
 .per-page .site-info {
   margin: 10px 0;
 }
+
+.other-sites {
+  margin: var(--album-margin);
+}
+
+.other-sites ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

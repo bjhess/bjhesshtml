@@ -1,0 +1,11 @@
+Brown:
+
+RGB	110	62	52
+
+Top Banners:
+
+Verdana 40
+
+Bottom Banner:
+
+white - Verdana 40 	brown - Verdana 14
