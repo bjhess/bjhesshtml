@@ -92,16 +92,11 @@ directories.each do |directory|
   content_element = doc.css('#content').first
   content_element.children.each do |element|
     next if element.matches?('h1') ||
-              element.matches?('.article_footer') #||
-              # element.matches?('script') ||
-              # element.matches?('#comments')
+              element.matches?('.article_footer')
 
     post_content += element.to_html
   end
   # puts post_content
-
-  # TODO: FIGURE OUT COMMENTS
-  # I will do this later. The export is in my Sites directory.
 
   # Write new directories and HTML file.
   conversion_directory_name = "@convert"
@@ -120,11 +115,9 @@ directories.each do |directory|
 
   # Collect post meta information for table of contents.
   posts[post_date.year.to_s.to_sym] << [post_date, directory.gsub('_', '-').gsub('./', ''), post_title]
-  # TODO: Write XML for the feed. Or does the feed only need to be going forward?
 end
 
 puts "Creating table of contents"
-# TODO: Write links to blog post for the table of contents
 posts.each do |key, value|
   # puts key
   # puts value.class.name
