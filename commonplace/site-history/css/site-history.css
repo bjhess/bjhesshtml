@@ -1,0 +1,61 @@
+/******************************************************************************
+  Sites design stolen from https://www.mrshawnliu.com/
+******************************************************************************/
+
+:root {
+  --site-screenshot-margin: 18px;
+}
+
+.main-container {
+  max-width: 1046px;
+  margin: 1em auto;
+  padding: 0 1em;
+}
+
+h1 {
+  font-size: var(--font-size-XL);
+  font-weight: 800;
+  margin: 1.5em auto 1em auto;
+  text-align: center;
+}
+
+p {
+  margin: inherit auto;
+  text-align: center;
+}
+
+.sites-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 auto;
+  flex-flow: wrap row;
+}
+
+.sites-container img {
+  border-radius: 0;
+}
+
+.per-page {
+  font-size: var(--font-size-S);
+  font-weight: 400;
+  line-height: 1.5em;
+  width: 300px;
+  margin: var(--site-screenshot-margin);
+}
+
+.per-page img {
+  display: block;
+  width: 100%;
+}
+
+/* Helps align .site-info text below picture when there are multiple columns. */
+@media screen and (min-width: 600px) {
+  .per-page .site-screenshot {
+    height: 275px;
+  }
+}
+
+.per-page .site-info {
+  margin: 10px 0;
+}
