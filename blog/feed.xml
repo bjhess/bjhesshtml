@@ -4,14 +4,21 @@
   <title>I am BARRY HESS</title>
   <link href="https://bjhess.com/blog/feed.xml" rel="self" />
   <link href="https://bjhess.com/blog/" />
-  <updated>2022-05-12T15:32:00-05:00</updated>
+  <updated>2022-05-13T15:12:00-05:00</updated>
   <id>https://bjhess.com/</id>
   <author>
     <name>Barry Hess</name>
   </author>
 
   <entry>
-    <title>My Basic Salad Dressing </title>
+    <title>HTML Only</title>
+    <link href="https://bjhess.com/blog/2022/HTML-only/" />
+    <updated>2022-05-13T15:12:00-05:00</updated>
+    <id>https://bjhess.com/blog/2022/HTML-only/</id>
+  </entry>
+
+  <entry>
+    <title>My Basic Salad Dressing</title>
     <link href="https://bjhess.com/blog/2022/salad-dressing/" />
     <updated>2022-05-12T00:00:00-05:00</updated>
     <id>https://bjhess.com/blog/2022/salad-dressing/</id>
