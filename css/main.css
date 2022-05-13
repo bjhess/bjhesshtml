@@ -304,7 +304,7 @@ p code,
 li code {
   background-color: var(--color-code-bg);
   border-radius: var(--inline-border-radius);
-  padding: 3px;
+  padding: 0.05em 3px;
 }
 
 pre {
