@@ -1,0 +1,32 @@
+:root {
+  --gif-margin: 16px;
+}
+
+.main-container {
+  max-width: var(--width-multimedia-page);
+  /* padding-right: 1.5em; */
+  margin: 1em auto;
+  padding: 0 1em;
+  /* padding: 0 1em 0 0; */
+}
+
+h1 {
+  text-align: center;
+}
+
+.gifs-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 auto;
+  flex-flow: wrap row;
+}
+
+/* For Commonplace: GIFs */
+.gifs-container img {
+  width: 250px;
+  margin: var(--gif-margin);
+  border-radius: var(--block-border-radius);
+  max-width: 100%;
+  height: auto;
+}

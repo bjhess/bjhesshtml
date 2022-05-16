@@ -96,6 +96,7 @@ h6 {
   --width-login: 30rem;
   --width-comments: 54rem;
   --width-content: 60rem;
+  --width-multimedia-page: 105rem;
   --padding-bottom: 4rem;
   --padding-content: 8px;
   --block-border-radius: 10px;
@@ -138,13 +139,6 @@ body {
   float: right;
   /* Oh, this is a hack to try to align the RSS icon to the text */
   margin-top: 5px;
-}
-
-/* For Commonplace: GIFs */
-.gifs img {
-  border-radius: 5px;
-  max-width: 100%;
-  height: auto;
 }
 
 a {

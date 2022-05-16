@@ -7,15 +7,12 @@
 }
 
 .main-container {
-  max-width: 1046px;
+  max-width: var(--width-multimedia-page);
   margin: 1em auto;
   padding: 0 1em;
 }
 
 h1 {
-  font-size: var(--font-size-XL);
-  font-weight: 800;
-  margin: 1.5em auto 1em auto;
   text-align: center;
 }
 
