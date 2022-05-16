@@ -4,11 +4,18 @@
   <title>I am BARRY HESS</title>
   <link href="https://bjhess.com/blog/feed.xml" rel="self" />
   <link href="https://bjhess.com/blog/" />
-  <updated>2022-05-13T15:12:00-05:00</updated>
+  <updated>2022-05-16T09:54:00-05:00</updated>
   <id>https://bjhess.com/</id>
   <author>
     <name>Barry Hess</name>
   </author>
+
+  <entry>
+    <title>Why I Went HTML Only</title>
+    <link href="https://bjhess.com/blog/2022/HTML-only-backstory/" />
+    <updated>2022-05-16T09:50:00-05:00</updated>
+    <id>https://bjhess.com/blog/2022/HTML-only-backstory/</id>
+  </entry>
 
   <entry>
     <title>HTML Only</title>
