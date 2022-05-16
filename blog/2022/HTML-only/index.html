@@ -1,115 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="/css/main.css">
-    <title>HTML Only :: Barry Hess :: bjhess.com</title>
-    <meta name="author" content="Barry Hess">
-    <meta name="description" content="Barry Hess writes about software,
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css">
+  <title>HTML Only :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software,
       writing, creativity, media, and family.">
-    <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS"
-      type="application/atom+xml">
-  </head>
-  <body>
-    <div class="content">
-      <div class="header"> <span>I am <a href="/">BARRY HESS</a> &gt;
-          <a href="/blog/">Blog</a></span> </div>
-      <article>
-        <hr>
-        <h1> HTML Only </h1>
-        <p>My site is now an HTML &amp; CSS website, just like <a
-            moz-do-not-send="true" href="/commonplace/site-history#2003">the
-            old days</a>. I've had a blast rebuilding it in this way.
-          The approachability of making updates to the site is off the
-          charts, and the speed that it is served by <a
-            moz-do-not-send="true" href="https://pages.github.com/">GitHub
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml">
+</head>
 
-
-
-
-
-
-
-
-
-            Pages</a> makes me smile. For some reason it's just more fun
-          to make this sort of site in HTML &amp; CSS.<br>
-        </p>
-        <p>At the moment it is pretty simple to make updates, but there
-          is sort of a checklist of things to remember. I'll use this
-          post as an example of how I go about adding a new post to the
-          site:<br>
-        </p>
-        <ul>
-          <li>Create a new folder <code>./blog/2022/HTML-only</code></li>
-          <li>Create an <code>index.html</code> file in that new folder
-            (I do it this way so that the URL will be a nice <code>bjhess.com/blog/2022/HTML-only/</code>)<br>
-          </li>
-          <li>Copy the HTML code from <code>./blog/template.html</code></li>
-          <li>Replace the title and date provided by the template</li>
-          <li>Open the new file in the <a moz-do-not-send="true"
-              href="https://www.seamonkey-project.org">SeaMonkey</a>
-            browser</li>
-          <li>Click File &gt; Edit Page (⌘E on macOS)</li>
-          <li>Write my post and save it</li>
-        </ul>
-        <p>There! I wrote a post! But more to do:<br>
-        </p>
-        <ul>
-          <li>Add a link to the post in <code>./blog/index.html</code></li>
-          <li>Add a new entry to <code>./blog/feed.xml</code> and
-            refresh the <code>updated</code> date on the feed</li>
-          <li>Add the changes to the git repository and push to github</li>
-        </ul>
-        <p>A few minutes later the post is live and the RSS feed is up
-          to date. Not bad!<br>
-        </p>
-        <p>Is it annoying to have to manually update things like the
-          blog index and the RSS feed? Typo-wise, yes, it is easy to
-          make a mistake. Time-wise, I haven't found it to be a bother
-          as of yet. <br>
-        </p>
-        <p>While it is a little more time consuming working in code this
-          way, it's at least consistent. When I'm working in a software
-          like <a moz-do-not-send="true" href="https://micro.blog/">Micro.blog</a>,
-          I'm usually writing in Markdown, but sometimes I need to bring
-          in HTML code anyway, and it gets confusing. Then if I'm making
-          tweaks to the design, I have to go do that in a different
-          webform while also maintaining a change history in a separate
-          file in git. When I change CSS in blog software it might take
-          effect instantly, or it might not. The particular CSS I'm
-          changing might work just fine, or it might need an <code>!important</code>
-          tacked on to it to work.<br>
-        </p>
-        <p>I might drop the SeaMonkey editing at some point. It's kind
-          of nice to have a WYSIWYG editor for this, but it also adds
-          some junk to the HTML at times. Maybe I can learn to not worry
-          about that junk.<br>
-        </p>
-        <p>I might write some scripts to automate things as I go. At
-          that point am I just making my own static site generator? I
-          don't think so, but maybe. (<a moz-do-not-send="true"
-href="https://github.com/bjhess/bjhesshtml/blob/main/scripts/parse_blog.rb">I
-            did some scripting</a> to convert the blog posts from my old
-          site, which were dumped to HTML, into static files for the new
-          site. I might also do this to convert Intense Debate comments
-          over to static comments so those don't get lost down the
-          road.)<br>
-        </p>
-        <p>Later I'll write more about how I ended up here.<br>
-        </p>
-        <ul>
-        </ul>
-        <ul>
-        </ul>
-        <hr>
-        <div class="post-meta">
-          <p class="date"> May 13, 2022 </p>
-        </div>
-      </article>
+<body>
+  <div class="content">
+    <div class="header">
+      <span>
+        I am <a href="/">BARRY HESS</a> &gt; <a href="/blog/">Blog</a>
+      </span>
     </div>
-  </body>
+
+    <article>
+
+      <hr>
+
+      <h1> HTML Only </h1>
+
+      <p>My site is now an HTML &amp; CSS website, just like <a moz-do-not-send="true"
+          href="/commonplace/site-history#2003">the
+          old days</a>. I've had a blast rebuilding it in this way.
+        The approachability of making updates to the site is off the
+        charts, and the speed that it is served by <a moz-do-not-send="true" href="https://pages.github.com/">GitHub
+
+
+
+
+
+
+
+
+
+          Pages</a> makes me smile. For some reason it's just more fun
+        to make this sort of site in HTML &amp; CSS.
+      </p>
+
+      <p>At the moment it is pretty simple to make updates, but there
+        is sort of a checklist of things to remember. I'll use this
+        post as an example of how I go about adding a new post to the
+        site:
+      </p>
+
+      <ul>
+        <li>Create a new folder <code>./blog/2022/HTML-only</code></li>
+        <li>Create an <code>index.html</code> file in that new folder
+          (I do it this way so that the URL will be a nice <code>bjhess.com/blog/2022/HTML-only/</code>)<br>
+        </li>
+        <li>Copy the HTML code from <code>./blog/template.html</code></li>
+        <li>Replace the title and date provided by the template</li>
+        <li>Open the new file in the <a moz-do-not-send="true" href="https://www.seamonkey-project.org">SeaMonkey</a>
+          browser</li>
+        <li>Click File &gt; Edit Page (⌘E on macOS)</li>
+        <li>Write my post and save it</li>
+      </ul>
+
+      <p>
+        There! I wrote a post! But more to do:
+      </p>
+
+      <ul>
+        <li>Add a link to the post in <code>./blog/index.html</code></li>
+        <li>Add a new entry to <code>./blog/feed.xml</code> and
+          refresh the <code>updated</code> date on the feed</li>
+        <li>Add the changes to the git repository and push to github</li>
+      </ul>
+
+      <p>A few minutes later the post is live and the RSS feed is up
+        to date. Not bad!
+      </p>
+
+      <p>Is it annoying to have to manually update things like the
+        blog index and the RSS feed? Typo-wise, yes, it is easy to
+        make a mistake. Time-wise, I haven't found it to be a bother
+        as of yet.
+      </p>
+
+      <p>While it is a little more time consuming working in code this
+        way, it's at least consistent. When I'm working in a software
+        like <a moz-do-not-send="true" href="https://micro.blog/">Micro.blog</a>,
+        I'm usually writing in Markdown, but sometimes I need to bring
+        in HTML code anyway, and it gets confusing. Then if I'm making
+        tweaks to the design, I have to go do that in a different
+        webform while also maintaining a change history in a separate
+        file in git. When I change CSS in blog software it might take
+        effect instantly, or it might not. The particular CSS I'm
+        changing might work just fine, or it might need an <code>!important</code>
+        tacked on to it to work.
+      </p>
+
+      <p>I might drop the SeaMonkey editing at some point. It's kind
+        of nice to have a WYSIWYG editor for this, but it also adds
+        some junk to the HTML at times. Maybe I can learn to not worry
+        about that junk.
+      </p>
+
+      <p>I might write some scripts to automate things as I go. At
+        that point am I just making my own static site generator? I
+        don't think so, but maybe. (<a moz-do-not-send="true"
+          href="https://github.com/bjhess/bjhesshtml/blob/main/scripts/parse_blog.rb">I
+          did some scripting</a> to convert the blog posts from my old
+        site, which were dumped to HTML, into static files for the new
+        site. I might also do this to convert Intense Debate comments
+        over to static comments so those don't get lost down the
+        road.)
+      </p>
+
+      <p>Later I'll write more about how I ended up here.
+      </p>
+
+      <hr>
+
+      <div class="post-meta">
+        <p class="date"> May 13, 2022
+          <a href="/blog/feed.xml" class="rss">
+            <img src="/blog/images/rss-16-meta.png" height="16" width="16" alt="RSS Feed">
+          </a>
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+
+</body>
+
 </html>
