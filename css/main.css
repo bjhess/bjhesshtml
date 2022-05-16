@@ -136,6 +136,7 @@ body {
   width: unset !important;
   border-radius: unset !important;
   float: right;
+  /* Oh, this is a hack to try to align the RSS icon to the text */
   margin-top: 5px;
 }
 
