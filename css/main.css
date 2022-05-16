@@ -74,7 +74,7 @@ h6 {
   --color-bg-alt: #f0fcfb;
   --color-post-border: #ddd;
   --color-hr: #ccc;
-  --color-txt: gb(35, 28, 51);
+  --color-txt: rgb(35, 28, 51);
   --color-txt-link: #a221c2;
   --color-txt-highlight: #f5f1ce;
   --color-txt-meta: #888;
@@ -126,9 +126,17 @@ body {
   font-weight: 400;
 }
 
-img {
+.content article img {
   width: 100%;
   border-radius: var(--block-border-radius);
+}
+
+.rss img {
+  display: inline;
+  width: unset !important;
+  border-radius: unset !important;
+  float: right;
+  margin-top: 5px;
 }
 
 /* For Commonplace: GIFs */
