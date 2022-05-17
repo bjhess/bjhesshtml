@@ -129,6 +129,7 @@ body {
 
 .content article img {
   width: 100%;
+  height: auto;
   border-radius: var(--block-border-radius);
 }
 
