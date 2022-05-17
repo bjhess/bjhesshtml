@@ -244,6 +244,12 @@ h1.with-meta {
   flex: 0 0 80px;
 }
 
+ul.consumed-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
 ul {
   margin: 1em 0;
 }
