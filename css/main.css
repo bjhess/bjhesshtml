@@ -272,10 +272,14 @@ ul {
   border-radius: var(--inline-border-radius);
 }
 
-aside {
+aside.note {
   font-style: italic;
   font-size: var(--font-size-S);
   color: var(--color-txt-meta)
+}
+
+aside.comments {
+  font-size: var(--font-size-S);
 }
 
 /******************************************************************************
