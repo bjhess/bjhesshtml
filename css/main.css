@@ -65,8 +65,6 @@ h6 {
   End CSS Reset
 ******************************************************************************/
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap");
-
 :root {
   --color-white: #fff;
   --color-pink: rgb(255, 181, 252);
