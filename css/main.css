@@ -134,12 +134,13 @@ body {
 }
 
 .rss img {
-  display: inline;
   width: unset !important;
   border-radius: unset !important;
   float: right;
   /* Oh, this is a hack to try to align the RSS icon to the text */
   margin-top: 5px;
+  max-width: 16px;
+  max-height: 16px;
 }
 
 a {
