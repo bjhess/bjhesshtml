@@ -136,7 +136,7 @@ body {
   border-radius: unset !important;
   float: right;
   /* Oh, this is a hack to try to align the RSS icon to the text */
-  margin-top: 5px;
+  margin-top: 0.2em;
   max-width: 16px;
   max-height: 16px;
 }
@@ -225,10 +225,10 @@ h1.with-meta {
 
 .blog-list {
   font-size: var(--font-size-S);
-  font-family: var(--font-sans-serif);
 }
 
 .blog-list ul {
+  font-family: var(--font-sans-serif);
   padding: 0;
   margin: 0;
 }
