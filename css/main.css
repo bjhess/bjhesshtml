@@ -310,7 +310,7 @@ blockquote cite {
 code,
 pre {
   font-family: var(--font-mono);
-  font-size: var(--font-size-S);
+  font-size: 1.3rem;
 }
 
 p code,
