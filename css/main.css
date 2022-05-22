@@ -233,6 +233,11 @@ h1.with-meta {
   margin: 0;
 }
 
+.blog-list .did-you {
+  font-family: var(--font-sans-serif);
+  text-align: center;
+}
+
 .blog-list li {
   display: flex;
   margin: 0.5em 0;
@@ -275,7 +280,7 @@ ul {
 aside.note {
   font-style: italic;
   font-size: var(--font-size-S);
-  color: var(--color-txt-meta)
+  color: var(--color-txt-meta);
 }
 
 aside.comments {
