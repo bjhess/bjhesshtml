@@ -325,6 +325,13 @@ li code {
   padding: 1px 3px;
 }
 
+/* This overrides the above in case a <pre><code> block is within a <p> or <li> */
+pre code {
+  background-color: inherit;
+  border-radius: 0;
+  padding: 0;
+}
+
 pre {
   color: #ccc;
   background-color: var(--color-pre-bg);

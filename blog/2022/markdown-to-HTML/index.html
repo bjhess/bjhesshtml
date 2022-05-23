@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css?v=2">
+  <title>Markdown to HTML on macOS :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml" />
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> > <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr />
+      <h1>
+        Markdown to HTML on macOS
+      </h1>
+
+      <p>So maybe you’ve decided to move your blog or website to an <a href="/blog/2022/HTML-only/">HTML only
+          workflow</a>.
+        Congratulations on joining our little movement!</p>
+      <p>So you’ve written a few posts or pages in straight HTML. Maybe you’ve noticed that you link to things less
+        often
+        because typing <code>&lt;a href...</code> gets to be a little cumbersome. That’s okay! A lot of sites are a bit
+        too
+        linky for my tastes. Maybe you’ve wanted to make some sweet unordered lists, but it felt a bit too cumbersome.
+        Maybe
+        your code editor could help you a bit more, but you haven’t gotten around to improving it yet.</p>
+      <p>So now you want to write a more sizable post and you’re kind of wishing you had access to Markdown. You said
+        your
+        site is HTML now and caving in to a static site generator would feel so wrong. There’s got to be another
+        way!</p>
+      <p>(Oh my goodness, this feels like those excruciating intros recipe websites are filled with. I’m so sorry!)</p>
+      <p>If you’re on macOS, I have an option for you and it involves my old friend, Automator! This does introduce code
+        and
+        dependencies to your simple, HTML workflow, but maybe it’s light enough to not be a big deal?</p>
+      <ol>
+        <li>Do you already use homebrew? If so, install <a href="https://formulae.brew.sh/formula/cmark">cmark</a>:
+          <pre><code class="language-zsh">brew install cmark
+</code></pre>
+        </li>
+        <li>Find where your cmark is installed:
+          <pre><code class="language-zsh">% which cmark
+/opt/homebrew/bin/cmark
+</code></pre>
+        </li>
+        <li>Open Automator and at the prompt create a new <strong>Quick Action</strong>:
+          <a href="images/automator-quick-action.png"><img src="images/automator-quick-action.png"></a>
+        </li>
+        <li>Set it up like this, using your cmark installation location as found in step 2:
+          <a href="images/automator-markdown-to-html.png"><img src="images/automator-markdown-to-html.png"></a>
+
+        </li>
+        <li>Save that Automator script. I called it <strong>Markdown &gt; HTML</strong>.</li>
+        <li>Write your blog post in your preferred markdown editor (mine is iA Writer), select the text, and click (for
+          example) <strong>iA Writer &gt; Services &gt; Markdown &gt; HTML</strong>.</li>
+        <li>The HTML is now on your clipboard, ready to be pasted into your HTML post/page template.</li>
+      </ol>
+      <p>Yes, this introduces dependencies on cmark and Automator. Good thing is if these ever break you can just go
+        back to
+        HTML editing or most markdown editors have an “export to HTML” option.</p>
+
+      <hr />
+
+      <div class="post-meta">
+        <p class="date">
+          May 23, 2022
+          <a href="/blog/feed.xml" class="rss">
+            <img src="/blog/images/rss-48-meta.png" height="16" width="16" alt="RSS Feed">
+          </a>
+        </p>
+      </div>
+
+      <hr>
+
+      <aside class="comments">
+
+        <h2>Have a comment?</h2>
+
+        <p>
+          To post a comment, please send an email by clicking the link below. Please let me know the name you want
+          referenced in the comment if you don't want it to be your real name. If you have a URL you'd like linked, let
+          me
+          know.
+        </p>
+
+        <p>
+          <a target="_blank"
+            href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#98;&#108;&#111;&#103;&#99;&#111;&#109;&#109;&#101;&#110;&#116;&#115;&#64;&#98;&#106;&#104;&#101;&#115;&#115;&#46;&#99;&#111;&#109;?subject=RE: Markdown to HTML on macOS">Comment
+            via
+            email</a>
+        </p>
+
+      </aside>
+
+    </article>
+
+  </div>
+
+</body>
+
+</html>
