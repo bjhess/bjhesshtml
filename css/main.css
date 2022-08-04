@@ -287,6 +287,10 @@ aside.note {
   color: var(--color-txt-meta);
 }
 
+aside.note a {
+  color: #666;
+}
+
 aside.comments {
   font-size: var(--font-size-S);
 }
