@@ -1,0 +1,44 @@
+Barry Hess
+https://bjhess.com
+
+I like to build things. I've managed people as well. It's possible
+I might want to do it again.
+
+
+WORK HISTORY
+
+2022-present	Good Enough, LLC (https://good-enough.us)
+Co-founded Good Enough with Shawn Liu. We've built multiple niche
+web services.
+
+1997-present	Doing My Own Thing (https://bjhess.com/projects/)
+Since becoming entangled in the web, I have built personal and side
+projects. I have built sites to help writers write and players keep
+track of stats. I have built sites that track Twitter noise and sites
+for keeping track of winter parking. Lots of sites!
+
+2007-2019		Harvest (https://getharvest.com)
+I helped build Harvest into one of the top time tracking and invoicing
+applications in the world! I started as a programmer, one of four
+builders of the initial application. By the time I left the company,
+I was the Director of Engineering, helping the engineering department
+grow to over 25 people successfully delivering improvements every day.
+
+2000-2007		Federated Insurance
+As a programmer/analyst, I grew in my skillset both as a programmer and
+as a teammate. Eventually I progressed to a Java Language Specialist
+role, where I helped Java programmers throughout the company solve
+problems while also supporting our Spring-like internally-built
+Java framework.
+
+1998-2000		Bay Technology Group
+My primary work was building and supporting the Daktronics, Inc. website
+as well as the Bay Technology Group website.
+
+
+EDUCATION
+
+1996-2000		Augustana College	Sioux Falls, SD
+B.A. Cum Laude in Computer Science, Minor in Mathematics
+
+1977-present	Life
