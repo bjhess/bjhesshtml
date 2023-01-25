@@ -4,11 +4,18 @@
   <title>I am BARRY HESS</title>
   <link href="https://bjhess.com/blog/feed.xml" rel="self" />
   <link href="https://bjhess.com/blog/" />
-  <updated>2023-01-06T09:25:00-05:00</updated>
+  <updated>2023-01-25T17:05:00-05:00</updated>
   <id>https://bjhess.com/</id>
   <author>
     <name>Barry Hess</name>
   </author>
+
+  <entry>
+    <title>How To Teach Your Customers</title>
+    <link href="https://bjhess.com/blog/2023/how-to-teach-your-customers/" />
+    <updated>2023-01-25T17:05:00-05:00</updated>
+    <id>https://bjhess.com/blog/2023/how-to-teach-your-customers/</id>
+  </entry>
 
   <entry>
     <title>Why Does My Apple TV Suck?</title>
