@@ -4,11 +4,22 @@
   <title>I am BARRY HESS</title>
   <link href="https://bjhess.com/blog/feed.xml" rel="self" />
   <link href="https://bjhess.com/blog/" />
-  <updated>2023-01-25T17:05:00-05:00</updated>
+  <updated>2023-02-08T11:15:00-05:00</updated>
   <id>https://bjhess.com/</id>
   <author>
     <name>Barry Hess</name>
   </author>
+
+  <entry>
+    <title>Rails System Tests with Safari</title>
+    <link href="https://bjhess.com/blog/2023/rails-system-tests-with-safari/" />
+    <updated>2023-02-08T11:15:00-05:00</updated>
+    <id>https://bjhess.com/blog/2023/rails-system-tests-with-safari/</id>
+    <summary>
+      You can write Rails system tests against the Safari browser.
+      But do you want to?
+    </summary>
+  </entry>
 
   <entry>
     <title>How To Teach Your Customers</title>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css?v=1">
+  <title>Rails System Tests with Safari :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml" />
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> > <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr />
+      <h1>
+        Rails System Tests with Safari
+      </h1>
+
+      <p>Not gonna bury the lede. Did you know you can write <a
+          href="https://guides.rubyonrails.org/testing.html#implementing-a-system-test">Rails system tests</a> against
+        Safari?
+        I think most of the documentation and old websites that come up on search largely talk about Chrome and Firefox,
+        but
+        Safari is on the table:</p>
+      <pre><code>class ApplicationSystemTestCase &lt; ActionDispatch::SystemTestCase
+  driven_by :selenium, using: :safari, screen_size: [1400, 1400],
+</code></pre>
+      <p>When you first run your system tests with that setup, you will get an error:</p>
+      <pre><code>Selenium::WebDriver::Error::SessionNotCreatedError:
+Could not create a session: You must enable the 'Allow Remote
+Automation' option in Safari's Develop menu to control Safari
+via WebDriver.
+</code></pre>
+      <p>So go do that in Safari &gt; Develop &gt; Allow Remote Automation. Then you'll find a browser pop up and do
+        things
+        when you run your tests.</p>
+      <p>Honestly, I couldn't handle that as my default flow. I wanted headless. I don't have Chrome installed because
+        Google.
+        I generally use <a href="https://www.mozilla.org/en-US/firefox/developer/">Firefox Developer Edition</a>, but I
+        couldn't figure out the magic incantation to make use of it as my Firefox driver. I tried this:</p>
+      <pre><code>driven_by :selenium, using: :headless_firefox, screen_size: [1400, 1400],
+  options: { driver_path: &quot;/Applications/Firefox Developer Edition.app&quot; }
+</code></pre>
+      <p>But unfortunately:</p>
+      <pre><code>Selenium::WebDriver::Error::WebDriverError: not a file:
+&quot;/Applications/Firefox Developer Edition.app&quot;
+</code></pre>
+      <p>So I gave in, installed Firefox, and called it a day:</p>
+      <pre><code>driven_by :selenium, using: :headless_firefox, screen_size: [1400, 1400]
+</code></pre>
+
+      <hr />
+
+      <div class="post-meta">
+        <p class="date">
+          February 8, 2023
+          <a href="/blog/feed.xml" class="rss">
+            <img src="/blog/images/rss-48-meta.png" height="16" width="16" alt="RSS Feed">
+          </a>
+        </p>
+      </div>
+
+      <hr>
+
+      <aside class="comments">
+
+        <h2>Have a comment?</h2>
+
+        <p>
+          To post a comment, please send an email by clicking the link below. Please let me know the name you want
+          referenced in the comment if you don't want it to be your real name. If you have a URL you'd like linked, let
+          me
+          know.
+        </p>
+
+        <p>
+          <a target="_blank"
+            href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#98;&#108;&#111;&#103;&#99;&#111;&#109;&#109;&#101;&#110;&#116;&#115;&#64;&#98;&#106;&#104;&#101;&#115;&#115;&#46;&#99;&#111;&#109;?subject=RE: Rails System Tests with Safari">Comment
+            via
+            email</a>
+        </p>
+
+      </aside>
+
+    </article>
+
+  </div>
+
+</body>
+
+</html>
