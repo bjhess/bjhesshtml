@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/main.css?v=1">
+  <title>Rails Form Redirect Not Rendering HTML :: Barry Hess :: bjhess.com</title>
+  <meta name="author" content="Barry Hess">
+  <meta name="description" content="Barry Hess writes about software, writing, creativity, media, and family.">
+  <link href="/blog/feed.xml" rel="alternate" title="I am BARRY HESS" type="application/atom+xml" />
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <span>I am <a href="/">BARRY HESS</a> > <a href="/blog/">Blog</a></span>
+    </div>
+
+    <article>
+      <hr />
+      <h1>
+        Rails Form Redirect Not Rendering HTML
+      </h1>
+
+      <p>Recently our login and sign up forms on <a href="https://doevery.day/">Do Every Day</a> broke. After submitting
+        the
+        forms, it appeared to the user that the same form page reloaded and you did not get logged in or signed up.
+        Reloading
+        the page the user would discover that they were indeed logged in, but who actually did that? This was especially
+        unfortunate because Do Every Day had just been featured on <a
+          href="https://blog.google/products/registry/google-registry-is-collaborating-with-un-organizations/">this
+          Google
+          blog post</a>.</p>
+      <p>I believe things broke along the way as I upgraded Rails and the <a
+          href="https://github.com/hotwired/turbo-rails">turbo-rails</a> gem, generally for security updates. Turbo is
+        relatively new and has been changing rapidly. While I have a decent test suite on the Do Every Day repo, I had
+        yet to
+        dip into system (browser) tests. This particular problem could only be caught by such tests.</p>
+      <p>What I discovered was all of the problems were with three forms that were supposed to be redirecting to <a
+          href="https://doevery.day/bjhess">the page that shows a user</a>: login, sign up, and edit profile. Each of
+        these
+        forms were just HTML requests, but Turbo Drive takes over and submits all of these forms as the format
+        TURBO_STREAM.
+        In this case I had two views for the users/show page: <code>show.html.erb</code> and
+        <code>show.turbo_stream.erb</code>. At some point in those aforementioned upgrades to Rails/Turbo had become
+        more
+        strict and no longer understood these basic form-redirects as HTML formats. TURBO_STREAM in, TURBO_STREAM out.
+      </p>
+      <p>The first step was to <a href="/blog/2023/rails-system-tests-with-safari/">rediscover how to write browser
+          tests</a>.
+        This is because my past self incessantly reminds me to <a
+          href="https://techtime.getharvest.com/blog/find-bugs-once-and-the-joy-of-bug-fixing">find bugs once</a>.</p>
+      <p>Once tests were working, I went on a deep Duck Duck Go excursion trying to figure out why Rails was doing this
+        to me.
+        After a couple of hours of searching and troubleshooting I discovered that Rails now needs you to be <a
+          href="https://discuss.hotwired.dev/t/opting-out-of-stream-responses-on-a-per-form-basis/2467/3">explicit about
+          leaving Turbo Drive</a> with <a
+          href="https://github.com/hotwired/turbo-rails#navigate-with-turbo-drive"><code>data-turbo=&quot;false&quot;</code></a>.
+        Suddenly tests were passing, both automated and clicky.</p>
+      <p>Hopefully over the next year or so this blog post pops up for anyone who is looking to fix the same problem.
+      </p>
+
+      <hr />
+
+      <div class="post-meta">
+        <p class="date">
+          February 9, 2023
+          <a href="/blog/feed.xml" class="rss">
+            <img src="/blog/images/rss-48-meta.png" height="16" width="16" alt="RSS Feed">
+          </a>
+        </p>
+      </div>
+
+      <hr>
+
+      <aside class="comments">
+
+        <h2>Have a comment?</h2>
+
+        <p>
+          To post a comment, please send an email by clicking the link below. Please let me know the name you want
+          referenced in the comment if you don't want it to be your real name. If you have a URL you'd like linked, let
+          me
+          know.
+        </p>
+
+        <p>
+          <a target="_blank"
+            href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#98;&#108;&#111;&#103;&#99;&#111;&#109;&#109;&#101;&#110;&#116;&#115;&#64;&#98;&#106;&#104;&#101;&#115;&#115;&#46;&#99;&#111;&#109;?subject=RE: Rails Form Redirect Not Rendering HTML">Comment
+            via
+            email</a>
+        </p>
+
+      </aside>
+
+    </article>
+
+  </div>
+
+</body>
+
+</html>
