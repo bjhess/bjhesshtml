@@ -4,11 +4,22 @@
   <title>I am BARRY HESS</title>
   <link href="https://bjhess.com/blog/feed.xml" rel="self" />
   <link href="https://bjhess.com/blog/" />
-  <updated>2023-02-08T11:15:00-05:00</updated>
+  <updated>2023-02-09T14:00:00-05:00</updated>
   <id>https://bjhess.com/</id>
   <author>
     <name>Barry Hess</name>
   </author>
+
+  <entry>
+    <title>Rails Form Redirect Not Rendering HTML</title>
+    <link href="https://bjhess.com/blog/2023/rails-form-redirect-not-rendering-html/" />
+    <updated>2023-02-09T14:00:00-05:00</updated>
+    <id>https://bjhess.com/blog/2023/rails-form-redirect-not-rendering-html/</id>
+    <summary>
+      Rails Turbo Drive is wonderful, but how do you break out of its grip
+      when that one form just needs to submit and redirect in plain ol' HTML?
+    </summary>
+  </entry>
 
   <entry>
     <title>Rails System Tests with Safari</title>
