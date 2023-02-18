@@ -77,7 +77,7 @@ li {
   --color-post-border: #ddd;
   --color-hr: #ccc;
   --color-txt: rgb(35, 28, 51);
-  --color-txt-link: #a221c2;
+  --color-txt-link: #333;
   --color-txt-highlight: #f5f1ce;
   --color-txt-meta: #888;
   --color-pre-bg: #222;
@@ -117,6 +117,20 @@ li {
 
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: rgb(35, 28, 51);
+    --color-bg-alt: #5c517b;
+    --color-txt: #e4e3e8;
+    --color-txt-link: var(--color-pink);
+    --color-txt-highlight: #5c517b;
+    --color-txt-meta: var(--color-pink);
+    --color-pre-bg: var(-color-bg-alt);
+    --color-code-bg: var(-color-bg-alt);
+    --bq-brightness: brightness(100%);
+  }
+}
+
 html {
   font-size: var(--font-size-base);
 }
@@ -146,7 +160,7 @@ body {
 }
 
 a {
-  color: #333;
+  color: var(--color-txt-link);
 }
 
 a:hover {
