@@ -104,6 +104,7 @@ li {
   --padding-content: 8px;
   --block-border-radius: 10px;
   --inline-border-radius: 2px;
+  --rss-img-filter: none;
 }
 
 @media (min-width: 60em) {
@@ -129,6 +130,7 @@ li {
     --color-pre-bg: #222;
     --color-code-bg: #333;
     --bq-brightness: brightness(100%);
+    --rss-img-filter: invert(100%);
   }
 }
 
@@ -158,6 +160,7 @@ body {
   margin-top: 0.2em;
   max-width: 16px;
   max-height: 16px;
+  filter: var(--rss-img-filter);
 }
 
 a {
