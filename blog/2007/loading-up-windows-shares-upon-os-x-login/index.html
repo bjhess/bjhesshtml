@@ -29,15 +29,15 @@
 <!--more-->
 <p>Early on I built an <a href="http://www.apple.com/macosx/features/automator/">Automator</a> script on my MacBook to connect to and mount Windows shares. Mounting a specific share looks something like this in Automator:</p>
 
-<p><img src="../../bjhessblog/wp-content/uploads/2007/04/auto-mounting.png" alt="Automator mounting of Windows shares"></p>
+<p><img src="images/auto-mounting.png" alt="Automator mounting of Windows shares"></p>
 
 <p>Finally, I took the time to figure out how to make things I want mounted available immediately upon login. It’s really quite easy. A simple visit to the Accounts area of System Preferences leads you to an area for defining login tasks. Click on Login Items and drag-and-drop the app version of that Automator script you created above to achieve login nirvana.</p>
 
-<p><img src="../../bjhessblog/wp-content/uploads/2007/04/account-login-items.png" alt="Account Login Items"></p>
+<p><img src="images/account-login-items.png" alt="Account Login Items"></p>
 
 <p>Of course, I actually would like three different shares to mount upon login. And I don’t really need them each to popup a new finder window. So I simplified to a single Automator script designed to establish a connection to the shares I desire without being so in-my-face.</p>
 
-<p><img src="../../bjhessblog/wp-content/uploads/2007/04/automator-mounting-multiples.png" alt="Automator Mounting Multiples"></p>
+<p><img src="images/automator-mounting-multiples.png" alt="Automator Mounting Multiples"></p>
 
 <p>I haven’t put this technique through any rigid testing. I’m not sure if it degrades nicely when the network isn’t available, though I suspect it does. I also don’t know what will happen when my MacBook comes out of a few hours of sleep mode. If all else fails, I have a <a href="http://www.43folders.com/2006/02/13/quicksilver-triggers/">Quicksilver trigger</a> setup on F1 to reconnect to all shares.</p>
 
