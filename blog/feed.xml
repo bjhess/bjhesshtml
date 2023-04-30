@@ -11,6 +11,20 @@
   </author>
 
   <entry>
+    <title>My blog has moved to Bear Blog</title>
+    <link href="https://bjhess.bearblog.dev/blog/" />
+    <updated>2023-04-30T09:15:00-05:00</updated>
+    <id>https://bjhess.bearblog.dev/blog/</id>
+    <summary>
+      For you feed readers, I am going to try to run my blog more simply via Bear Blog:
+      https://bjhess.bearblog.dev/blog/
+
+      Please update your feed readers accordingly:
+      https://bjhess.bearblog.dev/feed/?type=rss
+    </summary>
+  </entry>
+
+  <entry>
     <title>Helpful People</title>
     <link href="https://bjhess.com/blog/2023/helpful-people/" />
     <updated>2023-02-19T09:15:00-05:00</updated>
