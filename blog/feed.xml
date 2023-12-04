@@ -11,6 +11,29 @@
   </author>
 
   <entry>
+    <title>My blog has moved to Pika</title>
+    <link href="https://bjhess.bearblog.dev/blog/" />
+    <updated>2023-12-04T14:45:00-05:00</updated>
+    <id>https://bjhess.pika.page/</id>
+    <summary>
+      Hello, feed readers!
+
+      Remember 8 months ago when I moved my blog to Bear Blog?
+      You might not because you're still subscribed to this feed.
+
+      Anyway, I'm moving again, this time to Pika.
+      Pika is blogging software I've made with my friends at Good Enough:
+
+      https://bjhess.pika.page/
+
+      I will probably update you one more time when Pika supports custom domains.
+
+      Please update your feed readers accordingly:
+      https://bjhess.pika.page/posts_feed
+    </summary>
+  </entry>
+
+  <entry>
     <title>My blog has moved to Bear Blog</title>
     <link href="https://bjhess.bearblog.dev/blog/" />
     <updated>2023-04-30T09:15:00-05:00</updated>
